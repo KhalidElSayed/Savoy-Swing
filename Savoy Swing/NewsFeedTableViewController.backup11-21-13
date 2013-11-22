@@ -1,0 +1,571 @@
+//
+//  NewsFeedTableViewController.m
+//  Savoy Swing
+//
+//  Created by Steven Stevenson on 11/18/13.
+//  Copyright (c) 2013 Steven Stevenson. All rights reserved.
+//
+
+#import "NewsFeedTableViewController.h"
+#import "SWRevealViewController.h"
+#import "SSCNewsFeeds.h"
+#import "STTwitter.h"
+#import "SSCAppDelegate.h"
+
+@interface NewsFeedTableViewController  ()
+@property (nonatomic, strong) STTwitterAPI* _twitter;
+@end
+
+@implementation NewsFeedTableViewController
+
+@synthesize home_background;
+@synthesize imageArr;
+@synthesize basicCellHeight;
+@synthesize newsSettings;
+
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+-(void) viewDidAppear:(BOOL)animated {
+    NSLog(@"News Feed Appared");
+    [super viewWillAppear:animated];
+    _refreshImage = [NSTimer scheduledTimerWithTimeInterval:12.0 target:self selector:@selector(switchImageView) userInfo:nil repeats:YES];
+
+    [self makeFeeds];
+}
+
+-(void) makeFeeds {
+    [self makeTweetFeed];
+    if (_theCells){
+        [self makeFacebookFeed];
+    } else {
+        _facebookLoader = [NSTimer scheduledTimerWithTimeInterval:.5 target:self selector:@selector(makeFacebookFeed) userInfo:nil repeats:YES];
+    }
+}
+
+
+/*
+ *
+ *
+ *      ///////////////////////////// Facebook Feed Helpers!
+ *
+ *
+ */
+-(void)makeFacebookFeed {
+    if (_theCells && twitterReady) {
+        NSLog(@"Requesting Facebook Access");
+        NSString *mainURL = @"https://graph.facebook.com/oauth/access_token";
+        NSString *requestString =[NSString stringWithFormat:@"client_id=%@&client_secret=%@&grant_type=client_credentials"
+                                  ,@"1422669574628832",
+                                  @"ae143b9cea5708bb164ef0ab7e33590f"];
+        
+        NSString *combinedURLString = [NSString stringWithFormat:@"%@?%@",mainURL,requestString];
+        NSData *dataURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:combinedURLString]];
+        NSString *strResult = [[NSString alloc] initWithData:dataURL encoding:NSUTF8StringEncoding];
+        NSString *accessToken;
+        if (strResult) {
+            NSLog(@"Accessing Facebook Feed");
+            accessToken = strResult;
+            NSError *err;
+            NSString *feedURLString = [NSString stringWithFormat:@"https://graph.facebook.com/SavoySwingClub/feed?%@",accessToken ];
+            NSURL *feedURL = [NSURL URLWithString:[feedURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            NSData *feedData = [NSData dataWithContentsOfURL:feedURL];
+            
+            if (feedData) {
+                _FacebookPosts = [NSJSONSerialization JSONObjectWithData:feedData
+                                                                     options:kNilOptions
+                                                                       error:&err];
+                if (!err) {
+                    [self prepFacebookCells];
+                } else {
+                    NSLog(@"-- error: %@",err);
+                }
+            } else {
+                NSLog(@"-- error: no Response!");
+            }
+        } else {
+            NSLog(@"-- error: no Token Received!");
+        }
+        [_facebookLoader invalidate];
+    }
+}
+
+-(void) prepFacebookCells {
+    NSInteger startIndex = [self.tableView numberOfRowsInSection:0];
+    NSLog(@"Facebook Data Received!");
+    //NSLog(@"%@",[[(NSArray*)[_FacebookPosts objectForKey:@"data"] objectAtIndex:0] objectForKey:@"created_time"]);
+    NSLog(@"startIndex: %d",startIndex);
+    
+    if (!_theCells) {
+        _theCells = [[NSMutableDictionary alloc] init];
+    }
+    
+    for (int i=0; i<[self numberOfSectionsInTableView:self.tableView]; i++){
+        for (int j=0; j<[self.tableView numberOfRowsInSection:i]; j++ ) {
+            //NSIndexPath *thisPath = [NSIndexPath indexPathForRow:j inSection:i];
+            //UITableViewCell *theCell = [self tableView:self.tableView cellForRowAtIndexPath:thisPath];
+            [_theCells setObject:theCell forKey:thisPath];
+        }
+    }
+    
+    [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(loadImages) userInfo:nil repeats:NO];
+    
+    NSLog(@"Done Loading all Twitter Cells");
+}
+
+-(UITableViewCell *) addFacebookCell: (UITableViewCell *) theCell withPath: (NSIndexPath *) indexPath {
+    /*
+    int startIndex = [self.tableView numberOfRowsInSection:0];
+     *fb_posts = [_FacebookPosts objectAtIndex:(indexPath.row-startIndex)];
+    
+    UILabel *tag = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 3.0f, 219.0f, 22.0f)];
+    tag.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:17.0];
+    tag.textAlignment = NSTextAlignmentLeft;
+    tag.textColor = [UIColor blackColor];
+    tag.text = [NSString stringWithFormat:@"%@:",[status valueForKeyPath:@"user.screen_name"]];
+    [tag sizeToFit];
+    
+    UILabel *date = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 19.0f, 219.0f, 22.0f)];
+    date.font = [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:12.0];
+    date.textAlignment = NSTextAlignmentLeft;
+    date.textColor = [UIColor blackColor];
+    date.text = [status valueForKeyPath:@"created_at"];
+    [date sizeToFit];
+    
+    UILabel *text = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 33.0f, 219.0f, 56.0f)];
+    text.font = [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:14.0];
+    text.textAlignment = NSTextAlignmentLeft;
+    text.textColor = [UIColor blackColor];
+    text.text = [status valueForKeyPath:@"text"];
+    text.lineBreakMode = NSLineBreakByWordWrapping;
+    text.numberOfLines = 0;
+    [text sizeToFit];
+    
+    NSError *errRegex = NULL;
+    NSRegularExpression *regex = [NSRegularExpression
+                                  regularExpressionWithPattern:@"RT @.*: "
+                                  options:NSRegularExpressionCaseInsensitive
+                                  error:&errRegex];
+    
+    [regex enumerateMatchesInString:text.text options:0
+                              range:NSMakeRange(0, [text.text length])
+                         usingBlock:^(NSTextCheckingResult *match,
+                                      NSMatchingFlags flags, BOOL *stop) {
+                             
+                             NSString *matchFull = [text.text substringWithRange:[match range]];
+                             tag.text = matchFull;
+                             [tag sizeToFit];
+                             
+                             text.text = [text.text stringByReplacingOccurrencesOfString:tag.text withString:@""];
+                             [text sizeToFit];
+                         }];
+    
+    [theCell.contentView addSubview:tag];
+    [theCell.contentView addSubview:date];
+    [theCell.contentView addSubview:text];
+    */
+    return theCell;
+}
+
+/*
+ *
+ *
+ *      ///////////////////////////// Twitter Feed Helpers!
+ *
+ *
+ */
+-(void) makeTweetFeed {
+    SSCAppDelegate *appDel = (SSCAppDelegate *)[[UIApplication sharedApplication] delegate];
+    if ( !appDel.newsFeedCells ) {
+        if (self.imageArr == nil ) {
+        } else {
+            [self loadImages];
+        }
+        __twitter =
+        [STTwitterAPI twitterAPIWithOAuthConsumerName:@"Savoy Swing Club"
+                                          consumerKey:@"CNUcYnUkb69u3g7Y9WFWfA"
+                                       consumerSecret:@"kIpZ3gXqgBsinody7yOzfiaLQboQKkqts9WsrlXY"
+                                           oauthToken:@"36991268-FnGEuHvRSnN5XelEGDwQOUNNmDLZYTYCYkqu34eDc"
+                                     oauthTokenSecret:@"GxhtLFdV5piN7w6QLaAMs0O8YrRaJVtGTctqrcwru46Ew"];
+        [self getTweetAccount];
+        //[self getTweetList:@"seattle-swing-feeds"];   //custom made list in Twitter including different tweet accounts
+        
+        SSCAppDelegate *appDel = (SSCAppDelegate *)[[UIApplication sharedApplication] delegate];
+        appDel.newsFeedCells = _theCells;
+    } else {
+        NSLog(@"Reloading Data...");
+        _theCells = appDel.newsFeedCells;
+        for (int i=0; i<[self numberOfSectionsInTableView:self.tableView]; i++){
+            for (int j=0; j<[self.tableView numberOfRowsInSection:i]; j++ ) {
+                NSIndexPath *thisPath = [NSIndexPath indexPathForRow:j inSection:i];
+                UITableViewCell *theCell = [self tableView:self.tableView cellForRowAtIndexPath:thisPath];
+                [_theCells setObject:theCell forKey:thisPath];
+            }
+        }
+        [self.tableView reloadData];
+        NSLog(@"Done Reloading Data");
+    }
+}
+
+-(void) getTweetList: (NSString *) listSlug {
+    [__twitter verifyCredentialsWithSuccessBlock:^(NSString *username) {
+        
+        NSLog(@"Access granted for %@", username);
+        
+        [__twitter getListsStatusesForSlug:listSlug screenName:@"savoyswing" ownerID:nil sinceID:nil maxID:nil count:@"20" includeEntities:nil includeRetweets:nil
+                              successBlock:^(NSArray *statuses) {
+                                  _theCells = [[NSMutableDictionary alloc] init];
+                                  self.TwitterStatuses = statuses;
+                                  
+                                  if (!self.imageArr) {
+                                      [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(loadImages) userInfo:nil repeats:NO];
+                                  }
+                                  [self.tableView reloadData];
+                                  tweetsReady = YES;
+                                  _tweetLoader  = [NSTimer scheduledTimerWithTimeInterval:.5 target:self selector:@selector(prepTwitterCells) userInfo:nil repeats:YES];
+                              } errorBlock:^(NSError *error) {
+                                  //NSLog(@"-- error: %@", error);
+                              }];
+        
+    } errorBlock:^(NSError *error) {
+        NSLog(@"-- error %@", error);
+    }];
+}
+
+-(void) getTweetAccount {
+    [__twitter verifyCredentialsWithSuccessBlock:^(NSString *username) {
+        
+        NSLog(@"Access granted for %@", username);
+        
+        [__twitter getUserTimelineWithScreenName:@"savoyswing"
+                                           count: 20
+                                    successBlock:^(NSArray *statuses) {
+                                        _theCells = [[NSMutableDictionary alloc] init];
+                                        self.TwitterStatuses = statuses;
+                                        
+                                        [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(loadImages) userInfo:nil repeats:NO];
+                                        tweetsReady = YES;
+                                        _tweetLoader  = [NSTimer scheduledTimerWithTimeInterval:.5 target:self selector:@selector(prepTwitterCells) userInfo:nil repeats:YES];
+                                        NSMutableArray *insertIndexPaths = [[NSMutableArray alloc] init];
+                                        for (int i=0; i<[self.TwitterStatuses count]; i++ ) {
+                                         [insertIndexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+                                        }
+                                        [self.tableView beginUpdates];
+                                        [self.tableView insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationBottom];
+                                        [self.tableView endUpdates];
+                                    } errorBlock:^(NSError *error) {
+                                        //NSLog(@"-- error: %@", error);
+                                    }];
+        
+    } errorBlock:^(NSError *error) {
+        NSLog(@"-- error %@", error);
+    }];
+}
+
+-(void) prepTwitterCells {
+    if (tweetsReady && [self.tableView numberOfRowsInSection:0]>0){
+        _theCells = [[NSMutableDictionary alloc] init];
+        
+        for (int i=0; i<[self numberOfSectionsInTableView:self.tableView]; i++){
+            for (int j=0; j<[self.tableView numberOfRowsInSection:i]; j++ ) {
+                NSIndexPath *thisPath = [NSIndexPath indexPathForRow:j inSection:i];
+                UITableViewCell *theCell = [self tableView:self.tableView cellForRowAtIndexPath:thisPath];
+                [_theCells setObject:theCell forKey:thisPath];
+            }
+        }
+        
+        [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(loadImages) userInfo:nil repeats:NO];
+        
+        NSLog(@"Done Loading all Twitter Cells");
+        twitterReady = YES;
+        [_tweetLoader invalidate];
+    }
+}
+
+-(UITableViewCell *) addTwitterCell: (UITableViewCell *) theCell withPath: (NSIndexPath *) indexPath {
+    NSDictionary *status = [_TwitterStatuses objectAtIndex:indexPath.row-1];
+    
+    UILabel *tag = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 3.0f, 219.0f, 22.0f)];
+    tag.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:17.0];
+    tag.textAlignment = NSTextAlignmentLeft;
+    tag.textColor = [UIColor blackColor];
+    tag.text = [NSString stringWithFormat:@"%@:",[status valueForKeyPath:@"user.screen_name"]];
+    [tag sizeToFit];
+    
+    UILabel *date = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 19.0f, 219.0f, 22.0f)];
+    date.font = [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:12.0];
+    date.textAlignment = NSTextAlignmentLeft;
+    date.textColor = [UIColor blackColor];
+    date.text = [status valueForKeyPath:@"created_at"];
+    [date sizeToFit];
+    
+    UILabel *text = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 33.0f, 219.0f, 56.0f)];
+    text.font = [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:14.0];
+    text.textAlignment = NSTextAlignmentLeft;
+    text.textColor = [UIColor blackColor];
+    text.text = [status valueForKeyPath:@"text"];
+    text.lineBreakMode = NSLineBreakByWordWrapping;
+    text.numberOfLines = 0;
+    [text sizeToFit];
+    
+    NSError *errRegex = NULL;
+    NSRegularExpression *regex = [NSRegularExpression
+                                  regularExpressionWithPattern:@"RT @.*: "
+                                  options:NSRegularExpressionCaseInsensitive
+                                  error:&errRegex];
+    
+    [regex enumerateMatchesInString:text.text options:0
+                              range:NSMakeRange(0, [text.text length])
+                         usingBlock:^(NSTextCheckingResult *match,
+                                      NSMatchingFlags flags, BOOL *stop) {
+                             
+                             NSString *matchFull = [text.text substringWithRange:[match range]];
+                             tag.text = matchFull;
+                             [tag sizeToFit];
+                             
+                             text.text = [text.text stringByReplacingOccurrencesOfString:tag.text withString:@""];
+                             [text sizeToFit];
+                         }];
+    
+    [theCell.contentView addSubview:tag];
+    [theCell.contentView addSubview:date];
+    [theCell.contentView addSubview:text];
+    
+    return theCell;
+}
+
+/*
+ *
+ *
+ *      ///////////////////////////// Images Cell
+ *
+ *
+ *
+ */
+
+-(void)loadImages {
+    
+    //setup image
+    if (self.imageArr == nil ) {
+        self.imageArr = [[NSMutableArray alloc]  init];
+        for (int i=1; i < 5; i++ ){
+            // GET information (update to POST if possible)
+            NSString *strURL = [NSString stringWithFormat:@"http://www.savoyswing.org/wp-content/plugins/ssc_iphone_app/lib/processMobileApp.php?appSend=yes&sliders=%d",i];
+            NSData *dataURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:strURL]];
+            NSString *strResult = [[NSString alloc] initWithData:dataURL encoding:NSUTF8StringEncoding];
+            if ( [strResult length] == 0 ) {
+                break;
+            } else {
+                [self.imageArr addObject:strResult];
+            }
+        }
+        if ( [self.imageArr count] != 0 ) {
+            NSInteger indexArr = 0;
+            self.home_background.image = [UIImage imageWithData: [NSData dataWithContentsOfURL:[NSURL URLWithString:[imageArr objectAtIndex:indexArr]]]];
+            indexArr++;
+            NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+            
+            if (standardUserDefaults) {
+                [standardUserDefaults setObject:[NSNumber numberWithInt:(int)indexArr] forKey:@"indexArr"];
+                [standardUserDefaults synchronize];
+            }
+        }
+        [self.imageIndicator stopAnimating];
+        self.imageIndicator.alpha = 0.0f;
+        self.home_background.alpha = 1.0f;
+        CATransition *transition = [CATransition animation];
+        transition.duration = 0.66f;
+        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        transition.type = kCATransitionFade;
+        transition.delegate = self;
+        [self.home_background.layer addAnimation:transition forKey:nil];
+    }
+}
+
+
+-(void)switchImageView
+{
+    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    NSNumber *index = nil;
+    
+    if (standardUserDefaults)
+        index = [standardUserDefaults objectForKey:@"indexArr"];
+    
+    NSInteger indexArr = [index intValue];
+    
+    NSString *nextIMG = [self.imageArr objectAtIndex:indexArr];
+    UIImage * toImage = [UIImage imageWithData: [NSData dataWithContentsOfURL:[NSURL URLWithString:nextIMG]]];
+    [UIView transitionWithView:self.view
+                      duration:0.33f
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{
+                        self.home_background.image = toImage;
+                    } completion:NULL];
+    indexArr++;
+    if ( indexArr == [self.imageArr count]) {
+        indexArr = 0;
+    }
+    [standardUserDefaults setObject:[NSNumber numberWithInt:(int)indexArr] forKey:@"indexArr"];
+    [standardUserDefaults synchronize];
+}
+
+/*
+ *
+ *
+ *    ///////////////////////////// NEWS SETTINGS VIEW
+ *
+ *
+ */
+
+-(void) showNewsSettings:(id)sender {
+    
+    //setup header title
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+    label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
+    label.textAlignment = NSTextAlignmentCenter;
+    // ^-Use UITextAlignmentCenter for older SDKs.
+    label.textColor = [UIColor whiteColor];
+    
+    label.text = NSLocalizedString(@"News Feed Settings", @"");
+    [label sizeToFit];
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController: self.newsSettings];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    self.newsSettings.navigationItem.titleView = label;
+    self.newsSettings.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back"  style:UIBarButtonItemStyleDone target:self action:@selector(returnToNewsSettings:)];
+    
+    
+    [[self navigationController] presentViewController:navigationController animated:YES completion:nil];;
+}
+
+-(void) returnToNewsSettings:(id)sender {
+    [self.newsSettings dismissViewControllerAnimated:YES completion:nil];
+}
+
+/*
+ *
+ *
+ *     ///////////////////////////// OVERRIDING METHODS
+ *
+ *
+ */
+
+-(void) viewDidDisappear:(BOOL)animated {
+    NSLog(@"Hiding News Feed");
+    [super viewDidDisappear:animated];
+    if (_refreshImage != nil ) {
+        [_refreshImage invalidate];
+        _refreshImage = nil;
+    }
+    SSCAppDelegate *appDel = (SSCAppDelegate *)[[UIApplication sharedApplication] delegate];
+    appDel.newsFeedCells = _theCells;
+}
+
+
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    //basic Cell Height
+    self.basicCellHeight = 100.0f;
+    
+    //setup header title
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+    label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
+    label.textAlignment = NSTextAlignmentCenter;
+    // ^-Use UITextAlignmentCenter for older SDKs.
+    label.textColor = [UIColor whiteColor];
+    self.navigationItem.titleView = label;
+    label.text = NSLocalizedString(@"News Feed", @"");
+    [label sizeToFit];
+    
+    // Set the side bar button action. When it's tapped, it'll show up the sidebar.
+    _sidebarButton.tintColor = [UIColor whiteColor];
+    _sidebarButton.target = self.revealViewController;
+    _sidebarButton.action = @selector(revealToggle:);
+    
+    //self.newsSettings =
+    self.newsSettings = [self.storyboard instantiateViewControllerWithIdentifier:@"newsSettings"];
+    
+    // Set the side bar button action. When it's tapped, it'll show up the sidebar.
+    _newsSettingsButton.tintColor = [UIColor whiteColor];
+    _newsSettingsButton.target = self;
+    _newsSettingsButton.action = @selector(showNewsSettings:);
+    
+    UIColor *backgroundColor = [UIColor colorWithRed:235.0/255.0 green:119.0/255.0 blue:24.0/255.0 alpha:1.0];
+    self.navigationController.navigationBar.barTintColor = backgroundColor;
+    //self.view.backgroundColor = backgroundColor;
+    
+    // Set the gesture
+    [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
+}
+
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0 && indexPath.row == 0 ) {
+        return 215.0f;
+    }
+    return self.basicCellHeight;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    NSInteger totalRows = 1;
+    if (_TwitterStatuses) {
+        totalRows = totalRows + [self.TwitterStatuses count];
+    }
+    if (_FacebookPosts) {
+    }
+    return totalRows;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell;
+    NSString *CellIdentifier = @"";
+    if (![_theCells objectForKey:indexPath]) {
+        if (indexPath.section == 0 && indexPath.row == 0 ) {
+            CellIdentifier = @"top_slider";
+            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+            self.home_background = [[UIImageView alloc] initWithFrame:CGRectMake(-75.0f, 0.0f, 470.0f, 215.0f)];
+            self.imageIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            [self.imageIndicator startAnimating];
+            self.imageIndicator.alpha = 1.0f;
+            self.home_background.alpha = 0.0f;
+            [cell addSubview: self.home_background];
+            [cell addSubview: self.imageIndicator];
+            self.imageIndicator.center = CGPointMake(cell.frame.size.width / 2, cell.frame.size.height / 2);
+        } else if (!twitterReady) {
+            CellIdentifier = @"Twitter_Cell";
+            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+            [self addTwitterCell:cell withPath:indexPath];
+        } else {
+            CellIdentifier = @"Facebook_Cell";
+            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+            [self addFacebookCell:cell withPath:indexPath];
+        }
+    } else {
+        cell = [_theCells objectForKey:indexPath];
+    }
+    return cell;
+}
+
+@end
