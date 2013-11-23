@@ -125,12 +125,12 @@
         [self.tableView reloadData];
         _theCells = [[NSMutableDictionary alloc] init];
         if (twitterActive) {
-            [self makeTweetFeed];
+            [self makeTweetFeed: nil];
         } else {
             twitterReady = YES;
         }
         if (facebookActive) {
-            [self makeFacebookFeed];
+            [self makeFacebookFeed:@"SavoySwingClub" requestType:nil];
         } else {
             facebookReady = YES;
         }
@@ -249,6 +249,51 @@
                      }];
 }
 
+-(void) getNewerFeeds {
+    if (twitterActive) {
+        twitterReady = NO;
+        [self makeTweetFeed: @"new"];
+    }
+    if (facebookActive) {
+        facebookReady = NO;
+        [self makeFacebookFeed:@"SavoySwingClub" requestType:@"new"];
+    }
+    [self updateCellData:@"old"];
+}
+
+-(void) getOlderFeeds {
+    if (twitterActive) {
+        twitterReady = NO;
+        [self makeTweetFeed: @"old"];
+    }
+    if (facebookActive) {
+        facebookReady = NO;
+        [self makeFacebookFeed:@"SavoySwingClub" requestType:@"old"];
+    }
+    
+    [self updateCellData:@"old"];
+}
+
+
+-(void) updateCellData: (NSString*) type {
+    NSLog(@"Updating Cell Data... with operation: add %@",type);
+    
+    
+}
+
+-(BOOL) listByRows {
+    return NO;
+}
+
+-(NSInteger) rowsOrSectionsReturn: (NSIndexPath*) indexPath {
+    if ([self listByRows]) {
+        return indexPath.row;
+    } else {
+        return indexPath.section;
+    }
+}
+
+
 /*
  *
  *
@@ -256,21 +301,30 @@
  *
  *
  */
--(void)makeFacebookFeed {
-    SSCData *sscData = [SSCData new];
-    NSString *mainURL = @"https://graph.facebook.com/oauth/access_token";
-    NSString *requestString =[NSString stringWithFormat:@"client_id=%@&client_secret=%@&grant_type=client_credentials"
-                              ,sscData.facebookClient_id,
-                              sscData.facebookClient_secret];
-    
-    NSString *combinedURLString = [NSString stringWithFormat:@"%@?%@",mainURL,requestString];
-    NSData *dataURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:combinedURLString]];
-    NSString *strResult = [[NSString alloc] initWithData:dataURL encoding:NSUTF8StringEncoding];
-    NSString *accessToken;
-    if (strResult) {
-        accessToken = strResult;
+-(void)makeFacebookFeed: (NSString*) urlName requestType: (NSString*) type {
+    NSString *strResult;
+    NSString *feedURLString;
+    if (![type isEqualToString:@"new"] && ![type isEqualToString:@"old"]) {
+        SSCData *sscData = [SSCData new];
+        NSString *mainURL = @"https://graph.facebook.com/oauth/access_token";
+        NSString *requestString =[NSString stringWithFormat:@"client_id=%@&client_secret=%@&grant_type=client_credentials"
+                                  ,sscData.facebookClient_id,
+                                  sscData.facebookClient_secret];
+        
+        NSString *combinedURLString = [NSString stringWithFormat:@"%@?%@",mainURL,requestString];
+        NSData *dataURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:combinedURLString]];
+        strResult = [[NSString alloc] initWithData:dataURL encoding:NSUTF8StringEncoding];
+    }
+    if (strResult || [type isEqualToString:@"new"] || [type isEqualToString:@"old"]) {
+        NSString *accessToken = strResult;
         NSError *err;
-        NSString *feedURLString = [NSString stringWithFormat:@"https://graph.facebook.com/SavoySwingClub/feed?%@",accessToken ];
+        if ( strResult ) {
+            feedURLString = [NSString stringWithFormat:@"https://graph.facebook.com/%@/feed?%@",urlName,accessToken ];
+        } else if ([type isEqualToString:@"new"]) {
+            feedURLString = newFacebookPostLink;
+        } else if ([type isEqualToString:@"old"]) {
+            feedURLString = laterFacebookPostLink;
+        }
         NSURL *feedURL = [NSURL URLWithString:[feedURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         NSData *feedData = [NSData dataWithContentsOfURL:feedURL];
         
@@ -278,9 +332,10 @@
             NSDictionary *facebookData = [NSJSONSerialization JSONObjectWithData:feedData
                                                                  options:kNilOptions
                                                                    error:&err];
-            
             if (!err) {
                 _FacebookPosts = [facebookData objectForKey:@"data"];
+                newFacebookPostLink = [[facebookData objectForKey:@"paging"] objectForKey:@"previous"];
+                laterFacebookPostLink = [[facebookData objectForKey:@"paging"] objectForKey:@"next"];
                 NSLog(@"Facebook Feed Success!");
                 facebookReady = YES;
             } else {
@@ -295,7 +350,7 @@
 }
 
 -(UITableViewCell *) addFacebookCell: (UITableViewCell *) theCell withPath: (NSIndexPath *) indexPath {
-    NSDictionary *fbPost = [_allData objectAtIndex:indexPath.section-1];
+    NSDictionary *fbPost = [_allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1];
     
     UILabel *tag = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 3.0f, 219.0f, 22.0f)];
     tag.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:17.0];
@@ -343,7 +398,7 @@
  *
  *
  */
--(void) makeTweetFeed {
+-(void) makeTweetFeed: (NSString*) type {
     SSCData *sscData = [SSCData new];
     __twitter =
     [STTwitterAPI twitterAPIWithOAuthConsumerName:sscData.twitterConsumerName
@@ -351,18 +406,28 @@
                                    consumerSecret:sscData.twitterConsumerSecret
                                        oauthToken:sscData.twitterOathToken
                                  oauthTokenSecret:sscData.twitterOathTokenSecret];
-    [self getTweetAccount];
+    [self getTweetAccount:@"savoyswing" requestType:type];
     //[self getTweetList:@"seattle-swing-feeds"];   //custom made list in Twitter including different tweet accounts
 }
 
--(void) getTweetList: (NSString *) listSlug {
+-(void) getTweetList: (NSString *) listSlug requestType: (NSString*) type {
     [__twitter verifyCredentialsWithSuccessBlock:^(NSString *username) {
+        
+        NSString *sinceID;
+        NSString *maxID;
+        if ([type isEqualToString:@"new"]) {
+            sinceID = newestTwitterID;
+        } else if ([type isEqualToString:@"old"]) {
+            maxID = oldestTwitterID;
+        }
         
         NSLog(@"Access granted for %@", username);
         
-        [__twitter getListsStatusesForSlug:listSlug screenName:@"savoyswing" ownerID:nil sinceID:nil maxID:nil count:@"20" includeEntities:nil includeRetweets:nil
+        [__twitter getListsStatusesForSlug:listSlug screenName:@"savoyswing" ownerID:nil sinceID:sinceID maxID:maxID count:@"25" includeEntities:nil includeRetweets:nil
                               successBlock:^(NSArray *statuses) {
                                   self.TwitterStatuses = statuses;
+                                  newestTwitterID = [[statuses objectAtIndex:0] valueForKey:@"id"];
+                                  oldestTwitterID = [[statuses objectAtIndex:([statuses count]-1)] valueForKey:@"id"];
                                   twitterReady = YES;
                                   NSLog(@"Twitter Feed Success!");
                               } errorBlock:^(NSError *error) {
@@ -376,14 +441,24 @@
     }];
 }
 
--(void) getTweetAccount {
+-(void) getTweetAccount: (NSString*) accountName requestType: (NSString*) type {
+    
+    NSString *sinceID;
+    NSString *maxID;
+    if ([type isEqualToString:@"new"]) {
+        sinceID = newestTwitterID;
+    } else if ([type isEqualToString:@"old"]) {
+        maxID = oldestTwitterID;
+    }
+    
     [__twitter verifyCredentialsWithSuccessBlock:^(NSString *username) {
         NSLog(@"Access granted for %@", username);
         
-        [__twitter getUserTimelineWithScreenName:@"savoyswing"
-                                           count: 25
+        [__twitter getUserTimelineWithScreenName:accountName sinceID:sinceID maxID:maxID count:25
                                     successBlock:^(NSArray *statuses) {
                                         self.TwitterStatuses = statuses;
+                                        newestTwitterID = [[statuses objectAtIndex:0] valueForKey:@"id"];
+                                        oldestTwitterID = [[statuses objectAtIndex:([statuses count]-1)] valueForKey:@"id"];
                                         twitterReady = YES;
                                         NSLog(@"Twitter Feed Success!");
                                     } errorBlock:^(NSError *error) {
@@ -398,7 +473,7 @@
 }
 
 -(UITableViewCell *) addTwitterCell: (UITableViewCell *) theCell withPath: (NSIndexPath *) indexPath {
-    NSDictionary *status = [_allData objectAtIndex:indexPath.section-1];
+    NSDictionary *status = [_allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1];
     
     UILabel *tag = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 3.0f, 219.0f, 22.0f)];
     tag.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:17.0];
@@ -605,19 +680,34 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
-    if (theAppDel.newsFeedCells == _theCells) {
-        return [_theCells count];
-    } else if (_allData) {
-        return [_allData count];
-    } else {
+    if ([self listByRows]) {
         return 1;
+    } else {
+        // Return the number of sections.
+        if (theAppDel.newsFeedCells == _theCells) {
+            return [_theCells count];
+        } else if (_allData) {
+            return [_allData count];
+        } else {
+            return 1;
+        }
     }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    if ([self listByRows]) {
+        // Return the number of rows.
+        if (theAppDel.newsFeedCells == _theCells) {
+            return [_theCells count];
+        } else if (_allData) {
+            return [_allData count];
+        } else {
+            return 1;
+        }
+    } else {
+        return 1;
+    }
 }
 
 -(void) removePreviousCellInfoFromView: (UITableViewCell*) cell {
@@ -639,14 +729,14 @@
             cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
             self.home_background = [[UIImageView alloc] initWithFrame:CGRectMake(-75.0f, 0.0f, 470.0f, 215.0f)];
             [cell addSubview: self.home_background];
-        } else if ([[_allData objectAtIndex:indexPath.section-1] objectForKey:@"created_at"]) {
+        } else if ([[_allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1] objectForKey:@"created_at"]) {
             cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
             [self removePreviousCellInfoFromView:cell];
              UIImage *theImage = [UIImage imageNamed:@"twitter-icon.png"];
             soc_icon.image = theImage;
             [cell addSubview:soc_icon];
             [self addTwitterCell:cell withPath:indexPath];
-        } else if ([[_allData objectAtIndex:indexPath.section-1] objectForKey:@"created_time"]) {
+        } else if ([[_allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1] objectForKey:@"created_time"]) {
             cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
             [self removePreviousCellInfoFromView:cell];
             UIImage *theImage = [UIImage imageNamed:@"facebook-icon.png"];

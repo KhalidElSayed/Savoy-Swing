@@ -19,6 +19,10 @@
     UIActivityIndicatorView *imageIndicator;
     BOOL twitterActive;
     BOOL facebookActive;
+    NSString *newFacebookPostLink;
+    NSString *laterFacebookPostLink;
+    NSString *newestTwitterID;
+    NSString *oldestTwitterID;
 }
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;

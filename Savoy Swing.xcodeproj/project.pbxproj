@@ -27,8 +27,6 @@
 		D21210BA183FEE3000A2F349 /* SSCTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210B7183FEE3000A2F349 /* SSCTweet.m */; };
 		D21210E2183FEE7A00A2F349 /* SSC-SBTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210E1183FEE7A00A2F349 /* SSC-SBTableViewController.m */; };
 		D21210EA183FEEAE00A2F349 /* NewsFeedSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210E4183FEEAE00A2F349 /* NewsFeedSettingsViewController.m */; };
-		D21210EB183FEEAE00A2F349 /* NewsFeedTableViewController.backup11-21-13 in Resources */ = {isa = PBXBuildFile; fileRef = D21210E5183FEEAE00A2F349 /* NewsFeedTableViewController.backup11-21-13 */; };
-		D21210EC183FEEAE00A2F349 /* NewsFeedTableViewController.backup11-22-13.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210E7183FEEAE00A2F349 /* NewsFeedTableViewController.backup11-22-13.m */; };
 		D21210ED183FEEAE00A2F349 /* NewsFeedTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210E9183FEEAE00A2F349 /* NewsFeedTableViewController.m */; };
 		D21210F2183FEEC700A2F349 /* menu-gear.png in Resources */ = {isa = PBXBuildFile; fileRef = D21210EE183FEEC700A2F349 /* menu-gear.png */; };
 		D21210F3183FEEC700A2F349 /* menu-gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21210EF183FEEC700A2F349 /* menu-gear@2x.png */; };
@@ -60,7 +58,6 @@
 		D29EF7771838B3540087B04F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29EF7761838B3540087B04F /* Foundation.framework */; };
 		D29EF7791838B3540087B04F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29EF7781838B3540087B04F /* CoreGraphics.framework */; };
 		D29EF77B1838B3540087B04F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29EF77A1838B3540087B04F /* UIKit.framework */; };
-		D29EF7811838B3540087B04F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D29EF77F1838B3540087B04F /* InfoPlist.strings */; };
 		D29EF7871838B3540087B04F /* SSCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D29EF7861838B3540087B04F /* SSCAppDelegate.m */; };
 		D29EF7891838B3540087B04F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D29EF7881838B3540087B04F /* Images.xcassets */; };
 		D29EF7901838B3540087B04F /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29EF78F1838B3540087B04F /* XCTest.framework */; };
@@ -110,9 +107,6 @@
 		D21210E1183FEE7A00A2F349 /* SSC-SBTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SSC-SBTableViewController.m"; path = "Sidebar Menu/SSC-SBTableViewController.m"; sourceTree = "<group>"; };
 		D21210E3183FEEAE00A2F349 /* NewsFeedSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewsFeedSettingsViewController.h; path = "News Feed/NewsFeedSettingsViewController.h"; sourceTree = "<group>"; };
 		D21210E4183FEEAE00A2F349 /* NewsFeedSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewsFeedSettingsViewController.m; path = "News Feed/NewsFeedSettingsViewController.m"; sourceTree = "<group>"; };
-		D21210E5183FEEAE00A2F349 /* NewsFeedTableViewController.backup11-21-13 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "NewsFeedTableViewController.backup11-21-13"; path = "News Feed/NewsFeedTableViewController.backup11-21-13"; sourceTree = "<group>"; };
-		D21210E6183FEEAE00A2F349 /* NewsFeedTableViewController.backup11-21-13.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NewsFeedTableViewController.backup11-21-13.h"; path = "News Feed/NewsFeedTableViewController.backup11-21-13.h"; sourceTree = "<group>"; };
-		D21210E7183FEEAE00A2F349 /* NewsFeedTableViewController.backup11-22-13.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NewsFeedTableViewController.backup11-22-13.m"; path = "News Feed/NewsFeedTableViewController.backup11-22-13.m"; sourceTree = "<group>"; };
 		D21210E8183FEEAE00A2F349 /* NewsFeedTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewsFeedTableViewController.h; path = "News Feed/NewsFeedTableViewController.h"; sourceTree = "<group>"; };
 		D21210E9183FEEAE00A2F349 /* NewsFeedTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewsFeedTableViewController.m; path = "News Feed/NewsFeedTableViewController.m"; sourceTree = "<group>"; };
 		D21210EE183FEEC700A2F349 /* menu-gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "menu-gear.png"; path = "Images/menu-gear.png"; sourceTree = "<group>"; };
@@ -410,9 +404,6 @@
 			children = (
 				D21210E3183FEEAE00A2F349 /* NewsFeedSettingsViewController.h */,
 				D21210E4183FEEAE00A2F349 /* NewsFeedSettingsViewController.m */,
-				D21210E5183FEEAE00A2F349 /* NewsFeedTableViewController.backup11-21-13 */,
-				D21210E6183FEEAE00A2F349 /* NewsFeedTableViewController.backup11-21-13.h */,
-				D21210E7183FEEAE00A2F349 /* NewsFeedTableViewController.backup11-22-13.m */,
 				D21210E8183FEEAE00A2F349 /* NewsFeedTableViewController.h */,
 				D21210E9183FEEAE00A2F349 /* NewsFeedTableViewController.m */,
 			);
@@ -540,10 +531,8 @@
 				D21210F4183FEEC700A2F349 /* menu.png in Resources */,
 				D21210AE183FEDB900A2F349 /* login_but.png in Resources */,
 				D21210F5183FEEC700A2F349 /* menu@2x.png in Resources */,
-				D29EF7811838B3540087B04F /* InfoPlist.strings in Resources */,
 				D21210B1183FEDB900A2F349 /* Default@2x.png in Resources */,
 				D21210AB183FEDB900A2F349 /* ssc-app-design.png in Resources */,
-				D21210EB183FEEAE00A2F349 /* NewsFeedTableViewController.backup11-21-13 in Resources */,
 				D21210B0183FEDB900A2F349 /* facebook-icon.png in Resources */,
 				D2121129183FEF5900A2F349 /* Savoy Swing-Info.plist in Resources */,
 				D21210AD183FEDB900A2F349 /* Default@2x-120x120.png in Resources */,
@@ -593,7 +582,6 @@
 				D2121121183FEF1100A2F349 /* BAVPlistNode.m in Sources */,
 				D2121122183FEF1100A2F349 /* JSONSyntaxHighlight.m in Sources */,
 				D212111E183FEF1100A2F349 /* STTwitterHTML.m in Sources */,
-				D21210EC183FEEAE00A2F349 /* NewsFeedTableViewController.backup11-22-13.m in Sources */,
 				D212111F183FEF1100A2F349 /* STTwitterOAuth.m in Sources */,
 				D2D86610183ABBA9002B2575 /* AccountTableViewController.m in Sources */,
 				D2229B2A183FE819004651AE /* SSCData.m in Sources */,
@@ -738,8 +726,8 @@
 					"/Users/plenipotence/Dropbox/Xcode\\ projects/FacebookSDK",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Savoy Swing/Savoy Swing-Prefix.pch";
-				INFOPLIST_FILE = "Savoy Swing/Savoy Swing-Info.plist";
+				GCC_PREFIX_HEADER = "Savoy Swing/Supporting Files/Savoy Swing-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/Savoy Swing/Supporting Files/Savoy Swing-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/OmniGlot/Dropbox/Xcode\\ projects/Savoy\\ Swing/Savoy\\ Swing",
@@ -765,8 +753,8 @@
 					"/Users/plenipotence/Dropbox/Xcode\\ projects/FacebookSDK",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Savoy Swing/Savoy Swing-Prefix.pch";
-				INFOPLIST_FILE = "Savoy Swing/Savoy Swing-Info.plist";
+				GCC_PREFIX_HEADER = "Savoy Swing/Supporting Files/Savoy Swing-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/Savoy Swing/Supporting Files/Savoy Swing-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/OmniGlot/Dropbox/Xcode\\ projects/Savoy\\ Swing/Savoy\\ Swing",
