@@ -24,6 +24,9 @@
     NSString *laterFacebookPostLink;
     NSString *newestTwitterID;
     NSString *oldestTwitterID;
+    
+    //testing
+    NSMutableArray *items;
 }
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;

@@ -16,7 +16,7 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) NSString *user;
-@property (strong, nonatomic) NSMutableDictionary *newsFeedCells;
+@property (strong, nonatomic) NSMutableArray *newsFeedData;
 @property (nonatomic) BOOL didInitialize;
 @property (nonatomic) BOOL newsFeedTwitterActive;
 @property (nonatomic) BOOL newsFeedFacebookActive;
