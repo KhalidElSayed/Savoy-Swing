@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "NewsFeedSettingsViewController.h"
 #import "SSCAppDelegate.h"
+#import "STableViewController.h"
 
-@interface NewsFeedTableViewController : UITableViewController {
+@interface NewsFeedTableViewController : STableViewController {
     BOOL twitterReady;
     BOOL facebookReady;
     SSCAppDelegate *theAppDel;
@@ -37,5 +38,9 @@
 @property (nonatomic, strong) NSArray *TwitterStatuses;
 @property (nonatomic, strong) NSArray *FacebookPosts;
 @property (nonatomic, strong) NSMutableArray *allData;
+@property (nonatomic, strong) NSMutableArray *archivedData;
 @property (strong) NSMutableDictionary *theCells;
+// The view used for "load more"
+@property (nonatomic, retain) UITableViewCell *imageSlider;
+@property (nonatomic, retain) UITableViewCell *BasicCell;
 @end

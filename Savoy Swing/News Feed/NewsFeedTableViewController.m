@@ -11,6 +11,8 @@
 #import "SSCNewsFeeds.h"
 #import "STTwitter.h"
 #import "SSCData.h"
+#import "NewsFeedFooterView.h"
+#import "NewsFeedHeaderView.h"
 
 @interface NewsFeedTableViewController  ()
 @property (nonatomic, strong) STTwitterAPI* _twitter;
@@ -30,6 +32,24 @@
     self.basicCellHeight = 100.0f;
     
     theAppDel = (SSCAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    // set the custom view for "pull to refresh". See DemoTableHeaderView.xib.
+    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"NewsFeedHeaderView" owner:self options:nil];
+    NewsFeedHeaderView *headerView = (NewsFeedHeaderView *)[nib objectAtIndex:0];
+    self.headerView = headerView;
+    
+    // set the custom view for "load more". See DemoTableFooterView.xib.
+    nib = [[NSBundle mainBundle] loadNibNamed:@"NewsFeedFooterView" owner:self options:nil];
+    NewsFeedFooterView *footerView = (NewsFeedFooterView *)[nib objectAtIndex:0];
+    self.footerView = footerView;
+    
+    // set the first image slider view
+    nib = [[NSBundle mainBundle] loadNibNamed:@"NewsFeedImageSliderView" owner:self options:nil];
+    _imageSlider =[nib objectAtIndex:0];
+    
+    // set the generic table cell
+    nib = [[NSBundle mainBundle] loadNibNamed:@"NewsFeedEmptyCell" owner:self options:nil];
+    _BasicCell =[nib objectAtIndex:0];
     
     //setup header title
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -80,8 +100,6 @@
     UIImage *theImage = [UIImage imageNamed:@"R4Default.png"];
     loaderImageView.image = theImage;
     imageIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [imageIndicator startAnimating];
-    imageIndicator.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height / 2)+100);
     
     loadingLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     loadingLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
@@ -93,6 +111,8 @@
     
     [self.view addSubview:loaderImageView];
     [self.view addSubview: imageIndicator];
+    [imageIndicator startAnimating];
+    imageIndicator.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height / 2)+100);
     [self.view addSubview:loadingLabel];
 }
 
@@ -111,7 +131,8 @@
     self.navigationController.title = @"News";
 }
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
  *
  *
@@ -119,6 +140,9 @@
  *
  *
  */
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 -(void) makeFeeds {
     if (!theAppDel.newsFeedCells) {
         [_theCells removeAllObjects];
@@ -134,7 +158,7 @@
         } else {
             facebookReady = YES;
         }
-        _sortCellLoader = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(sortObjects) userInfo:nil repeats:YES];
+        _sortCellLoader = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(sortInitialObjects) userInfo:nil repeats:YES];
     } else {
         _theCells = theAppDel.newsFeedCells;
         [self initializeCellData];
@@ -142,9 +166,15 @@
     
 }
 
+-(void) sortInitialObjects {
+    [self sortObjects];
+    [self performSelector:@selector(initializeCellData) withObject:nil afterDelay:2.0];
+}
+
 -(void) sortObjects {
     if (twitterReady && facebookReady) {
         [_sortCellLoader invalidate];
+        _sortCellLoader = nil;
         if ( !_FacebookPosts ) {
             _allData =  [_TwitterStatuses mutableCopy];
         } else {
@@ -214,25 +244,21 @@
         }
         NSLog(@"Data Sorted (total entries: %d)",[_allData count]);
     }
-    [self initializeCellData];
 }
 
 -(void) initializeCellData {
     NSLog(@"Initializing Cell Data...");
     
     
-    [self.tableView reloadData];
-    [self.tableView beginUpdates];
+
     _refreshImage = [NSTimer scheduledTimerWithTimeInterval:12.0 target:self selector:@selector(switchImageView) userInfo:nil repeats:YES];
     for (int i=0; i<[self numberOfSectionsInTableView:self.tableView]; i++){
         for (int j=0; j<[self.tableView numberOfRowsInSection:i]; j++ ) {
             NSIndexPath *thisPath = [NSIndexPath indexPathForRow:j inSection:i];
             UITableViewCell *theCell = [self tableView:self.tableView cellForRowAtIndexPath:thisPath];
-            [_theCells setObject:theCell forKey:thisPath];
+            //[_theCells setObject:theCell forKey:thisPath];
         }
     }
-    [self.tableView endUpdates];
-    [self.tableView reloadData];
     [self loadImages];
     
     
@@ -243,6 +269,7 @@
                          loaderImageView.alpha = 0;
                      }completion:^(BOOL finished){
                          self.navigationController.navigationBarHidden = NO;
+                         [self.tableView reloadData];
                          [loaderImageView removeFromSuperview];
                          [imageIndicator removeFromSuperview];
                          [loadingLabel removeFromSuperview];
@@ -250,39 +277,37 @@
 }
 
 -(void) getNewerFeeds {
+    twitterReady = NO;
+    facebookReady = NO;
     if (twitterActive) {
-        twitterReady = NO;
         [self makeTweetFeed: @"new"];
+    } else{
+        twitterReady = YES;
     }
     if (facebookActive) {
-        facebookReady = NO;
         [self makeFacebookFeed:@"SavoySwingClub" requestType:@"new"];
+    }else{
+        twitterReady = NO;
     }
-    [self updateCellData:@"old"];
 }
 
 -(void) getOlderFeeds {
+    twitterReady = NO;
+    facebookReady = NO;
     if (twitterActive) {
-        twitterReady = NO;
         [self makeTweetFeed: @"old"];
+    }else{
+        twitterReady = YES;
     }
     if (facebookActive) {
-        facebookReady = NO;
         [self makeFacebookFeed:@"SavoySwingClub" requestType:@"old"];
+    }else{
+        twitterReady = NO;
     }
-    
-    [self updateCellData:@"old"];
-}
-
-
--(void) updateCellData: (NSString*) type {
-    NSLog(@"Updating Cell Data... with operation: add %@",type);
-    
-    
 }
 
 -(BOOL) listByRows {
-    return NO;
+    return YES;
 }
 
 -(NSInteger) rowsOrSectionsReturn: (NSIndexPath*) indexPath {
@@ -293,7 +318,8 @@
     }
 }
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
  *
  *
@@ -301,6 +327,9 @@
  *
  *
  */
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 -(void)makeFacebookFeed: (NSString*) urlName requestType: (NSString*) type {
     NSString *strResult;
     NSString *feedURLString;
@@ -334,8 +363,10 @@
                                                                    error:&err];
             if (!err) {
                 _FacebookPosts = [facebookData objectForKey:@"data"];
-                newFacebookPostLink = [[facebookData objectForKey:@"paging"] objectForKey:@"previous"];
-                laterFacebookPostLink = [[facebookData objectForKey:@"paging"] objectForKey:@"next"];
+                if ([facebookData objectForKey:@"paging"]) {
+                    newFacebookPostLink = [[facebookData objectForKey:@"paging"] objectForKey:@"previous"];
+                    laterFacebookPostLink = [[facebookData objectForKey:@"paging"] objectForKey:@"next"];
+                }
                 NSLog(@"Facebook Feed Success!");
                 facebookReady = YES;
             } else {
@@ -391,6 +422,8 @@
     return theCell;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
  *
  *
@@ -398,6 +431,9 @@
  *
  *
  */
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 -(void) makeTweetFeed: (NSString*) type {
     SSCData *sscData = [SSCData new];
     __twitter =
@@ -421,13 +457,15 @@
             maxID = oldestTwitterID;
         }
         
-        NSLog(@"Access granted for %@", username);
+        //NSLog(@"Access granted for %@", username);
         
         [__twitter getListsStatusesForSlug:listSlug screenName:@"savoyswing" ownerID:nil sinceID:sinceID maxID:maxID count:@"25" includeEntities:nil includeRetweets:nil
                               successBlock:^(NSArray *statuses) {
                                   self.TwitterStatuses = statuses;
-                                  newestTwitterID = [[statuses objectAtIndex:0] valueForKey:@"id"];
-                                  oldestTwitterID = [[statuses objectAtIndex:([statuses count]-1)] valueForKey:@"id"];
+                                  if ([statuses  count] > 1) {
+                                      newestTwitterID = [[statuses objectAtIndex:0] valueForKey:@"id"];
+                                      oldestTwitterID = [[statuses objectAtIndex:([statuses count]-1)] valueForKey:@"id"];
+                                  }
                                   twitterReady = YES;
                                   NSLog(@"Twitter Feed Success!");
                               } errorBlock:^(NSError *error) {
@@ -447,18 +485,21 @@
     NSString *maxID;
     if ([type isEqualToString:@"new"]) {
         sinceID = newestTwitterID;
+        NSLog(@"loading newest Tweets from: %@",sinceID);
     } else if ([type isEqualToString:@"old"]) {
         maxID = oldestTwitterID;
     }
     
     [__twitter verifyCredentialsWithSuccessBlock:^(NSString *username) {
-        NSLog(@"Access granted for %@", username);
+        //NSLog(@"Access granted for %@", username);
         
         [__twitter getUserTimelineWithScreenName:accountName sinceID:sinceID maxID:maxID count:25
                                     successBlock:^(NSArray *statuses) {
                                         self.TwitterStatuses = statuses;
-                                        newestTwitterID = [[statuses objectAtIndex:0] valueForKey:@"id"];
-                                        oldestTwitterID = [[statuses objectAtIndex:([statuses count]-1)] valueForKey:@"id"];
+                                        if ([statuses  count] > 0) {
+                                            newestTwitterID = [[statuses objectAtIndex:0] valueForKey:@"id"];
+                                            oldestTwitterID = [[statuses objectAtIndex:([statuses count]-1)] valueForKey:@"id"];
+                                        }
                                         twitterReady = YES;
                                         NSLog(@"Twitter Feed Success!");
                                     } errorBlock:^(NSError *error) {
@@ -533,6 +574,128 @@
     return theCell;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+ *
+ *
+ *      ///////////////////////////// Pull To Refresh
+ *
+ *
+ *
+ */
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Pull to Refresh
+
+- (void) pinHeaderView
+{
+    [super pinHeaderView];
+    
+    NewsFeedHeaderView *hv = (NewsFeedHeaderView *)self.headerView;
+    [hv.activityIndicator startAnimating];
+    hv.title.text = @"Loading More News...";
+}
+
+- (void) unpinHeaderView
+{
+    [super unpinHeaderView];
+    
+    [[(NewsFeedHeaderView *)self.headerView activityIndicator] stopAnimating];
+}
+
+- (void) headerViewDidScroll:(BOOL)willRefreshOnRelease scrollView:(UIScrollView *)scrollView
+{
+    NewsFeedHeaderView *hv = (NewsFeedHeaderView *)self.headerView;
+    if (willRefreshOnRelease)
+        hv.title.text = @"Release to refresh...";
+    else
+        hv.title.text = @"Pull down to refresh...";
+}
+
+- (BOOL) refresh
+{
+    if (![super refresh])
+        return NO;
+    _archivedData = [_allData mutableCopy];
+    _allData = nil;
+    [self getNewerFeeds];
+    _sortCellLoader = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(sortNewObjects) userInfo:nil repeats:YES];
+    return YES;
+}
+
+-(void) sortNewObjects {
+    [self sortObjects];
+    if (!_sortCellLoader) {
+        [self performSelector:@selector(refreshCompleted) withObject:nil afterDelay:2.0];
+    }
+}
+
+
+- (void) refreshCompleted {
+    NSLog(@"Refresh is Completed");
+    [_allData addObjectsFromArray:_archivedData];
+    for (int i=0; i<[self numberOfSectionsInTableView:self.tableView]; i++){
+        for (int j=0; j<[self.tableView numberOfRowsInSection:i]; j++ ) {
+            NSIndexPath *thisPath = [NSIndexPath indexPathForRow:j inSection:i];
+            UITableViewCell *theCell = [self tableView:self.tableView cellForRowAtIndexPath:thisPath];
+            [_theCells setObject:theCell forKey:thisPath];
+        }
+    }
+    [self.tableView reloadData];
+    [super refreshCompleted];
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark - Load More
+/*
+- (void) willBeginLoadingMore
+{
+    //NewsFeedFooterView *fv = (NewsFeedFooterView *)self.footerView;
+    //[fv.activityIndicator startAnimating];
+}
+
+- (void) loadMoreCompleted
+{
+    [super loadMoreCompleted];
+    
+    NewsFeedFooterView *fv = (NewsFeedFooterView *)self.footerView;
+    //[fv.activityIndicator stopAnimating];
+    
+    if (!self.canLoadMore) {
+        // Do something if there are no more items to load
+        
+        // We can hide the footerView by: [self setFooterViewVisibility:NO];
+        
+        // Just show a textual info that there are no more items to load
+        fv.infoLabel.hidden = NO;
+    }
+}
+
+- (BOOL) loadMore
+{
+    if (![super loadMore])
+        return NO;
+    
+    // Do your async loading here
+    //_sortCellLoader = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(sortOlderObjects) userInfo:nil repeats:YES];
+    // See -addItemsOnBottom for more info on what to do after loading more items
+    
+    return YES;
+}
+
+-(void) sortOlderObjects {
+    [_sortCellLoader invalidate];
+    [self sortObjects];
+    [_archivedData addObjectsFromArray:_allData];
+    _allData = _archivedData;
+    [self.tableView reloadData];
+    _archivedData = nil;
+    [self loadMoreCompleted];
+}
+*/
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
  *
  *
@@ -541,6 +704,8 @@
  *
  *
  */
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 -(void)loadImages {
     //setup image
@@ -604,6 +769,8 @@
     [standardUserDefaults synchronize];
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
  *
  *
@@ -641,6 +808,8 @@
     [self.newsSettings dismissViewControllerAnimated:YES completion:nil];
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
  *
  *
@@ -724,20 +893,21 @@
     NSString *CellIdentifier = @"Cell";
     UIImageView *soc_icon = [[UIImageView alloc] initWithFrame:CGRectMake(11.0f, 25.0f, 50.0f, 50.0f)];
     if (![_theCells objectForKey:indexPath ]) {
+        NSLog(@"Creating Cell...");
         if (indexPath.section == 0 && indexPath.row == 0 ) {
-            CellIdentifier = @"top_slider";
-            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+            cell = _imageSlider;
             self.home_background = [[UIImageView alloc] initWithFrame:CGRectMake(-75.0f, 0.0f, 470.0f, 215.0f)];
             [cell addSubview: self.home_background];
         } else if ([[_allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1] objectForKey:@"created_at"]) {
-            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             [self removePreviousCellInfoFromView:cell];
              UIImage *theImage = [UIImage imageNamed:@"twitter-icon.png"];
             soc_icon.image = theImage;
             [cell addSubview:soc_icon];
             [self addTwitterCell:cell withPath:indexPath];
         } else if ([[_allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1] objectForKey:@"created_time"]) {
-            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            //cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
             [self removePreviousCellInfoFromView:cell];
             UIImage *theImage = [UIImage imageNamed:@"facebook-icon.png"];
             soc_icon.image = theImage;
@@ -745,6 +915,7 @@
             [self addFacebookCell:cell withPath:indexPath];
         }
     } else {
+        NSLog(@"Loading Data..");
         cell = [_theCells objectForKey:indexPath];
     }
     return cell;
