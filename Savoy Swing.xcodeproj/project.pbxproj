@@ -68,6 +68,7 @@
 		D2D21056183ADF6C0041B301 /* banner_sav_mon_.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D2D21054183ADF6C0041B301 /* banner_sav_mon_.jpg */; };
 		D2D21059183AE1070041B301 /* blues_underground.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D2D21058183AE1070041B301 /* blues_underground.jpg */; };
 		D2D86610183ABBA9002B2575 /* AccountTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D8660F183ABBA9002B2575 /* AccountTableViewController.m */; };
+		D2EB39CD1843521E0067214D /* SSCData.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EB39CC1843521E0067214D /* SSCData.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -175,6 +176,8 @@
 		D2D21058183AE1070041B301 /* blues_underground.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = blues_underground.jpg; path = Images/blues_underground.jpg; sourceTree = "<group>"; };
 		D2D8660E183ABBA9002B2575 /* AccountTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountTableViewController.h; sourceTree = "<group>"; };
 		D2D8660F183ABBA9002B2575 /* AccountTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountTableViewController.m; sourceTree = "<group>"; };
+		D2EB39CB1843521E0067214D /* SSCData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSCData.h; path = "../../Savoy Swing Secret/Savoy Swing Secret/SSCData.h"; sourceTree = "<group>"; };
+		D2EB39CC1843521E0067214D /* SSCData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSCData.m; path = "../../Savoy Swing Secret/Savoy Swing Secret/SSCData.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -336,6 +339,8 @@
 				D212112A183FEF6F00A2F349 /* main.m */,
 				D2121124183FEF3B00A2F349 /* SWRevealViewController.h */,
 				D2121125183FEF3B00A2F349 /* SWRevealViewController.m */,
+				D2EB39CB1843521E0067214D /* SSCData.h */,
+				D2EB39CC1843521E0067214D /* SSCData.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -568,6 +573,7 @@
 				D2121119183FEF1100A2F349 /* NSDateFormatter+STTwitter.m in Sources */,
 				D29EF7871838B3540087B04F /* SSCAppDelegate.m in Sources */,
 				D212112B183FEF6F00A2F349 /* main.m in Sources */,
+				D2EB39CD1843521E0067214D /* SSCData.m in Sources */,
 				D21210ED183FEEAE00A2F349 /* NewsFeedTableViewController.m in Sources */,
 				D212111A183FEF1100A2F349 /* NSString+STTwitter.m in Sources */,
 				D2121126183FEF3B00A2F349 /* SWRevealViewController.m in Sources */,
