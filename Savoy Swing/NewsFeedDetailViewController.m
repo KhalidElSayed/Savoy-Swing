@@ -49,6 +49,8 @@
     self.post_title = @"";
     self.date_display = @"";
     self.message = @"";
+    self.image_url = @"";
+    _likeData = nil;
     self.navigationController.navigationBar.hidden = NO;
     
     postTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
@@ -57,7 +59,11 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    NSInteger numRows = 1;
+    if (_likeData) {
+        numRows++;
+    }
+    return numRows;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -89,13 +95,13 @@
         nameLabel.text = post_title;
         
         UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(80.0f, 32.0f, 211.0f, 19.0f)];
-        dateLabel.font = [UIFont fontWithName:@"HevelticaNeue-Regular" size:14.0];
+        dateLabel.font = [UIFont fontWithName:@"HevelticaNeue-Regular" size:12.0];
         dateLabel.textAlignment = NSTextAlignmentLeft;
         dateLabel.textColor = [UIColor lightGrayColor];
         dateLabel.text = date_display;
         
         UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(32.0f, 67.0f, 268.0f, 50.0f)];
-        messageLabel.font = [UIFont fontWithName:@"HevelticaNeue-Regular" size:12.0];
+        messageLabel.font = [UIFont fontWithName:@"HevelticaNeue-Regular" size:10.0];
         messageLabel.textAlignment = NSTextAlignmentLeft;
         messageLabel.textColor = [UIColor blackColor];
         messageLabel.text = message;
@@ -123,6 +129,24 @@
         [cell addSubview:user_image];
         [cell addSubview:nameLabel];
         [cell addSubview:dateLabel];
+        [cell addSubview:messageLabel];
+    } else if (indexPath.section == 0 && indexPath.row == 1 && _likeData){
+        CellIdentifier = @"Cell";
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
+        cell.backgroundColor = [UIColor clearColor];
+        
+        UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(32.0f, 10.0f, 268.0f, 21.0f)];
+        messageLabel.font = [UIFont fontWithName:@"HevelticaNeue-Regular" size:10.0];
+        messageLabel.textAlignment = NSTextAlignmentLeft;
+        messageLabel.textColor = [UIColor blackColor];
+        messageLabel.text = _likeData;
+        messageLabel.numberOfLines = 0;
+        [messageLabel sizeToFit];
+        
+        UIView *cellBackground = [[UIView alloc] initWithFrame:CGRectMake(20.0f, 00.0f, 280.0f, cell.frame.size.height)];
+        cellBackground.backgroundColor = [UIColor whiteColor];
+        
+        [cell addSubview:cellBackground];
         [cell addSubview:messageLabel];
     } else {
         CellIdentifier = @"Cell";
@@ -152,6 +176,7 @@
     message = nil;
     image_url = nil;
     postTableView = nil;
+    _likeData = nil;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

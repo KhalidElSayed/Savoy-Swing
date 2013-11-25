@@ -879,6 +879,11 @@
         
         NSString *user_id = [[fbPost valueForKeyPath:@"from"] valueForKey:@"id"];;
         image_url = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=square",user_id];
+        
+        if ( [fbPost valueForKey:@"likes"] ) {
+            NSInteger likeDataCount = [[[fbPost valueForKey:@"likes"] valueForKey:@"data"] count];
+            self.detailView.likeData = [[NSString alloc] initWithFormat:@"%d others liked this",likeDataCount];
+        }
     } else if (isTwitter) {
         NSDictionary *status = [_allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1];
         name = [NSString stringWithFormat:@"@%@:",[status valueForKeyPath:@"user.screen_name"]];

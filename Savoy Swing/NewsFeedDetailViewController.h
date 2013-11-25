@@ -18,9 +18,7 @@
 @property (nonatomic, strong) NSString *image_url;
 
 @property (strong, nonatomic) IBOutlet UITableView *postTableView;
-@property (strong, nonatomic) UILabel *title_label;
-@property (strong, nonatomic) UILabel *date_label;
-@property (strong, nonatomic) UILabel *message_label;
+@property (strong, nonatomic) NSString *likeData;
 
 
 @end
