@@ -16,6 +16,7 @@
 @property (nonatomic, strong) NSString *date_display;
 @property (nonatomic, strong) NSString *message;
 @property (nonatomic, strong) NSString *image_url;
+@property (nonatomic, strong) NSString *post_type;
 
 @property (strong, nonatomic) IBOutlet UITableView *postTableView;
 @property (strong, nonatomic) NSString *likeData;

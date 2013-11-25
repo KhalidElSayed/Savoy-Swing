@@ -47,7 +47,6 @@
 		D2121122183FEF1100A2F349 /* JSONSyntaxHighlight.m in Sources */ = {isa = PBXBuildFile; fileRef = D2121116183FEF1100A2F349 /* JSONSyntaxHighlight.m */; };
 		D2121123183FEF1100A2F349 /* STHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = D2121118183FEF1100A2F349 /* STHTTPRequest.m */; };
 		D2121126183FEF3B00A2F349 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2121125183FEF3B00A2F349 /* SWRevealViewController.m */; };
-		D2121129183FEF5900A2F349 /* Savoy Swing-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2121127183FEF5900A2F349 /* Savoy Swing-Info.plist */; };
 		D212112B183FEF6F00A2F349 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D212112A183FEF6F00A2F349 /* main.m */; };
 		D2542017183D8D83001BA3E1 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2542016183D8D83001BA3E1 /* FacebookSDK.framework */; };
 		D27C29D81842920D000BD68B /* NewsFeedDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D27C29D71842920D000BD68B /* NewsFeedDetailViewController.m */; };
@@ -153,7 +152,6 @@
 		D2121118183FEF1100A2F349 /* STHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STHTTPRequest.m; sourceTree = "<group>"; };
 		D2121124183FEF3B00A2F349 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SWRevealViewController.h; path = "Supporting Files/SWRevealViewController.h"; sourceTree = "<group>"; };
 		D2121125183FEF3B00A2F349 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SWRevealViewController.m; path = "Supporting Files/SWRevealViewController.m"; sourceTree = "<group>"; };
-		D2121127183FEF5900A2F349 /* Savoy Swing-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Savoy Swing-Info.plist"; path = "Supporting Files/Savoy Swing-Info.plist"; sourceTree = "<group>"; };
 		D2121128183FEF5900A2F349 /* Savoy Swing-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Savoy Swing-Prefix.pch"; path = "Supporting Files/Savoy Swing-Prefix.pch"; sourceTree = "<group>"; };
 		D212112A183FEF6F00A2F349 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "Supporting Files/main.m"; sourceTree = "<group>"; };
 		D2542016183D8D83001BA3E1 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
@@ -198,6 +196,7 @@
 		D2D8660F183ABBA9002B2575 /* AccountTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountTableViewController.m; sourceTree = "<group>"; };
 		D2EB39CB1843521E0067214D /* SSCData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSCData.h; path = "../../Savoy Swing Secret/Savoy Swing Secret/SSCData.h"; sourceTree = "<group>"; };
 		D2EB39CC1843521E0067214D /* SSCData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSCData.m; path = "../../Savoy Swing Secret/Savoy Swing Secret/SSCData.m"; sourceTree = "<group>"; };
+		D2EB39CE184355C00067214D /* Savoy Swing-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Savoy Swing-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -380,7 +379,7 @@
 				D293E9BA183B160800D3D9EA /* TestFlight */,
 				D2D8661A183AD3D8002B2575 /* Objects */,
 				D29EF77F1838B3540087B04F /* InfoPlist.strings */,
-				D2121127183FEF5900A2F349 /* Savoy Swing-Info.plist */,
+				D2EB39CE184355C00067214D /* Savoy Swing-Info.plist */,
 				D2121128183FEF5900A2F349 /* Savoy Swing-Prefix.pch */,
 				D212112A183FEF6F00A2F349 /* main.m */,
 				D2121124183FEF3B00A2F349 /* SWRevealViewController.h */,
@@ -586,7 +585,6 @@
 				D21210B0183FEDB900A2F349 /* facebook-icon.png in Resources */,
 				D295D5E41840D3AF00D796C5 /* NewsFeedImageSliderView.xib in Resources */,
 				D295D5E21840CAFB00D796C5 /* NewsFeedHeaderView.xib in Resources */,
-				D2121129183FEF5900A2F349 /* Savoy Swing-Info.plist in Resources */,
 				D21210AD183FEDB900A2F349 /* Default@2x-120x120.png in Resources */,
 				D21210A7183FEDB900A2F349 /* ssc-app-design_nobg.png in Resources */,
 				D29EF7891838B3540087B04F /* Images.xcassets in Resources */,
@@ -780,15 +778,13 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/OmniGlot/Dropbox/Xcode\\ projects/FacebookSDK",
-					"/Users/plenipotence/Dropbox/Xcode\\ projects/FacebookSDK",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Savoy Swing/Supporting Files/Savoy Swing-Prefix.pch";
-				INFOPLIST_FILE = "$(SRCROOT)/Savoy Swing/Supporting Files/Savoy Swing-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Savoy Swing/Savoy Swing-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/OmniGlot/Dropbox/Xcode\\ projects/Savoy\\ Swing/Savoy\\ Swing",
-					"/Users/plenipotence/Dropbox/Xcode\\ projects/Savoy\\ Swing/Savoy\\ Swing",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -807,15 +803,13 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/OmniGlot/Dropbox/Xcode\\ projects/FacebookSDK",
-					"/Users/plenipotence/Dropbox/Xcode\\ projects/FacebookSDK",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Savoy Swing/Supporting Files/Savoy Swing-Prefix.pch";
-				INFOPLIST_FILE = "$(SRCROOT)/Savoy Swing/Supporting Files/Savoy Swing-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Savoy Swing/Savoy Swing-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/OmniGlot/Dropbox/Xcode\\ projects/Savoy\\ Swing/Savoy\\ Swing",
-					"/Users/plenipotence/Dropbox/Xcode\\ projects/Savoy\\ Swing/Savoy\\ Swing",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";

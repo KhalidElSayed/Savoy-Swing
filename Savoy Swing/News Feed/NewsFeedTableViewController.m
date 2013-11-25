@@ -415,11 +415,21 @@
     date.text = thisDateText;
     [date sizeToFit];
     
+    
+    NSString *message =[fbPost valueForKeyPath:@"message"];
+    NSRange foundRange = [message rangeOfString:@"\n"];
+    if (foundRange.location != NSNotFound) {
+        message = [message stringByReplacingOccurrencesOfString:@"\n"
+                                            withString:@""
+                                               options:0
+                                                 range:foundRange];
+    }
+    
     UILabel *text = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 43.0f, 219.0f, 56.0f)];
     text.font = [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:14.0];
     text.textAlignment = NSTextAlignmentLeft;
     text.textColor = [UIColor blackColor];
-    text.text = [fbPost valueForKeyPath:@"message"];
+    text.text = message;
     text.lineBreakMode = NSLineBreakByWordWrapping;
     text.numberOfLines = 0;
     //[text sizeToFit];
@@ -863,6 +873,7 @@
     }
     NSLog(@"%@", [_allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1]);
     if (isFacebook) {
+        self.detailView.post_type = @"Facebook";
         NSDictionary *fbPost = [_allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1];
         name = [[fbPost valueForKeyPath:@"from"] valueForKey:@"name"];
 
@@ -875,7 +886,14 @@
         NSString *thisDateText = [dateFormatter stringFromDate:thisDate];
         date = thisDateText;
         
-        message = [fbPost objectForKey:@"message"];
+        message =[fbPost valueForKeyPath:@"message"];
+        NSRange foundRange = [message rangeOfString:@"\n"];
+        if (foundRange.location != NSNotFound) {
+            message = [message stringByReplacingOccurrencesOfString:@"\n"
+                                                         withString:@""
+                                                            options:0
+                                                              range:foundRange];
+        }
         
         NSString *user_id = [[fbPost valueForKeyPath:@"from"] valueForKey:@"id"];;
         image_url = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=square",user_id];
@@ -885,6 +903,7 @@
             self.detailView.likeData = [[NSString alloc] initWithFormat:@"%d others liked this",likeDataCount];
         }
     } else if (isTwitter) {
+        self.detailView.post_type = @"Twitter";
         NSDictionary *status = [_allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1];
         name = [NSString stringWithFormat:@"@%@:",[status valueForKeyPath:@"user.screen_name"]];
         
@@ -897,7 +916,14 @@
         NSString *thisDateText = [dateFormatter stringFromDate:thisDate];
         date = thisDateText;
         
-        message = [status valueForKeyPath:@"text"];
+        message =[status valueForKeyPath:@"text"];
+        NSRange foundRange = [message rangeOfString:@"\n"];
+        if (foundRange.location != NSNotFound) {
+            message = [message stringByReplacingOccurrencesOfString:@"\n"
+                                                         withString:@""
+                                                            options:0
+                                                              range:foundRange];
+        }
         
         if ([status valueForKey:@"retweeted_status"]) {
             image_url = [status valueForKeyPath:@"retweeted_status.user.profile_image_url"];
@@ -990,6 +1016,8 @@
          UIImage *theImage = [UIImage imageNamed:@"twitter-icon.png"];
         soc_icon.image = theImage;
         
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
         UIView *topSeparator = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, cell.frame.size.width, 10.0f)];
         topSeparator.backgroundColor = [UIColor groupTableViewBackgroundColor];
         
@@ -1002,6 +1030,8 @@
         [self removePreviousCellInfoFromView:cell];
         UIImage *theImage = [UIImage imageNamed:@"facebook-icon.png"];
         soc_icon.image = theImage;
+        
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
         UIView *topSeparator = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, cell.frame.size.width, 10.0f)];
         topSeparator.backgroundColor = [UIColor groupTableViewBackgroundColor];

@@ -6,9 +6,12 @@
 //  Copyright (c) 2013 Steven Stevenson. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "NewsFeedDetailViewController.h"
 
-@implementation NewsFeedDetailViewController
+@implementation NewsFeedDetailViewController {
+    UIColor *bgColor;
+}
 
 @synthesize postTableView;
 
@@ -16,17 +19,23 @@
 @synthesize date_display;
 @synthesize message;
 @synthesize image_url;
+@synthesize post_type;
 
 - (void)viewDidLoad
 {
+    
+    bgColor = [UIColor colorWithWhite:0.8f alpha:1.0f];
+    
     [super viewDidLoad];
+    self.postTableView.backgroundColor = bgColor;
+    self.view.backgroundColor = bgColor;
     postTableView.delegate = self;
     postTableView.dataSource = self;
 }
 
 -(void)viewWillAppear:(BOOL)animated {
-    UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(12.0f, 67.0f, 269.0f, 50.0f)];
-    messageLabel.font = [UIFont fontWithName:@"HevelticaNeue-Regular" size:14.0];
+    UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(32.0f, 67.0f, 258.0f, 50.0f)];
+    messageLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14.0];
     messageLabel.textAlignment = NSTextAlignmentLeft;
     messageLabel.textColor = [UIColor blackColor];
     messageLabel.text = message;
@@ -54,6 +63,17 @@
     self.navigationController.navigationBar.hidden = NO;
     
     postTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+}
+
+-(void) sharePost {
+    NSArray *itemsToShare = @[message];
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:itemsToShare applicationActivities:nil];
+    activityVC.excludedActivityTypes = @[UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll]; //or whichever you don't need
+    [self presentViewController:activityVC animated:YES completion:nil];
+}
+
+-(void) likePost {
+    
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,19 +109,19 @@
         user_image.image = toImage;
         
         UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(80.0f, 14.0f, 211.0f, 19.0f)];
-        nameLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:16.0];
+        nameLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:17.0];
         nameLabel.textAlignment = NSTextAlignmentLeft;
         nameLabel.textColor = [UIColor blackColor];
         nameLabel.text = post_title;
         
-        UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(80.0f, 32.0f, 211.0f, 19.0f)];
-        dateLabel.font = [UIFont fontWithName:@"HevelticaNeue-Regular" size:12.0];
+        UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(80.0f, 30.0f, 211.0f, 19.0f)];
+        dateLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:10.0];
         dateLabel.textAlignment = NSTextAlignmentLeft;
         dateLabel.textColor = [UIColor lightGrayColor];
         dateLabel.text = date_display;
         
-        UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(32.0f, 67.0f, 268.0f, 50.0f)];
-        messageLabel.font = [UIFont fontWithName:@"HevelticaNeue-Regular" size:10.0];
+        UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(32.0f, 67.0f, 258.0f, 50.0f)];
+        messageLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14.0];
         messageLabel.textAlignment = NSTextAlignmentLeft;
         messageLabel.textColor = [UIColor blackColor];
         messageLabel.text = message;
@@ -114,16 +134,50 @@
         
         float yPostForMenu = cellHeight-45.0f;
         UIView *botShare = [[UIView alloc] initWithFrame:CGRectMake(20.0f, yPostForMenu, cell.frame.size.width-40, 40.0f)];
-        botShare.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.5f];
+        botShare.backgroundColor = [UIColor groupTableViewBackgroundColor] ;
+        botShare.layer.cornerRadius = 5;
+        botShare.layer.masksToBounds = YES;
+        
+        if (![post_type isEqualToString:@"Twitter"]) {
+            UIButton *likeButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 280.0f/2.0f, 40.0f)];
+            [likeButton setTitle:@"Like" forState:UIControlStateNormal];
+            [likeButton setTitleColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
+            [likeButton addTarget:self action:@selector(likePost) forControlEvents:UIControlEventTouchUpInside];
+            [likeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+            [botShare addSubview:likeButton];
+            
+            UIButton *shareButton = [[UIButton alloc] initWithFrame:CGRectMake(280.0f/2.0f, 0.0f, 280.0f/2.0f, 40.0f)];
+            [shareButton setTitle:@"Share" forState:UIControlStateNormal];
+            [shareButton setTitleColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
+            [shareButton addTarget:self action:@selector(sharePost) forControlEvents:UIControlEventTouchUpInside];
+            [shareButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+            [botShare addSubview:shareButton];
+        } else {
+            UIButton *shareButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 280.0f, 40.0f)];
+            [shareButton setTitle:@"Share" forState:UIControlStateNormal];
+            [shareButton setTitleColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
+            [shareButton addTarget:self action:@selector(sharePost) forControlEvents:UIControlEventTouchUpInside];
+            [shareButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+            [botShare addSubview:shareButton];
+        }
+        
+        
+        float yPostForMenuTop = cellHeight-45.0f;
+        UIView *botShareTop = [[UIView alloc] initWithFrame:CGRectMake(20.0f, yPostForMenuTop, cell.frame.size.width-40, 5.0f)];
+        botShareTop.backgroundColor = [UIColor groupTableViewBackgroundColor];
+        
         
         UIView *botSeparator = [[UIView alloc] initWithFrame:CGRectMake(20.0f, yPostForMenu+40.0f, cell.frame.size.width-40, 5.0f)];
-        botSeparator.backgroundColor = [UIColor groupTableViewBackgroundColor];
+        botSeparator.backgroundColor = bgColor;
         
-        UIView *cellBackground = [[UIView alloc] initWithFrame:CGRectMake(20.0f, 0.0f, 280.0f, cellHeight)];
+        UIView *cellBackground = [[UIView alloc] initWithFrame:CGRectMake(20.0f, 0.0f, 280.0f, cellHeight-5)];
         cellBackground.backgroundColor = [UIColor whiteColor];
+        cellBackground.layer.cornerRadius = 5;
+        botShare.layer.masksToBounds = YES;
         
         [cell addSubview:cellBackground];
         [cell addSubview:botShare];
+        [cell addSubview:botShareTop];
         [cell addSubview:botSeparator];
         [cell addSubview:user_image];
         [cell addSubview:user_image];
@@ -131,11 +185,10 @@
         [cell addSubview:dateLabel];
         [cell addSubview:messageLabel];
     } else if (indexPath.section == 0 && indexPath.row == 1 && _likeData){
-        CellIdentifier = @"Cell";
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
         cell.backgroundColor = [UIColor clearColor];
         
-        UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(32.0f, 10.0f, 268.0f, 21.0f)];
+        UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(32.0f, 11.0f, 268.0f, 21.0f)];
         messageLabel.font = [UIFont fontWithName:@"HevelticaNeue-Regular" size:10.0];
         messageLabel.textAlignment = NSTextAlignmentLeft;
         messageLabel.textColor = [UIColor blackColor];
@@ -143,18 +196,21 @@
         messageLabel.numberOfLines = 0;
         [messageLabel sizeToFit];
         
-        UIView *cellBackground = [[UIView alloc] initWithFrame:CGRectMake(20.0f, 00.0f, 280.0f, cell.frame.size.height)];
+        UIView *cellBackground = [[UIView alloc] initWithFrame:CGRectMake(20.0f, 0.0f, 280.0f, cell.frame.size.height)];
         cellBackground.backgroundColor = [UIColor whiteColor];
+        cellBackground.layer.cornerRadius = 5;
+        cellBackground.layer.masksToBounds = YES;
         
         [cell addSubview:cellBackground];
         [cell addSubview:messageLabel];
     } else {
-        CellIdentifier = @"Cell";
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
         cell.backgroundColor = [UIColor clearColor];
         
-        UIView *cellBackground = [[UIView alloc] initWithFrame:CGRectMake(20.0f, 00.0f, 280.0f, cell.frame.size.height)];
+        UIView *cellBackground = [[UIView alloc] initWithFrame:CGRectMake(20.0f, 0.0f, 280.0f, cell.frame.size.height)];
         cellBackground.backgroundColor = [UIColor whiteColor];
+        cellBackground.layer.cornerRadius = 5;
+        cellBackground.layer.masksToBounds = YES;
         
         [cell addSubview:cellBackground];
     }
@@ -177,6 +233,7 @@
     image_url = nil;
     postTableView = nil;
     _likeData = nil;
+    cellHeight = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

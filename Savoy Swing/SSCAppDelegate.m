@@ -17,7 +17,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [TestFlight takeOff:@"108d271a-98ff-486e-ac86-2c5d3c280438"];
+    [TestFlight takeOff:@"b0affd4b-5867-49f6-8773-5064c47cf767"];
     _newsFeedFacebookActive = YES;
     _newsFeedTwitterActive = YES;
     return YES;
