@@ -24,12 +24,13 @@
 @synthesize imageArr;
 @synthesize basicCellHeight;
 @synthesize newsSettings;
+@synthesize detailView;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     //basic Cell Height
-    self.basicCellHeight = 100.0f;
+    self.basicCellHeight = 120.0f;
     
     theAppDel = (SSCAppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -63,13 +64,16 @@
     nib = [[NSBundle mainBundle] loadNibNamed:@"NewsFeedEmptyCell" owner:self options:nil];
     _BasicCell =[nib objectAtIndex:0];
     
+    self.tableView.separatorColor = [UIColor groupTableViewBackgroundColor];
+    
     // Set the side bar button action. When it's tapped, it'll show up the sidebar.
     _sidebarButton.tintColor = [UIColor whiteColor];
     _sidebarButton.target = self.revealViewController;
     _sidebarButton.action = @selector(revealToggle:);
     
-    //self.newsSettings =
+    //sub control views
     self.newsSettings = [self.storyboard instantiateViewControllerWithIdentifier:@"newsSettings"];
+    self.detailView = [self.storyboard instantiateViewControllerWithIdentifier:@"detailView"];
     
     // Set the side bar button action. When it's tapped, it'll show up the sidebar.
     _newsSettingsButton.tintColor = [UIColor whiteColor];
@@ -87,11 +91,11 @@
 
 -(void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    NSLog(@"News Feed Appeared");
     facebookActive = theAppDel.newsFeedFacebookActive;
     twitterActive = theAppDel.newsFeedTwitterActive;
     
-    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(startLoading) userInfo:nil repeats:NO];
+    loadingLabel.text = @"Initializing Features";
+    [self startLoading];
 }
 
 -(void) viewWillAppear:(BOOL)animated {
@@ -108,8 +112,9 @@
     loadingLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
     loadingLabel.textAlignment = NSTextAlignmentCenter;
     loadingLabel.textColor = [UIColor whiteColor];
-    loadingLabel.text = @"Loading News Feeds";
+    loadingLabel.text = @"Loading Application Data";
     [loadingLabel sizeToFit];
+    loadingLabel.frame = CGRectMake(0, 0, self.view.frame.size.width, loadingLabel.frame.size.height);
     loadingLabel.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height / 2)+160);
     
     [self.view addSubview:loaderImageView];
@@ -125,11 +130,20 @@
 
 -(void) viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    NSLog(@"News Will Disappear");
     theAppDel.newsFeedData = _allData;
     _TwitterStatuses = nil;
     _FacebookPosts = nil;
     self.navigationController.title = @"News";
+}
+
+
+-(void) viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    if (_refreshImage != nil ) {
+        [_refreshImage invalidate];
+        _refreshImage = nil;
+    }
+    theAppDel.newsFeedData = _allData;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -146,6 +160,7 @@
 
 -(void) makeFeeds {
     if (!theAppDel.newsFeedData) {
+        loadingLabel.text = @"Loading News Feeds";
         if (twitterActive) {
             [self makeTweetFeed: nil];
         } else {
@@ -171,12 +186,12 @@
 
 -(void) sortObjects {
     if (twitterReady && facebookReady) {
+        loadingLabel.text = @"Sorting News Feed";
         [_sortCellLoader invalidate];
         _sortCellLoader = nil;
         if ( !_FacebookPosts ) {
             _allData =  [_TwitterStatuses mutableCopy];
         } else {
-            NSLog(@"Sorting Data into one");
             _allData = [[NSMutableArray alloc] init];
             
             NSInteger fb_count = 0;
@@ -241,11 +256,11 @@
             }
         }
         NSLog(@"Data Sorted (total entries: %d)",[_allData count]);
+        loadingLabel.text = @"Finalizing Display";
     }
 }
 
 -(void) initializeCellData {
-    NSLog(@"Initializing Cell Data...");
     
     
     _refreshImage = [NSTimer scheduledTimerWithTimeInterval:12.0 target:self selector:@selector(switchImageView) userInfo:nil repeats:YES];
@@ -255,8 +270,8 @@
     [self setHeaderView:self.headerView];
     
     [self loadImages];
-    [UIView animateWithDuration:0.5
-                          delay:2.0
+    [UIView animateWithDuration:0.25
+                          delay:.5
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          loaderImageView.alpha = 0;
@@ -377,7 +392,7 @@
 -(UITableViewCell *) addFacebookCell: (UITableViewCell *) theCell withPath: (NSIndexPath *) indexPath {
     NSDictionary *fbPost = [_allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1];
     
-    UILabel *tag = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 3.0f, 219.0f, 22.0f)];
+    UILabel *tag = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 13.0f, 219.0f, 22.0f)];
     tag.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:17.0];
     tag.textAlignment = NSTextAlignmentLeft;
     tag.textColor = [UIColor blackColor];
@@ -392,7 +407,7 @@
     [dateFormatter setDateFormat:@"E MMM, d yyyy hh:mm"];
     NSString *thisDateText = [dateFormatter stringFromDate:thisDate];
     
-    UILabel *date = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 22.0f, 219.0f, 22.0f)];
+    UILabel *date = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 32.0f, 219.0f, 22.0f)];
     date.tag = 101;
     date.font = [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:11.5];
     date.textAlignment = NSTextAlignmentLeft;
@@ -400,7 +415,7 @@
     date.text = thisDateText;
     [date sizeToFit];
     
-    UILabel *text = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 33.0f, 219.0f, 56.0f)];
+    UILabel *text = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 43.0f, 219.0f, 56.0f)];
     text.font = [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:14.0];
     text.textAlignment = NSTextAlignmentLeft;
     text.textColor = [UIColor blackColor];
@@ -517,7 +532,7 @@
 -(UITableViewCell *) addTwitterCell: (UITableViewCell *) theCell withPath: (NSIndexPath *) indexPath {
     NSDictionary *status = [_allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1];
     
-    UILabel *tag = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 3.0f, 219.0f, 22.0f)];
+    UILabel *tag = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 13.0f, 219.0f, 22.0f)];
     tag.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:17.0];
     tag.textAlignment = NSTextAlignmentLeft;
     tag.textColor = [UIColor blackColor];
@@ -532,7 +547,7 @@
     [dateFormatter setDateFormat:@"E MMM, d yyyy hh:mm"];
     NSString *thisDateText = [dateFormatter stringFromDate:thisDate];
     
-    UILabel *date = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 22.0f, 219.0f, 22.0f)];
+    UILabel *date = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 32.0f, 219.0f, 22.0f)];
     date.tag = 101;
     date.font = [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:11.5];
     date.textAlignment = NSTextAlignmentLeft;
@@ -540,7 +555,7 @@
     date.text = thisDateText;
     [date sizeToFit];
     
-    UILabel *text = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 33.0f, 219.0f, 56.0f)];
+    UILabel *text = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 43.0f, 219.0f, 56.0f)];
     text.font = [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:14.0];
     text.textAlignment = NSTextAlignmentLeft;
     text.textColor = [UIColor blackColor];
@@ -792,14 +807,14 @@
     UIColor *backgroundColor = [UIColor colorWithRed:235.0/255.0 green:119.0/255.0 blue:24.0/255.0 alpha:1.0];
     self.newsSettings.navigationController.navigationBar.barTintColor = backgroundColor;
     self.newsSettings.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.newsSettings.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"< News"  style:UIBarButtonItemStylePlain target:self action:@selector(returnToNewsSettings:)];
+    self.newsSettings.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"< News"  style:UIBarButtonItemStylePlain target:self action:@selector(returnToNewsFeedSettings:)];
 
     self.newsSettings.theAppDel = theAppDel;
     
     [[self navigationController] presentViewController:navigationController animated:YES completion:nil];;
 }
 
--(void) returnToNewsSettings:(id)sender {
+-(void) returnToNewsFeedSettings:(id)sender {
     [self.newsSettings dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -808,26 +823,99 @@
 /*
  *
  *
- *     ///////////////////////////// OVERRIDING METHODS
+ *     ///////////////////////////// tableView Methods
  *
  *
  */
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    //setup header title
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+    label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
+    label.textAlignment = NSTextAlignmentCenter;
+    // ^-Use UITextAlignmentCenter for older SDKs.
+    label.textColor = [UIColor whiteColor];
+    
+    label.text = NSLocalizedString(@"News Post", @"");
+    [label sizeToFit];
+    
+	[tableView deselectRowAtIndexPath:indexPath animated:TRUE];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController: self.detailView];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    self.detailView.navigationItem.titleView = label;
+    UIColor *backgroundColor = [UIColor colorWithRed:235.0/255.0 green:119.0/255.0 blue:24.0/255.0 alpha:1.0];
+    self.detailView.navigationController.navigationBar.barTintColor = backgroundColor;
+    self.detailView.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.detailView.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"< News"  style:UIBarButtonItemStylePlain target:self action:@selector(returnToNewsFeedDetail:)];
+
+    BOOL isFacebook = NO;
+    BOOL isTwitter = NO;
+    NSString *name;
+    NSString *date;
+    NSString *message;
+    NSString *image_url;
+    
+    if ( [[_allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1] objectForKey:@"created_at"]) {
+        isTwitter = YES;
+    } else if ( [[_allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1] objectForKey:@"created_time"]) {
+        isFacebook = YES;
+    }
+    NSLog(@"%@", [_allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1]);
+    if (isFacebook) {
+        NSDictionary *fbPost = [_allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1];
+        name = [[fbPost valueForKeyPath:@"from"] valueForKey:@"name"];
+
+        NSString *fbDate =[fbPost valueForKeyPath:@"created_time"];
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
+        NSDate *thisDate = [dateFormatter dateFromString:fbDate];
+        [dateFormatter setDateFormat:@"E MMM, d yyyy hh:mm"];
+        NSString *thisDateText = [dateFormatter stringFromDate:thisDate];
+        date = thisDateText;
+        
+        message = [fbPost objectForKey:@"message"];
+        
+        NSString *user_id = [[fbPost valueForKeyPath:@"from"] valueForKey:@"id"];;
+        image_url = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=square",user_id];
+    } else if (isTwitter) {
+        NSDictionary *status = [_allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1];
+        name = [NSString stringWithFormat:@"@%@:",[status valueForKeyPath:@"user.screen_name"]];
+        
+        NSString *twitterDate =[status valueForKeyPath:@"created_at"];
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"E MMM d HH:mm:ss +0000 yyyy"];
+        NSDate *thisDate = [dateFormatter dateFromString:twitterDate];
+        [dateFormatter setDateFormat:@"E MMM, d yyyy hh:mm"];
+        NSString *thisDateText = [dateFormatter stringFromDate:thisDate];
+        date = thisDateText;
+        
+        message = [status valueForKeyPath:@"text"];
+        
+        if ([status valueForKey:@"retweeted_status"]) {
+            image_url = [status valueForKeyPath:@"retweeted_status.user.profile_image_url"];
+        } else {
+            image_url = [status valueForKeyPath:@"user.profile_image_url"];
+        }
+    }
+    self.detailView.image_url = image_url;
+    self.detailView.post_title = name;
+    self.detailView.date_display = date;
+    self.detailView.message = message;
+    
+    [[self navigationController] presentViewController:navigationController animated:YES completion:nil];
+}
+
+-(void) returnToNewsFeedDetail:(id)sender {
+    [self.detailView dismissViewControllerAnimated:YES completion:nil];
+}
+
+
 -(BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath  {
     return YES;
 }
-
--(void) viewDidDisappear:(BOOL)animated {
-    NSLog(@"Hiding News Feed");
-    [super viewDidDisappear:animated];
-    if (_refreshImage != nil ) {
-        [_refreshImage invalidate];
-        _refreshImage = nil;
-    }
-    theAppDel.newsFeedData = _allData;
-}
-
-
 
 - (void)didReceiveMemoryWarning
 {
@@ -886,7 +974,7 @@
 {
     UITableViewCell *cell;
     NSString *CellIdentifier = @"Cell";
-    UIImageView *soc_icon = [[UIImageView alloc] initWithFrame:CGRectMake(11.0f, 25.0f, 50.0f, 50.0f)];
+    UIImageView *soc_icon = [[UIImageView alloc] initWithFrame:CGRectMake(11.0f, 35.0f, 50.0f, 50.0f)];
     if (indexPath.section == 0 && indexPath.row == 0 ) {
         cell = _imageSlider;
         self.home_background = [[UIImageView alloc] initWithFrame:CGRectMake(-75.0f, 0.0f, 470.0f, 215.0f)];
@@ -896,6 +984,11 @@
         [self removePreviousCellInfoFromView:cell];
          UIImage *theImage = [UIImage imageNamed:@"twitter-icon.png"];
         soc_icon.image = theImage;
+        
+        UIView *topSeparator = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, cell.frame.size.width, 10.0f)];
+        topSeparator.backgroundColor = [UIColor groupTableViewBackgroundColor];
+        
+        [cell addSubview:topSeparator];
         [cell addSubview:soc_icon];
         [self addTwitterCell:cell withPath:indexPath];
     } else if ([[_allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1] objectForKey:@"created_time"]) {
@@ -904,6 +997,11 @@
         [self removePreviousCellInfoFromView:cell];
         UIImage *theImage = [UIImage imageNamed:@"facebook-icon.png"];
         soc_icon.image = theImage;
+        
+        UIView *topSeparator = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, cell.frame.size.width, 10.0f)];
+        topSeparator.backgroundColor = [UIColor groupTableViewBackgroundColor];
+        
+        [cell addSubview:topSeparator];
         [cell addSubview:soc_icon];
         [self addFacebookCell:cell withPath:indexPath];
     }

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "NewsFeedSettingsViewController.h"
+#import "NewsFeedDetailViewController.h"
 #import "SSCAppDelegate.h"
 #import "STableViewController.h"
 
@@ -31,6 +32,7 @@
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *newsSettingsButton;
+@property (strong, nonatomic) NewsFeedDetailViewController *detailView;
 @property (strong, nonatomic) UIImageView *home_background;
 @property (strong,retain) NSMutableArray *imageArr;
 @property (nonatomic) CGFloat basicCellHeight;
