@@ -50,8 +50,16 @@
 		D2121129183FEF5900A2F349 /* Savoy Swing-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2121127183FEF5900A2F349 /* Savoy Swing-Info.plist */; };
 		D212112B183FEF6F00A2F349 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D212112A183FEF6F00A2F349 /* main.m */; };
 		D2542017183D8D83001BA3E1 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2542016183D8D83001BA3E1 /* FacebookSDK.framework */; };
+		D27C29D81842920D000BD68B /* NewsFeedDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D27C29D71842920D000BD68B /* NewsFeedDetailViewController.m */; };
 		D293E9B9183B160000D3D9EA /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D293E9B5183B160000D3D9EA /* libTestFlight.a */; };
 		D293E9BC183B16DB00D3D9EA /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D293E9BB183B16DB00D3D9EA /* libz.dylib */; };
+		D295D5D71840C96A00D796C5 /* STableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D295D5D61840C96A00D796C5 /* STableViewController.m */; };
+		D295D5DF1840CAFB00D796C5 /* NewsFeedFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = D295D5DA1840CAFB00D796C5 /* NewsFeedFooterView.m */; };
+		D295D5E01840CAFB00D796C5 /* NewsFeedFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D295D5DB1840CAFB00D796C5 /* NewsFeedFooterView.xib */; };
+		D295D5E11840CAFB00D796C5 /* NewsFeedHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D295D5DD1840CAFB00D796C5 /* NewsFeedHeaderView.m */; };
+		D295D5E21840CAFB00D796C5 /* NewsFeedHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D295D5DE1840CAFB00D796C5 /* NewsFeedHeaderView.xib */; };
+		D295D5E41840D3AF00D796C5 /* NewsFeedImageSliderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D295D5E31840D3AF00D796C5 /* NewsFeedImageSliderView.xib */; };
+		D295D5E61840DA6600D796C5 /* NewsFeedEmptyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D295D5E51840DA6600D796C5 /* NewsFeedEmptyCell.xib */; };
 		D296A6561839894600D35795 /* MasterNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D296A6551839894600D35795 /* MasterNavViewController.m */; };
 		D296A65C183994DA00D35795 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D296A65B183994DA00D35795 /* Storyboard.storyboard */; };
 		D29EF7771838B3540087B04F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29EF7761838B3540087B04F /* Foundation.framework */; };
@@ -149,11 +157,23 @@
 		D2121128183FEF5900A2F349 /* Savoy Swing-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Savoy Swing-Prefix.pch"; path = "Supporting Files/Savoy Swing-Prefix.pch"; sourceTree = "<group>"; };
 		D212112A183FEF6F00A2F349 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "Supporting Files/main.m"; sourceTree = "<group>"; };
 		D2542016183D8D83001BA3E1 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
+		D27C29D61842920D000BD68B /* NewsFeedDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsFeedDetailViewController.h; sourceTree = "<group>"; };
+		D27C29D71842920D000BD68B /* NewsFeedDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsFeedDetailViewController.m; sourceTree = "<group>"; };
 		D293E9B5183B160000D3D9EA /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
 		D293E9B6183B160000D3D9EA /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		D293E9B7183B160000D3D9EA /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
 		D293E9B8183B160000D3D9EA /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
 		D293E9BB183B16DB00D3D9EA /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		D295D5D51840C96A00D796C5 /* STableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STableViewController.h; sourceTree = "<group>"; };
+		D295D5D61840C96A00D796C5 /* STableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STableViewController.m; sourceTree = "<group>"; };
+		D295D5D91840CAFB00D796C5 /* NewsFeedFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewsFeedFooterView.h; path = "News Feed/NewsFeedFooterView.h"; sourceTree = "<group>"; };
+		D295D5DA1840CAFB00D796C5 /* NewsFeedFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewsFeedFooterView.m; path = "News Feed/NewsFeedFooterView.m"; sourceTree = "<group>"; };
+		D295D5DB1840CAFB00D796C5 /* NewsFeedFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewsFeedFooterView.xib; path = "News Feed/NewsFeedFooterView.xib"; sourceTree = "<group>"; };
+		D295D5DC1840CAFB00D796C5 /* NewsFeedHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewsFeedHeaderView.h; path = "News Feed/NewsFeedHeaderView.h"; sourceTree = "<group>"; };
+		D295D5DD1840CAFB00D796C5 /* NewsFeedHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewsFeedHeaderView.m; path = "News Feed/NewsFeedHeaderView.m"; sourceTree = "<group>"; };
+		D295D5DE1840CAFB00D796C5 /* NewsFeedHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewsFeedHeaderView.xib; path = "News Feed/NewsFeedHeaderView.xib"; sourceTree = "<group>"; };
+		D295D5E31840D3AF00D796C5 /* NewsFeedImageSliderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewsFeedImageSliderView.xib; path = "News Feed/NewsFeedImageSliderView.xib"; sourceTree = "<group>"; };
+		D295D5E51840DA6600D796C5 /* NewsFeedEmptyCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewsFeedEmptyCell.xib; path = "News Feed/NewsFeedEmptyCell.xib"; sourceTree = "<group>"; };
 		D296A6541839894600D35795 /* MasterNavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterNavViewController.h; sourceTree = "<group>"; };
 		D296A6551839894600D35795 /* MasterNavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterNavViewController.m; sourceTree = "<group>"; };
 		D296A65B183994DA00D35795 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
@@ -267,6 +287,31 @@
 			name = "Sidebar Menu";
 			sourceTree = "<group>";
 		};
+		D295D5D41840C96A00D796C5 /* STableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				D295D5D51840C96A00D796C5 /* STableViewController.h */,
+				D295D5D61840C96A00D796C5 /* STableViewController.m */,
+			);
+			name = STableViewController;
+			path = ../../STableViewController;
+			sourceTree = "<group>";
+		};
+		D295D5D81840C9AE00D796C5 /* pullToRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				D295D5E51840DA6600D796C5 /* NewsFeedEmptyCell.xib */,
+				D295D5E31840D3AF00D796C5 /* NewsFeedImageSliderView.xib */,
+				D295D5D91840CAFB00D796C5 /* NewsFeedFooterView.h */,
+				D295D5DA1840CAFB00D796C5 /* NewsFeedFooterView.m */,
+				D295D5DB1840CAFB00D796C5 /* NewsFeedFooterView.xib */,
+				D295D5DC1840CAFB00D796C5 /* NewsFeedHeaderView.h */,
+				D295D5DD1840CAFB00D796C5 /* NewsFeedHeaderView.m */,
+				D295D5DE1840CAFB00D796C5 /* NewsFeedHeaderView.xib */,
+			);
+			name = pullToRefresh;
+			sourceTree = "<group>";
+		};
 		D296A6571839894F00D35795 /* Main Navigation */ = {
 			isa = PBXGroup;
 			children = (
@@ -330,6 +375,7 @@
 		D29EF77D1838B3540087B04F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D295D5D41840C96A00D796C5 /* STableViewController */,
 				D21210FF183FEF1100A2F349 /* STTwitter */,
 				D293E9BA183B160800D3D9EA /* TestFlight */,
 				D2D8661A183AD3D8002B2575 /* Objects */,
@@ -404,8 +450,11 @@
 			children = (
 				D21210E3183FEEAE00A2F349 /* NewsFeedSettingsViewController.h */,
 				D21210E4183FEEAE00A2F349 /* NewsFeedSettingsViewController.m */,
+				D27C29D61842920D000BD68B /* NewsFeedDetailViewController.h */,
+				D27C29D71842920D000BD68B /* NewsFeedDetailViewController.m */,
 				D21210E8183FEEAE00A2F349 /* NewsFeedTableViewController.h */,
 				D21210E9183FEEAE00A2F349 /* NewsFeedTableViewController.m */,
+				D295D5D81840C9AE00D796C5 /* pullToRefresh */,
 			);
 			name = "News Feed";
 			sourceTree = "<group>";
@@ -531,9 +580,12 @@
 				D21210F4183FEEC700A2F349 /* menu.png in Resources */,
 				D21210AE183FEDB900A2F349 /* login_but.png in Resources */,
 				D21210F5183FEEC700A2F349 /* menu@2x.png in Resources */,
+				D295D5E01840CAFB00D796C5 /* NewsFeedFooterView.xib in Resources */,
 				D21210B1183FEDB900A2F349 /* Default@2x.png in Resources */,
 				D21210AB183FEDB900A2F349 /* ssc-app-design.png in Resources */,
 				D21210B0183FEDB900A2F349 /* facebook-icon.png in Resources */,
+				D295D5E41840D3AF00D796C5 /* NewsFeedImageSliderView.xib in Resources */,
+				D295D5E21840CAFB00D796C5 /* NewsFeedHeaderView.xib in Resources */,
 				D2121129183FEF5900A2F349 /* Savoy Swing-Info.plist in Resources */,
 				D21210AD183FEDB900A2F349 /* Default@2x-120x120.png in Resources */,
 				D21210A7183FEDB900A2F349 /* ssc-app-design_nobg.png in Resources */,
@@ -544,6 +596,7 @@
 				D21210A9183FEDB900A2F349 /* ssc-app-design@2x-152x152.png in Resources */,
 				D21210F2183FEEC700A2F349 /* menu-gear.png in Resources */,
 				D21210AF183FEDB900A2F349 /* twitter-icon.png in Resources */,
+				D295D5E61840DA6600D796C5 /* NewsFeedEmptyCell.xib in Resources */,
 				D21210A1183FEDB900A2F349 /* 2xDefault.png in Resources */,
 				D21210AA183FEDB900A2F349 /* ssc-app-design@2x-120x120.png in Resources */,
 				D212108B183FED6600A2F349 /* marquee-4.png in Resources */,
@@ -576,15 +629,19 @@
 				D2EB39CD1843521E0067214D /* SSCData.m in Sources */,
 				D21210ED183FEEAE00A2F349 /* NewsFeedTableViewController.m in Sources */,
 				D212111A183FEF1100A2F349 /* NSString+STTwitter.m in Sources */,
+				D295D5E11840CAFB00D796C5 /* NewsFeedHeaderView.m in Sources */,
 				D2121126183FEF3B00A2F349 /* SWRevealViewController.m in Sources */,
+				D295D5DF1840CAFB00D796C5 /* NewsFeedFooterView.m in Sources */,
 				D21210EA183FEEAE00A2F349 /* NewsFeedSettingsViewController.m in Sources */,
 				D296A6561839894600D35795 /* MasterNavViewController.m in Sources */,
 				D21210BA183FEE3000A2F349 /* SSCTweet.m in Sources */,
 				D2121121183FEF1100A2F349 /* BAVPlistNode.m in Sources */,
 				D2121122183FEF1100A2F349 /* JSONSyntaxHighlight.m in Sources */,
 				D212111E183FEF1100A2F349 /* STTwitterHTML.m in Sources */,
+				D295D5D71840C96A00D796C5 /* STableViewController.m in Sources */,
 				D212111F183FEF1100A2F349 /* STTwitterOAuth.m in Sources */,
 				D2D86610183ABBA9002B2575 /* AccountTableViewController.m in Sources */,
+				D27C29D81842920D000BD68B /* NewsFeedDetailViewController.m in Sources */,
 				D212111D183FEF1100A2F349 /* STTwitterAppOnly.m in Sources */,
 				D21210FE183FEEE200A2F349 /* CalendarTableViewController.m in Sources */,
 				D212111B183FEF1100A2F349 /* STHTTPRequest+STTwitter.m in Sources */,

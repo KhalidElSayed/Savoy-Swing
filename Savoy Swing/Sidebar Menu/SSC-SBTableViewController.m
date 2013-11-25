@@ -8,6 +8,7 @@
 
 #import "SSC-SBTableViewController.h"
 #import "SWRevealViewController.h"
+#import "MasterNavViewController.h"
 #import "SSCAppDelegate.h"
 
 @interface SSC_SBTableViewController ()
@@ -83,24 +84,31 @@
         SWRevealViewControllerSegue *swSegue = (SWRevealViewControllerSegue*) segue;
         
         swSegue.performBlock = ^(SWRevealViewControllerSegue* rvc_segue, UIViewController* svc, UIViewController* dvc) {
-            
-            //setup header title
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-            label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
-            label.textAlignment = NSTextAlignmentCenter;
-            // ^-Use UITextAlignmentCenter for older SDKs.
-            label.textColor = [UIColor whiteColor];
-            
-            NSString *theTitle = destViewController.title;
-            label.text = NSLocalizedString(theTitle, @"");
-            [label sizeToFit];
-            destViewController.navigationItem.titleView = label;
-            
-            destViewController.navigationItem.leftBarButtonItem.tintColor = [UIColor whiteColor];
-            
-            UINavigationController* navController = (UINavigationController*)self.revealViewController.frontViewController;
-            [navController setViewControllers: @[dvc] animated: NO ];
-            [self.revealViewController setFrontViewPosition: FrontViewPositionLeft animated: YES];
+            MasterNavViewController *nav;
+            if ([self.revealViewController.frontViewController isKindOfClass:[MasterNavViewController class]] ) {
+                nav = (MasterNavViewController*)self.revealViewController.frontViewController;
+            }
+            if ( nav && [[nav topViewController] class] == [dvc class]) {
+                [self.revealViewController revealToggleAnimated:YES];
+            } else {
+                //setup header title
+                UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+                label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
+                label.textAlignment = NSTextAlignmentCenter;
+                // ^-Use UITextAlignmentCenter for older SDKs.
+                label.textColor = [UIColor whiteColor];
+                
+                NSString *theTitle = destViewController.title;
+                label.text = NSLocalizedString(theTitle, @"");
+                [label sizeToFit];
+                destViewController.navigationItem.titleView = label;
+                
+                destViewController.navigationItem.leftBarButtonItem.tintColor = [UIColor whiteColor];
+                
+                UINavigationController* navController = (UINavigationController*)self.revealViewController.frontViewController;
+                [navController setViewControllers: @[dvc] animated: NO ];
+                [self.revealViewController setFrontViewPosition: FrontViewPositionLeft animated: YES];
+            }
         };
         
     }
