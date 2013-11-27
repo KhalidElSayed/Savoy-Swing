@@ -21,4 +21,6 @@
 @property (nonatomic) BOOL newsFeedTwitterActive;
 @property (nonatomic) BOOL newsFeedFacebookActive;
 
+-(void) loadSSCWebsiteData;
+
 @end

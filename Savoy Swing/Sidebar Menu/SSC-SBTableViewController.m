@@ -36,7 +36,7 @@
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.2f alpha:1.0f];
     self.tableView.separatorColor = [UIColor colorWithWhite:0.15f alpha:0.4f];
     
-    _menuItems = @[@"menu_title",@"news",@"about",@"calendar",@"classes",@"get-involved",@"blank",@"account",@"membership",@"logout"];
+    _menuItems = @[@"menu_title",@"home",@"news",@"about",@"calendar",@"classes",@"get-involved",@"blank",@"account",@"membership",@"logout"];
     
     //NSLog(@"%@",_menuItems);
 }
@@ -76,7 +76,7 @@
     UIImage *theImage = [[UIImage alloc] initWithContentsOfFile:filePath];
     
     destViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:theImage style:UIBarButtonItemStylePlain target:self.revealViewController action:@selector(revealToggle:)];
-    if (![[segue identifier] isEqualToString:@"showNews"]) {
+    if (![[segue identifier] isEqualToString:@"showHome"]) {
          [destViewController.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
     }
     

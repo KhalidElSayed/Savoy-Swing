@@ -28,12 +28,19 @@
 
 - (void)viewDidLoad
 {
+    twitter_username = @"savoyswing";
+    
+    UIColor *backgroundColor = [UIColor colorWithRed:235.0/255.0 green:119.0/255.0 blue:24.0/255.0 alpha:1.0];
+    self.navigationController.navigationBar.barTintColor = backgroundColor;
+    self.view.backgroundColor = [UIColor lightGrayColor];
+    
     [super viewDidLoad];
     //basic Cell Height
     self.basicCellHeight = 120.0f;
     
     theAppDel = (SSCAppDelegate *)[[UIApplication sharedApplication] delegate];
     
+    /*
     //setup header title
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
@@ -43,6 +50,7 @@
     self.navigationItem.titleView = label;
     label.text = NSLocalizedString(@"News Feed", @"");
     [label sizeToFit];
+    */
     
     
     // set the custom view for "pull to refresh". See DemoTableHeaderView.xib.
@@ -80,12 +88,6 @@
     _newsSettingsButton.target = self;
     _newsSettingsButton.action = @selector(showNewsSettings:);
     
-    UIColor *backgroundColor = [UIColor colorWithRed:235.0/255.0 green:119.0/255.0 blue:24.0/255.0 alpha:1.0];
-    self.navigationController.navigationBar.barTintColor = backgroundColor;
-    self.view.backgroundColor = [UIColor lightGrayColor];
-    
-    // Set the gesture
-    [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
 }
 
 
@@ -217,6 +219,13 @@
                 NSDate *twi_date;
                 if (twi_count < [_TwitterStatuses count]) {
                     NSData *twi_obj = [_TwitterStatuses objectAtIndex:twi_count];
+                    //remove if possibly retweeting self occured (may be unnecessary in current twitter API)
+                    if ([twi_obj valueForKeyPath:@"retweeted_status"] &&
+                        ![[twi_obj valueForKey:@"reteeted_status.user.screen_name"] isEqualToString:twitter_username]) {
+                        twi_count++;
+                        totalData--;
+                        continue;
+                    }
                     NSString *twi_unformDate = [twi_obj valueForKeyPath:@"created_at"];
                     NSDateFormatter *twi_dateFormatter = [[NSDateFormatter alloc] init];
                     [twi_dateFormatter setDateFormat:@"E MMM d HH:mm:ss +0000 yyyy"];
@@ -461,45 +470,49 @@
                                    consumerSecret:sscData.twitterConsumerSecret
                                        oauthToken:sscData.twitterOathToken
                                  oauthTokenSecret:sscData.twitterOathTokenSecret];
-    [self getTweetAccount:@"savoyswing" requestType:type];
-    //[self getTweetList:@"seattle-swing-feeds"];   //custom made list in Twitter including different tweet accounts
+    //[self getTweetAccount:twitter_username requestType:type];
+    //custom made list in Twitter including different tweet accounts
+    [self getTweetList:@"seattle-swing-feeds" username:twitter_username requestType:type];
 }
 
-/*
--(void) getTweetList: (NSString *) listSlug requestType: (NSString*) type {
-    [__twitter verifyCredentialsWithSuccessBlock:^(NSString *username) {
-        
-        NSString *sinceID;
-        NSString *maxID;
-        if ([type isEqualToString:@"new"]) {
-            sinceID = newestTwitterID;
-        } else if ([type isEqualToString:@"old"]) {
-            maxID = oldestTwitterID;
-        }
-        
-        //NSLog(@"Access granted for %@", username);
-        
-        [__twitter getListsStatusesForSlug:listSlug screenName:@"savoyswing" ownerID:nil sinceID:sinceID maxID:maxID count:@"25" includeEntities:nil includeRetweets:nil
-                              successBlock:^(NSArray *statuses) {
-                                  self.TwitterStatuses = statuses;
-                                  if ([statuses  count] > 1) {
-                                      newestTwitterID = [[statuses objectAtIndex:0] valueForKey:@"id"];
-                                      oldestTwitterID = [[statuses objectAtIndex:([statuses count]-1)] valueForKey:@"id"];
-                                  }
-                                  twitterReady = YES;
-                                  NSLog(@"Twitter Feed Success!");
-                              } errorBlock:^(NSError *error) {
-                                  NSLog(@"-- error: %@", error);
-                                  twitterReady = YES;
-                              }];
-        
-    } errorBlock:^(NSError *error) {
-        NSLog(@"-- error %@", error);
+-(void) getTweetList: (NSString *) listSlug username: (NSString*) username requestType: (NSString*) type {
+    NSString *sinceID;
+    NSString *maxID;
+    if ([type isEqualToString:@"new"]) {
+        sinceID = newestTwitterID;
+        NSLog(@"loading newest Tweets from: %@",sinceID);
+    } else if ([type isEqualToString:@"old"] ) {
+        maxID = oldestTwitterID;
+    }
+    
+    if ((![type isEqualToString:@"new"] && ![type isEqualToString:@"new"]) ||
+        ([type isEqualToString:@"new"] && sinceID) ||
+        ([type isEqualToString:@"old"] && maxID)) {
+        [__twitter verifyCredentialsWithSuccessBlock:^(NSString *username) {
+            
+            [__twitter getListsStatusesForSlug:listSlug screenName:username ownerID:nil sinceID:sinceID maxID:maxID count:@"25" includeEntities:nil includeRetweets:nil
+                                  successBlock:^(NSArray *statuses) {
+                                      self.TwitterStatuses = statuses;
+                                      if ([statuses  count] > 1) {
+                                          newestTwitterID = [[statuses objectAtIndex:0] valueForKey:@"id"];
+                                          oldestTwitterID = [[statuses objectAtIndex:([statuses count]-1)] valueForKey:@"id"];
+                                      }
+                                      twitterReady = YES;
+                                      NSLog(@"Twitter Feed Success!");
+                                  } errorBlock:^(NSError *error) {
+                                      NSLog(@"-- error: %@", error);
+                                      twitterReady = YES;
+                                  }];
+            
+        } errorBlock:^(NSError *error) {
+            NSLog(@"-- error %@", error);
+            twitterReady = YES;
+        }];
+    } else {
         twitterReady = YES;
-    }];
+    }
 }
-*/
- 
+
 -(void) getTweetAccount: (NSString*) accountName requestType: (NSString*) type {
     
     NSString *sinceID;
@@ -1011,6 +1024,7 @@
         self.home_background = [[UIImageView alloc] initWithFrame:CGRectMake(-75.0f, 0.0f, 470.0f, 215.0f)];
         [cell addSubview: self.home_background];
     } else if ([[_allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1] objectForKey:@"created_at"]) {
+        //twitter post
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         [self removePreviousCellInfoFromView:cell];
          UIImage *theImage = [UIImage imageNamed:@"twitter-icon.png"];
@@ -1025,8 +1039,8 @@
         [cell addSubview:soc_icon];
         [self addTwitterCell:cell withPath:indexPath];
     } else if ([[_allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1] objectForKey:@"created_time"]) {
+        //facebook post
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        //cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         [self removePreviousCellInfoFromView:cell];
         UIImage *theImage = [UIImage imageNamed:@"facebook-icon.png"];
         soc_icon.image = theImage;

@@ -48,7 +48,12 @@
 		D2121123183FEF1100A2F349 /* STHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = D2121118183FEF1100A2F349 /* STHTTPRequest.m */; };
 		D2121126183FEF3B00A2F349 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2121125183FEF3B00A2F349 /* SWRevealViewController.m */; };
 		D212112B183FEF6F00A2F349 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D212112A183FEF6F00A2F349 /* main.m */; };
+		D252CE9318467C9500F29DAC /* home_bg_solid.png in Resources */ = {isa = PBXBuildFile; fileRef = D252CE9218467C9500F29DAC /* home_bg_solid.png */; };
 		D2542017183D8D83001BA3E1 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2542016183D8D83001BA3E1 /* FacebookSDK.framework */; };
+		D273FCF11844166F00C04977 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D273FCF01844166F00C04977 /* HomeViewController.m */; };
+		D273FCF318441AC600C04977 /* SHIM-SHAM.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D273FCF218441AC600C04977 /* SHIM-SHAM.jpg */; };
+		D273FCFC18441FAF00C04977 /* home_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = D273FCFB18441FAF00C04977 /* home_bg.png */; };
+		D273FD001844296F00C04977 /* bg_test.png in Resources */ = {isa = PBXBuildFile; fileRef = D273FCFF1844296F00C04977 /* bg_test.png */; };
 		D27C29D81842920D000BD68B /* NewsFeedDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D27C29D71842920D000BD68B /* NewsFeedDetailViewController.m */; };
 		D293E9B9183B160000D3D9EA /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D293E9B5183B160000D3D9EA /* libTestFlight.a */; };
 		D293E9BC183B16DB00D3D9EA /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D293E9BB183B16DB00D3D9EA /* libz.dylib */; };
@@ -154,7 +159,13 @@
 		D2121125183FEF3B00A2F349 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SWRevealViewController.m; path = "Supporting Files/SWRevealViewController.m"; sourceTree = "<group>"; };
 		D2121128183FEF5900A2F349 /* Savoy Swing-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Savoy Swing-Prefix.pch"; path = "Supporting Files/Savoy Swing-Prefix.pch"; sourceTree = "<group>"; };
 		D212112A183FEF6F00A2F349 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "Supporting Files/main.m"; sourceTree = "<group>"; };
+		D252CE9218467C9500F29DAC /* home_bg_solid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home_bg_solid.png; sourceTree = "<group>"; };
 		D2542016183D8D83001BA3E1 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
+		D273FCEF1844166F00C04977 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		D273FCF01844166F00C04977 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		D273FCF218441AC600C04977 /* SHIM-SHAM.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "SHIM-SHAM.jpg"; sourceTree = "<group>"; };
+		D273FCFB18441FAF00C04977 /* home_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home_bg.png; sourceTree = "<group>"; };
+		D273FCFF1844296F00C04977 /* bg_test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_test.png; sourceTree = "<group>"; };
 		D27C29D61842920D000BD68B /* NewsFeedDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsFeedDetailViewController.h; sourceTree = "<group>"; };
 		D27C29D71842920D000BD68B /* NewsFeedDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsFeedDetailViewController.m; sourceTree = "<group>"; };
 		D293E9B5183B160000D3D9EA /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
@@ -266,6 +277,17 @@
 			path = Vendor;
 			sourceTree = "<group>";
 		};
+		D273FCF618441CD100C04977 /* Home Page */ = {
+			isa = PBXGroup;
+			children = (
+				D273FCF218441AC600C04977 /* SHIM-SHAM.jpg */,
+				D273FCFF1844296F00C04977 /* bg_test.png */,
+				D273FCFB18441FAF00C04977 /* home_bg.png */,
+				D252CE9218467C9500F29DAC /* home_bg_solid.png */,
+			);
+			name = "Home Page";
+			sourceTree = "<group>";
+		};
 		D293E9BA183B160800D3D9EA /* TestFlight */ = {
 			isa = PBXGroup;
 			children = (
@@ -314,6 +336,8 @@
 		D296A6571839894F00D35795 /* Main Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				D273FCEF1844166F00C04977 /* HomeViewController.h */,
+				D273FCF01844166F00C04977 /* HomeViewController.m */,
 				D296A6541839894600D35795 /* MasterNavViewController.h */,
 				D296A6551839894600D35795 /* MasterNavViewController.m */,
 				D2D8660E183ABBA9002B2575 /* AccountTableViewController.h */,
@@ -421,6 +445,7 @@
 			isa = PBXGroup;
 			children = (
 				D29EF7881838B3540087B04F /* Images.xcassets */,
+				D273FCF618441CD100C04977 /* Home Page */,
 				D2D21057183ADF700041B301 /* Test Banners */,
 				D21210EE183FEEC700A2F349 /* menu-gear.png */,
 				D21210EF183FEEC700A2F349 /* menu-gear@2x.png */,
@@ -579,12 +604,16 @@
 				D21210F4183FEEC700A2F349 /* menu.png in Resources */,
 				D21210AE183FEDB900A2F349 /* login_but.png in Resources */,
 				D21210F5183FEEC700A2F349 /* menu@2x.png in Resources */,
+				D273FCFC18441FAF00C04977 /* home_bg.png in Resources */,
 				D295D5E01840CAFB00D796C5 /* NewsFeedFooterView.xib in Resources */,
+				D273FD001844296F00C04977 /* bg_test.png in Resources */,
+				D273FCF318441AC600C04977 /* SHIM-SHAM.jpg in Resources */,
 				D21210B1183FEDB900A2F349 /* Default@2x.png in Resources */,
 				D21210AB183FEDB900A2F349 /* ssc-app-design.png in Resources */,
 				D21210B0183FEDB900A2F349 /* facebook-icon.png in Resources */,
 				D295D5E41840D3AF00D796C5 /* NewsFeedImageSliderView.xib in Resources */,
 				D295D5E21840CAFB00D796C5 /* NewsFeedHeaderView.xib in Resources */,
+				D252CE9318467C9500F29DAC /* home_bg_solid.png in Resources */,
 				D21210AD183FEDB900A2F349 /* Default@2x-120x120.png in Resources */,
 				D21210A7183FEDB900A2F349 /* ssc-app-design_nobg.png in Resources */,
 				D29EF7891838B3540087B04F /* Images.xcassets in Resources */,
@@ -640,6 +669,7 @@
 				D212111F183FEF1100A2F349 /* STTwitterOAuth.m in Sources */,
 				D2D86610183ABBA9002B2575 /* AccountTableViewController.m in Sources */,
 				D27C29D81842920D000BD68B /* NewsFeedDetailViewController.m in Sources */,
+				D273FCF11844166F00C04977 /* HomeViewController.m in Sources */,
 				D212111D183FEF1100A2F349 /* STTwitterAppOnly.m in Sources */,
 				D21210FE183FEEE200A2F349 /* CalendarTableViewController.m in Sources */,
 				D212111B183FEF1100A2F349 /* STHTTPRequest+STTwitter.m in Sources */,
