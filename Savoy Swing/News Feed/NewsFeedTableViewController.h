@@ -15,9 +15,13 @@
 
 @interface NewsFeedTableViewController : STableViewController {
     SSCAppDelegate *theAppDel;
+    
+    //preloading image
     UIImageView *loaderImageView;
     UILabel *loadingLabel;
     UIActivityIndicatorView *imageIndicator;
+    
+    //news loading
     BOOL loadingFromMemory;
 }
 
@@ -29,13 +33,14 @@
 @property (strong,retain) NSMutableArray *imageArr;
 @property (nonatomic) CGFloat basicCellHeight;
 @property (strong)  NSTimer *refreshImage;
-@property (strong)  NSTimer *loadingScreenText;
 @property (strong)  NSTimer *finalizeData;
 @property (nonatomic, strong) NSMutableArray *allData;
 @property (nonatomic, strong) NSMutableArray *archivedData;
 @property (nonatomic, retain) UITableViewCell *imageSlider;
 @property (nonatomic, retain) UITableViewCell *BasicCell;
 
+//preloading image
+@property (strong)  NSTimer *loadingScreenText;
 
 //convert to NewsFeed Class
 @property (nonatomic, strong) NSArray *TwitterStatuses;

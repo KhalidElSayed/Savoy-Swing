@@ -126,8 +126,13 @@
 }
 
 
+
 -(void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    [self performSelector:@selector(startLoading) withObject:self afterDelay:1.0];
+}
+
+-(void) startLoading {
     loadingFromMemory = NO;
     loadingLabel.text = theAppDel.theFeed.status_update;
     _loadingScreenText = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updateLoadingScreen) userInfo:nil repeats:YES];

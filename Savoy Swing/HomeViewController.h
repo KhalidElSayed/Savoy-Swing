@@ -14,6 +14,8 @@
 }
 
 @property (nonatomic, strong) IBOutlet UITableView  *news_teaser;
+@property (strong, nonatomic) IBOutlet UIButton *moreEducation;
+@property (strong, nonatomic) IBOutlet UIButton *moreCommunity;
 
 @end
 
@@ -22,7 +24,7 @@
     SSCAppDelegate *theAppDel;
 }
 
-
+@property (strong, nonatomic) IBOutlet UIButton *fullSite;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
 @property (strong, nonatomic) IBOutlet HomeView *Home_info_view;
 @property (strong, nonatomic) NSTimer *singleNewsTimer;

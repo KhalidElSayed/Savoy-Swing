@@ -32,11 +32,16 @@
 {
     [super viewDidLoad];
     
+    UIImageView *highlightLogo = [[UIImageView alloc] initWithFrame:CGRectMake(-150.0f, 250.0f, 400.0f, 385.0f)];
+    highlightLogo.image = [UIImage imageNamed:@"ssc-app-design_nobg"];
+    highlightLogo.alpha = 0.1;
+    [self.view addSubview:highlightLogo];
+    
     self.view.backgroundColor = [UIColor colorWithWhite:0.2f alpha:1.0f];
-    self.tableView.backgroundColor = [UIColor colorWithWhite:0.2f alpha:1.0f];
+    self.tableView.backgroundColor = [UIColor colorWithWhite:0.3f alpha:0.5f];
     self.tableView.separatorColor = [UIColor colorWithWhite:0.15f alpha:0.4f];
     
-    _menuItems = @[@"menu_title",@"home",@"news",@"about",@"calendar",@"classes",@"get-involved",@"blank",@"account",@"membership",@"logout"];
+    _menuItems = @[@"menu_title",@"home",@"news",@"about",@"special",@"calendar",@"classes",@"get-involved",@"blank",@"account",@"membership",@"logout"];
     
     //NSLog(@"%@",_menuItems);
 }
@@ -68,7 +73,6 @@
 
 - (void) prepareForSegue: (UIStoryboardSegue *) segue sender: (id) sender
 {
-    //NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     UINavigationController *destViewController = (UINavigationController*)segue.destinationViewController;
     
     
@@ -88,7 +92,7 @@
             if ([self.revealViewController.frontViewController isKindOfClass:[MasterNavViewController class]] ) {
                 nav = (MasterNavViewController*)self.revealViewController.frontViewController;
             }
-            if ( nav && [[nav topViewController] class] == [dvc class]) {
+            if ( nav && [[nav topViewController] class] == [dvc class] && ([[nav topViewController].title isEqualToString:dvc.title]  )) {
                 [self.revealViewController revealToggleAnimated:YES];
             } else {
                 //setup header title
@@ -99,7 +103,7 @@
                 label.textColor = [UIColor whiteColor];
                 
                 NSString *theTitle = destViewController.title;
-                label.text = NSLocalizedString(theTitle, @"");
+                label.text = theTitle;
                 [label sizeToFit];
                 destViewController.navigationItem.titleView = label;
                 

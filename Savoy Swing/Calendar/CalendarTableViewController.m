@@ -12,10 +12,6 @@
 
 @implementation CalendarTableViewController
 
-@synthesize mondays;
-@synthesize tuesdays;
-@synthesize basicCellHeight;
-
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -25,112 +21,133 @@
     return self;
 }
 
--(void)viewDidAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    theCells = [[NSMutableDictionary alloc] init];
-    days = [[NSMutableArray alloc] init];
-    banner_events_weekly = [[NSMutableDictionary alloc] init];
-    self.basicCellHeight = 74;
+-(void) viewWillAppear:(BOOL)animated {
+    //put graphic image for loading graphic
+    self.navigationController.navigationBarHidden = YES;
+    loaderImageView =[[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
     
-    for (int i=0; i<11;i++ ){
-        BannerEvent *thisEvent = [[BannerEvent alloc] initWithID:i];
-        NSMutableArray *eventsOnDay;
-        if ( [days containsObject:thisEvent.day] ) {
-            eventsOnDay = [[NSMutableArray alloc] initWithArray:[banner_events_weekly objectForKey:thisEvent.day]];
-            [eventsOnDay addObject:thisEvent];
-            [banner_events_weekly setObject:eventsOnDay forKey:thisEvent.day];
-        } else {
-            [days addObject:thisEvent.day];
-            eventsOnDay = [[NSMutableArray alloc] initWithObjects:thisEvent, nil];
-            [banner_events_weekly setObject:eventsOnDay forKey:thisEvent.day];
-        }
-    }
+    UIImage *theImage = [UIImage imageNamed:@"R4Default.png"];
+    loaderImageView.image = theImage;
+    imageIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     
-    [self.tableView reloadData];
-    for (int i=0; i<[self numberOfSectionsInTableView:self.tableView]; i++){
-        for (int j=0; j<[self.tableView numberOfRowsInSection:i]; j++ ) {
-            NSIndexPath *thisPath = [NSIndexPath indexPathForRow:j inSection:i];
-            UITableViewCell *theCell = [self tableView:self.tableView cellForRowAtIndexPath:thisPath];
-            [theCells setObject:theCell forKey:thisPath];
-            NSLog(@"New Cell Created!");
-        }
-    }
+    loadingLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    loadingLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
+    loadingLabel.textAlignment = NSTextAlignmentCenter;
+    loadingLabel.textColor = [UIColor whiteColor];
+    loadingLabel.text = @"Getting Weekly Events";
+    [loadingLabel sizeToFit];
+    loadingLabel.frame = CGRectMake(0, 0, self.view.frame.size.width, loadingLabel.frame.size.height);
+    loadingLabel.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height / 2)+160);
+    
+    
+    [imageIndicator startAnimating];
+    imageIndicator.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height / 2)+120);
+    
+    preloaderView = [[UIView alloc] initWithFrame:self.view.bounds];
+    
+    
+    [preloaderView addSubview:loaderImageView];
+    [preloaderView addSubview: imageIndicator];
+    [preloaderView addSubview:loadingLabel];
+    
+    [self.view addSubview:preloaderView];
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
-    self.view.backgroundColor = [UIColor colorWithWhite:0.2f alpha:1.0f];
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.2f alpha:1.0f];
     self.tableView.separatorColor = [UIColor colorWithWhite:0.15f alpha:0.4f];
     
-    selectedIndexes = [[NSMutableDictionary alloc] init];
+    [self performSelector:@selector(startLoading) withObject:self afterDelay:1.5];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
+-(void) startLoading {
+    
+    basicCellHeight = 74;
+    allBannerEvents = [[NSMutableDictionary alloc] init];
+    theImages = [[NSMutableDictionary alloc] init];
+    allDays = [[NSMutableArray alloc] init];
+    for (int i=0; i<11;i++ ){
+        BannerEvent *thisEvent = [[BannerEvent alloc] initWithID:i];
+        if ( ![allBannerEvents objectForKey:thisEvent.day]) {
+            NSMutableArray *eventsOnDay = [[NSMutableArray alloc] init];
+            [eventsOnDay addObject:thisEvent];
+            [allBannerEvents setObject:eventsOnDay forKey:thisEvent.day];
+            [allDays addObject:thisEvent.day];
+        } else if ([[allBannerEvents objectForKey:thisEvent.day] isKindOfClass:[NSMutableArray class]] ) {
+            NSMutableArray *eventsOnDay = [allBannerEvents objectForKey:thisEvent.day];
+            [eventsOnDay addObject:thisEvent];
+        }
+    }
+    [self.tableView reloadData];
+    self.navigationController.navigationBarHidden = NO;
+    [preloaderView removeFromSuperview];
+    
+    selectedIndexes = [[NSMutableDictionary alloc] init];
+    loadingLabel.text = @"Refreshing Table";
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 7;
+    return [allDays count];
 }
 
-- (BOOL)cellIsSelected:(NSIndexPath *)indexPath {
-	// Return whether the cell at the specified index path is selected or not
-	NSNumber *selectedIndex = [selectedIndexes objectForKey:indexPath];
-	return selectedIndex == nil ? FALSE : [selectedIndex boolValue];
+- (BOOL)cellIsSelected:(NSString *) comboString {
+    if ([[selectedIndexes objectForKey:comboString] isEqualToString:@"1"]) {
+        return YES;
+    } else{
+        return NO;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    // If our cell is selected, return double height
-    if([self cellIsSelected:indexPath]) {
-        return self.basicCellHeight * 2.0;
-        //move extra view down
+    if([self cellIsSelected:[NSString stringWithFormat:@"%d-%d",indexPath.section,indexPath.row]]) {
+        return basicCellHeight * 3.0;
     }
-    //move extra view back up
-    // Cell isn't selected so return single height
-    return self.basicCellHeight;
+    return basicCellHeight;
 }
 
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    if ([[banner_events_weekly objectForKey:[days objectAtIndex:section]] isKindOfClass:[NSMutableArray class]] ) {
-        return [[banner_events_weekly objectForKey:[days objectAtIndex:section] ] count];
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if ([allDays count] > section ) {
+        return [[allBannerEvents objectForKey:[allDays objectAtIndex:section]] count];
     }
     return 0;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return [days objectAtIndex:section];
+    return [allDays objectAtIndex:section];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-	// Deselect cell
-	[tableView deselectRowAtIndexPath:indexPath animated:TRUE];
+    NSString *thisAddress = [NSString stringWithFormat:@"%d-%d",indexPath.section,indexPath.row];
+	if ([self cellIsSelected:thisAddress]) {
+        [selectedIndexes setObject:@"0" forKey:thisAddress];
+    } else {
+        [selectedIndexes setObject:@"1" forKey:thisAddress];
+    }
+	[self.tableView deselectRowAtIndexPath:indexPath animated:TRUE];
 	
-	// Toggle 'selected' state
-	BOOL isSelected = ![self cellIsSelected:indexPath];
-	
-	// Store cell 'selected' state keyed on indexPath
-	NSNumber *selectedIndex = [NSNumber numberWithBool:isSelected];
-	[selectedIndexes setObject:selectedIndex forKey:indexPath];
-    
-	// This is where magic happens...
-	[demoTableView beginUpdates];
-	[demoTableView endUpdates];
+    [self performSelector:@selector(refreshTableCells) withObject:self afterDelay:0.2];
+}
+
+-(void) refreshTableCells {
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
 }
 
 - (UITableViewCell *)prepareCell: (BannerEvent*) thisBanner theCell: (UITableViewCell*) cell {
     //image from banner
     UIImageView *bannerImageView =[[UIImageView alloc] initWithFrame:CGRectMake(-29.0f, 0.0f, 349.0f, 80.0f)];
-    NSData *dataFromURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:thisBanner.image]];
-    UIImage *theImage = [UIImage imageWithData: dataFromURL];
-    bannerImageView.image = theImage;
+    if (![theImages valueForKey:thisBanner.image]) {
+        NSData *dataFromURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:thisBanner.image]];
+        UIImage *theImage = [UIImage imageWithData: dataFromURL];
+        bannerImageView.image = theImage;
+        [theImages setValue:theImage forKey:thisBanner.image];
+    } else {
+        bannerImageView.image = [theImages valueForKey:thisBanner.image];
+    }
     
     //highlightView objects
     CalendarCellView *highlightView = [[CalendarCellView alloc] initWithFrame:CGRectMake(161.0f, 11.0f, 160.0f, 64.0f)];
@@ -181,24 +198,21 @@
     return cell;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    UITableViewCell *cell;
-    
-    if (![theCells objectForKey:indexPath]) {
-        
-        cell = [tableView dequeueReusableCellWithIdentifier:@"bannerCell" forIndexPath:indexPath];
-        //cell.backgroundColor = [UIColor blackColor];
-        
-        //data for banner
-        BannerEvent *thisBanner = [[banner_events_weekly objectForKey:[days objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
-        
-        //draw cell
-        cell = [self prepareCell:thisBanner theCell:cell];
-    } else {
-        cell = [theCells objectForKey:indexPath];
+-(void) removePreviousCellInfoFromView: (UITableViewCell*) cell {
+    for(UIView *view in cell.contentView.subviews){
+        if ([view isKindOfClass:[UIView class]]) {
+            [view removeFromSuperview];
+        }
     }
-    
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
+    [self removePreviousCellInfoFromView:cell];
+    //data for banner
+    BannerEvent *thisBanner = [[allBannerEvents objectForKey:[allDays objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+    cell = [self prepareCell:thisBanner theCell:cell];
     
     return cell;
 }

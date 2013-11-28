@@ -8,16 +8,27 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CalendarTableViewController : UITableViewController{
-	IBOutlet UITableView *demoTableView;
+@interface CalendarTableViewController : UITableViewController {
+    //IBOutlet UITableView *the_tableView;
 	NSMutableDictionary *selectedIndexes;
-    NSMutableDictionary *banner_events_weekly;
-    NSMutableArray *days;
-    NSMutableDictionary *theCells;
+    NSInteger basicCellHeight;
+    
+    NSMutableDictionary *allBannerEvents;
+    NSMutableArray *allDays;
+    NSMutableDictionary *theImages;
+    
+    
+    //preloading image
+    UIView *preloaderView;
+    UIImageView *loaderImageView;
+    UILabel *loadingLabel;
+    UIActivityIndicatorView *imageIndicator;
 }
 
-@property (nonatomic, strong) NSArray *mondays;
-@property (nonatomic, strong) NSArray *tuesdays;
-@property (nonatomic) int basicCellHeight;
+//preloading image
+@property (strong)  NSTimer *loadingScreenText;
+
+
+-(void) startLoading;
 
 @end

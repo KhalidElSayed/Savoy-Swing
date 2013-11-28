@@ -52,6 +52,10 @@
     _Home_info_view.layer.cornerRadius = 5;
     _Home_info_view.layer.masksToBounds = YES;
     
+    [_fullSite addTarget:self action:@selector(openFullSite) forControlEvents:UIControlEventTouchUpInside];
+    [_Home_info_view.moreCommunity addTarget:self action:@selector(openFullSite) forControlEvents:UIControlEventTouchUpInside];
+    [_Home_info_view.moreEducation addTarget:self action:@selector(openFullSite) forControlEvents:UIControlEventTouchUpInside];
+    
     _singleNewsTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(putNewsFeedSingle) userInfo:nil repeats:YES];
     
     _sidebarButton.tintColor = [UIColor whiteColor];
@@ -59,6 +63,11 @@
     _sidebarButton.action = @selector(revealToggle:);
     
     [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
+}
+
+-(void) openFullSite {
+    NSString *theURL = @"https://www.savoyswing.org";
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:theURL]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -71,7 +80,6 @@
     if ([theAppDel.theFeed allDone]) {
         [_singleNewsTimer invalidate];
         [_Home_info_view.news_teaser reloadData];
-        NSLog(@"Setting up Cell");
     }
 }
 
@@ -115,6 +123,7 @@
         date.frame = CGRectMake(20.0f, 32.0f, 219.0f, 22.0f);
         UILabel *text = (UILabel*)[cell viewWithTag:3];
         text.frame = CGRectMake(20.0f, 43.0f, 219.0f, 56.0f);
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     } else if (indexPath.section ==0 && indexPath.row == 1) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"newsMore" forIndexPath:indexPath];
     } else {
