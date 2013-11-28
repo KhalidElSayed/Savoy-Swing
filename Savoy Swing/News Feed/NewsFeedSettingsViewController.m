@@ -27,11 +27,11 @@
 -(void) viewWillDisappear:(BOOL)animated {
     if (_facebookSwitch.on != _theAppDel.newsFeedFacebookActive ){
         _theAppDel.newsFeedFacebookActive = _facebookSwitch.on;
-        _theAppDel.newsFeedData = nil;
+        [_theAppDel makeNewFeeds];
     }
     if (_twitterSwitch.on != _theAppDel.newsFeedTwitterActive ){
-        _theAppDel.newsFeedData = nil;
         _theAppDel.newsFeedTwitterActive = _twitterSwitch.on;
+        [_theAppDel makeNewFeeds];
     }
 }
 

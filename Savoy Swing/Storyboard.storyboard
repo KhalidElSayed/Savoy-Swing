@@ -381,7 +381,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="News Feed" id="rMR-3K-AWM">
+                    <navigationItem key="navigationItem" id="rMR-3K-AWM">
                         <barButtonItem key="leftBarButtonItem" image="menu.png" id="nQC-LA-fhL"/>
                         <barButtonItem key="rightBarButtonItem" image="menu-gear.png" id="5jt-a7-wkK"/>
                     </navigationItem>
@@ -1102,19 +1102,13 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="280" height="98"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hello!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J7V-8N-d4R">
-                                                            <rect key="frame" x="118" y="39" width="44" height="21"/>
+                                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="XOf-P0-Orv">
+                                                            <rect key="frame" x="122" y="30" width="37" height="37"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <imageView userInteractionEnabled="NO" alpha="0.10000000000000002" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ssc-app-design_nobg.png" translatesAutoresizingMaskIntoConstraints="NO" id="zYh-Jo-2z5">
-                                                            <rect key="frame" x="-27" y="-423" width="500" height="480"/>
-                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                        </imageView>
+                                                        </activityIndicatorView>
                                                     </subviews>
                                                 </tableViewCellContentView>
-                                                <color key="backgroundColor" red="1" green="0.96991227670271207" blue="0.98354257252359012" alpha="0.70000000000000007" colorSpace="calibratedRGB"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </tableViewCell>
                                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="newsMore" rowHeight="35" id="Pwk-jz-kGh">
                                                 <rect key="frame" x="0.0" y="121" width="280" height="35"/>
@@ -1123,8 +1117,8 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="247" height="34"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Read More" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pb0-q5-iW0">
-                                                            <rect key="frame" x="169" y="6" width="85" height="21"/>
+                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Read More News" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pb0-q5-iW0">
+                                                            <rect key="frame" x="131" y="6" width="109" height="21"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                                             <nil key="highlightedColor"/>
@@ -1167,7 +1161,7 @@
                             <constraint firstItem="Lbh-Xj-rr9" firstAttribute="leading" secondItem="8ia-VD-jsd" secondAttribute="leading" constant="20" id="xHB-Pm-Iwm"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Savoy Swing Club" id="sVw-tJ-Wlw">
+                    <navigationItem key="navigationItem" id="sVw-tJ-Wlw">
                         <barButtonItem key="leftBarButtonItem" image="menu.png" id="IhT-WO-eXr"/>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>

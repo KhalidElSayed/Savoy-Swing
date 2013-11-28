@@ -8,6 +8,7 @@
 
 #import "SSCAppDelegate.h"
 #import "TestFlight.h"
+#import "SSCData.h"
 
 @implementation SSCAppDelegate
 
@@ -20,6 +21,9 @@
     [TestFlight takeOff:@"b0affd4b-5867-49f6-8773-5064c47cf767"];
     _newsFeedFacebookActive = YES;
     _newsFeedTwitterActive = YES;
+    
+    [self makeNewFeeds];
+    
     return YES;
 }
 
@@ -50,8 +54,28 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
--(void) loadSSCWebsiteData {
+
+-(void) makeNewFeeds {
+    _theFeed = [[SSCNewsFeeds alloc] init];
+    SSCData *SSC_DATA = [[SSCData alloc] init];
+    if ( _newsFeedFacebookActive ) {
+        NSArray *facebookParams = @[SSC_DATA.facebookClient_id,
+                                    SSC_DATA.facebookClient_secret];
+        [_theFeed addFacebookFeed:@"SavoySwingClub" andParams:facebookParams];
+    }
+    if (_newsFeedTwitterActive ) {
+        NSArray *twitterParams = @[SSC_DATA.twitterConsumerName,
+                                   SSC_DATA.twitterConsumerKey,
+                                   SSC_DATA.twitterConsumerSecret,
+                                   SSC_DATA.twitterOathToken,
+                                   SSC_DATA.twitterOathTokenSecret];
+        //[theFeed addTwitterFeed:@"savoyswing" andTweetList:nil];      //for user tweets only
+        [_theFeed addTwitterFeed:@"savoyswing" andTweetList:@"seattle-swing-feeds" andParams:twitterParams];
+    }
     
+    if ([_theFeed hasFeeds]) {
+        [_theFeed generateFeeds];
+    }
 }
 
 @end

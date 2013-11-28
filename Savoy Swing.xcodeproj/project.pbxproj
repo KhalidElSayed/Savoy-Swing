@@ -24,7 +24,6 @@
 		D21210B1183FEDB900A2F349 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21210A0183FEDB900A2F349 /* Default@2x.png */; };
 		D21210B8183FEE3000A2F349 /* BannerEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210B3183FEE3000A2F349 /* BannerEvent.m */; };
 		D21210B9183FEE3000A2F349 /* SSCNewsFeeds.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210B5183FEE3000A2F349 /* SSCNewsFeeds.m */; };
-		D21210BA183FEE3000A2F349 /* SSCTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210B7183FEE3000A2F349 /* SSCTweet.m */; };
 		D21210E2183FEE7A00A2F349 /* SSC-SBTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210E1183FEE7A00A2F349 /* SSC-SBTableViewController.m */; };
 		D21210EA183FEEAE00A2F349 /* NewsFeedSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210E4183FEEAE00A2F349 /* NewsFeedSettingsViewController.m */; };
 		D21210ED183FEEAE00A2F349 /* NewsFeedTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210E9183FEEAE00A2F349 /* NewsFeedTableViewController.m */; };
@@ -113,8 +112,6 @@
 		D21210B3183FEE3000A2F349 /* BannerEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BannerEvent.m; path = "Supporting Files/Objects/BannerEvent.m"; sourceTree = "<group>"; };
 		D21210B4183FEE3000A2F349 /* SSCNewsFeeds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSCNewsFeeds.h; path = "Supporting Files/Objects/SSCNewsFeeds.h"; sourceTree = "<group>"; };
 		D21210B5183FEE3000A2F349 /* SSCNewsFeeds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSCNewsFeeds.m; path = "Supporting Files/Objects/SSCNewsFeeds.m"; sourceTree = "<group>"; };
-		D21210B6183FEE3000A2F349 /* SSCTweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSCTweet.h; path = "Supporting Files/Objects/SSCTweet.h"; sourceTree = "<group>"; };
-		D21210B7183FEE3000A2F349 /* SSCTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSCTweet.m; path = "Supporting Files/Objects/SSCTweet.m"; sourceTree = "<group>"; };
 		D21210E0183FEE7A00A2F349 /* SSC-SBTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SSC-SBTableViewController.h"; path = "Sidebar Menu/SSC-SBTableViewController.h"; sourceTree = "<group>"; };
 		D21210E1183FEE7A00A2F349 /* SSC-SBTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SSC-SBTableViewController.m"; path = "Sidebar Menu/SSC-SBTableViewController.m"; sourceTree = "<group>"; };
 		D21210E3183FEEAE00A2F349 /* NewsFeedSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewsFeedSettingsViewController.h; path = "News Feed/NewsFeedSettingsViewController.h"; sourceTree = "<group>"; };
@@ -401,7 +398,7 @@
 				D295D5D41840C96A00D796C5 /* STableViewController */,
 				D21210FF183FEF1100A2F349 /* STTwitter */,
 				D293E9BA183B160800D3D9EA /* TestFlight */,
-				D2D8661A183AD3D8002B2575 /* Objects */,
+				D2D8661A183AD3D8002B2575 /* Classes */,
 				D29EF77F1838B3540087B04F /* InfoPlist.strings */,
 				D2EB39CE184355C00067214D /* Savoy Swing-Info.plist */,
 				D2121128183FEF5900A2F349 /* Savoy Swing-Prefix.pch */,
@@ -506,17 +503,15 @@
 			name = Calendar;
 			sourceTree = "<group>";
 		};
-		D2D8661A183AD3D8002B2575 /* Objects */ = {
+		D2D8661A183AD3D8002B2575 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
 				D21210B2183FEE3000A2F349 /* BannerEvent.h */,
 				D21210B3183FEE3000A2F349 /* BannerEvent.m */,
 				D21210B4183FEE3000A2F349 /* SSCNewsFeeds.h */,
 				D21210B5183FEE3000A2F349 /* SSCNewsFeeds.m */,
-				D21210B6183FEE3000A2F349 /* SSCTweet.h */,
-				D21210B7183FEE3000A2F349 /* SSCTweet.m */,
 			);
-			name = Objects;
+			name = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -661,7 +656,6 @@
 				D295D5DF1840CAFB00D796C5 /* NewsFeedFooterView.m in Sources */,
 				D21210EA183FEEAE00A2F349 /* NewsFeedSettingsViewController.m in Sources */,
 				D296A6561839894600D35795 /* MasterNavViewController.m in Sources */,
-				D21210BA183FEE3000A2F349 /* SSCTweet.m in Sources */,
 				D2121121183FEF1100A2F349 /* BAVPlistNode.m in Sources */,
 				D2121122183FEF1100A2F349 /* JSONSyntaxHighlight.m in Sources */,
 				D212111E183FEF1100A2F349 /* STTwitterHTML.m in Sources */,

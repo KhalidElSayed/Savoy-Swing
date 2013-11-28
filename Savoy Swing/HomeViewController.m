@@ -29,6 +29,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+ 
+    theAppDel = (SSCAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     UIColor *backgroundColor = [UIColor colorWithRed:235.0/255.0 green:119.0/255.0 blue:24.0/255.0 alpha:1.0];
     self.navigationController.navigationBar.barTintColor = backgroundColor;
@@ -47,10 +49,10 @@
     _Home_info_view.news_teaser.delegate = _Home_info_view;
     _Home_info_view.news_teaser.dataSource = _Home_info_view;
     _Home_info_view.news_teaser.backgroundColor = [UIColor clearColor];
-	[_Home_info_view.news_teaser reloadData];
-    
     _Home_info_view.layer.cornerRadius = 5;
     _Home_info_view.layer.masksToBounds = YES;
+    
+    _singleNewsTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(putNewsFeedSingle) userInfo:nil repeats:YES];
     
     _sidebarButton.tintColor = [UIColor whiteColor];
     _sidebarButton.target = self.revealViewController;
@@ -63,6 +65,14 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void) putNewsFeedSingle {
+    if ([theAppDel.theFeed allDone]) {
+        [_singleNewsTimer invalidate];
+        [_Home_info_view.news_teaser reloadData];
+        NSLog(@"Setting up Cell");
+    }
 }
 
 @end
@@ -89,14 +99,26 @@
 }
 
 -(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    theAppDel = (SSCAppDelegate *)[[UIApplication sharedApplication] delegate];
     UITableViewCell *cell;
-    if (indexPath.section == 0 && indexPath.row == 0) {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"newsTeaser" forIndexPath:indexPath];
+    if (indexPath.section == 0 && indexPath.row == 0 && [theAppDel.theFeed allDone]) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
         
+        if ([[theAppDel.theFeed.allData objectAtIndex:0] objectForKey:@"created_at"]) {
+            cell = [theAppDel.theFeed addTwitterCell:cell withIndex:0];
+        } else if ([[theAppDel.theFeed.allData objectAtIndex:0] objectForKey:@"created_time"]) {
+            cell = [theAppDel.theFeed addFacebookCell:cell withIndex:0];
+        }
+        UILabel *title = (UILabel*)[cell viewWithTag:1];
+        title.frame = CGRectMake(20.0f, 13.0f, 219.0f, 22.0f);
+        UILabel *date = (UILabel*)[cell viewWithTag:2];
+        date.frame = CGRectMake(20.0f, 32.0f, 219.0f, 22.0f);
+        UILabel *text = (UILabel*)[cell viewWithTag:3];
+        text.frame = CGRectMake(20.0f, 43.0f, 219.0f, 56.0f);
     } else if (indexPath.section ==0 && indexPath.row == 1) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"newsMore" forIndexPath:indexPath];
     } else {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"newsTeaser"];
     }
     return cell;
 }

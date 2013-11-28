@@ -7,19 +7,25 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SSCAppDelegate.h"
 
-@interface HomeView: UIView  <UITableViewDelegate, UITableViewDataSource>
+@interface HomeView: UIView  <UITableViewDelegate, UITableViewDataSource> {
+    SSCAppDelegate *theAppDel;
+}
 
 @property (nonatomic, strong) IBOutlet UITableView  *news_teaser;
 
 @end
 
 
-@interface HomeViewController : UIViewController
+@interface HomeViewController : UIViewController {
+    SSCAppDelegate *theAppDel;
+}
 
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
 @property (strong, nonatomic) IBOutlet HomeView *Home_info_view;
+@property (strong, nonatomic) NSTimer *singleNewsTimer;
 
 @end
 

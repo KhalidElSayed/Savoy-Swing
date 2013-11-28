@@ -11,39 +11,36 @@
 #import "NewsFeedDetailViewController.h"
 #import "SSCAppDelegate.h"
 #import "STableViewController.h"
+#import "SSCNewsFeeds.h"
 
 @interface NewsFeedTableViewController : STableViewController {
-    BOOL twitterReady;
-    BOOL facebookReady;
     SSCAppDelegate *theAppDel;
     UIImageView *loaderImageView;
     UILabel *loadingLabel;
     UIActivityIndicatorView *imageIndicator;
-    BOOL twitterActive;
-    BOOL facebookActive;
-    NSString *newFacebookPostLink;
-    NSString *laterFacebookPostLink;
-    NSString *newestTwitterID;
-    NSString *oldestTwitterID;
-    NSString *twitter_username;
+    BOOL loadingFromMemory;
 }
 
+@property (strong, retain) NewsFeedSettingsViewController *newsSettings;
+@property (strong, nonatomic) NewsFeedDetailViewController *detailView;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *newsSettingsButton;
-@property (strong, nonatomic) NewsFeedDetailViewController *detailView;
 @property (strong, nonatomic) UIImageView *home_background;
 @property (strong,retain) NSMutableArray *imageArr;
 @property (nonatomic) CGFloat basicCellHeight;
-@property (strong, retain) NewsFeedSettingsViewController *newsSettings;
 @property (strong)  NSTimer *refreshImage;
-@property (strong)  NSTimer *tweetLoader;
-@property (strong)  NSTimer *sortCellLoader;
-@property (nonatomic, strong) NSArray *TwitterStatuses;
-@property (nonatomic, strong) NSArray *FacebookPosts;
+@property (strong)  NSTimer *loadingScreenText;
+@property (strong)  NSTimer *finalizeData;
 @property (nonatomic, strong) NSMutableArray *allData;
 @property (nonatomic, strong) NSMutableArray *archivedData;
-@property (strong) NSMutableDictionary *theCells;
-// The view used for "load more"
 @property (nonatomic, retain) UITableViewCell *imageSlider;
 @property (nonatomic, retain) UITableViewCell *BasicCell;
+
+
+//convert to NewsFeed Class
+@property (nonatomic, strong) NSArray *TwitterStatuses;
+@property (nonatomic, strong) NSArray *FacebookPosts;
+@property (strong)  NSTimer *sortCellLoader;
+@property (strong)  NSTimer *tweetLoader;
+
 @end

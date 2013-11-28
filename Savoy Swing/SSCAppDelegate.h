@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SWRevealViewController.h"
+#import "SSCNewsFeeds.h"
 
 @interface SSCAppDelegate : UIResponder <UIApplicationDelegate> {
     NSString *user;
@@ -17,10 +18,11 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) NSString *user;
 @property (strong, nonatomic) NSMutableArray *newsFeedData;
+@property (strong, nonatomic) SSCNewsFeeds *theFeed;
 @property (nonatomic) BOOL didInitialize;
 @property (nonatomic) BOOL newsFeedTwitterActive;
 @property (nonatomic) BOOL newsFeedFacebookActive;
 
--(void) loadSSCWebsiteData;
+-(void) makeNewFeeds;
 
 @end
