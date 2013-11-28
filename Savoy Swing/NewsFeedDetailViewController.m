@@ -23,12 +23,9 @@
 
 - (void)viewDidLoad
 {
-    
-    bgColor = [UIColor colorWithWhite:0.8f alpha:1.0f];
-    
     [super viewDidLoad];
+    bgColor = [UIColor colorWithWhite:0.8f alpha:1.0f];
     self.postTableView.backgroundColor = bgColor;
-    self.view.backgroundColor = bgColor;
     postTableView.delegate = self;
     postTableView.dataSource = self;
 }

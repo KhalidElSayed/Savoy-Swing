@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "SSCAppDelegate.h"
+#import "NewsFeedDetailViewController.h"
 
-@interface HomeView: UIView  <UITableViewDelegate, UITableViewDataSource> {
+@interface HomeView: UIView {
     SSCAppDelegate *theAppDel;
 }
+
 
 @property (nonatomic, strong) IBOutlet UITableView  *news_teaser;
 @property (strong, nonatomic) IBOutlet UIButton *moreEducation;
@@ -20,10 +22,11 @@
 @end
 
 
-@interface HomeViewController : UIViewController {
+@interface HomeViewController : UIViewController  <UITableViewDelegate, UITableViewDataSource> {
     SSCAppDelegate *theAppDel;
 }
 
+@property (strong, nonatomic) NewsFeedDetailViewController *detailView;
 @property (strong, nonatomic) IBOutlet UIButton *fullSite;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
 @property (strong, nonatomic) IBOutlet HomeView *Home_info_view;

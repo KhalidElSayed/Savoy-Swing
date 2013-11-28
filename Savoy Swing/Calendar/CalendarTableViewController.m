@@ -7,7 +7,6 @@
 //
 
 #import "CalendarTableViewController.h"
-#import "CalendarCellView.h"
 #import  "BannerEvent.h"
 
 @implementation CalendarTableViewController
@@ -24,7 +23,7 @@
 -(void) viewWillAppear:(BOOL)animated {
     //put graphic image for loading graphic
     self.navigationController.navigationBarHidden = YES;
-    loaderImageView =[[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+    loaderImageView =[[UIImageView alloc] initWithFrame:CGRectMake(0.0f, (self.view.bounds.size.height-568.0f)/2, self.view.frame.size.width, 568.0f)];
     
     UIImage *theImage = [UIImage imageNamed:@"R4Default.png"];
     loaderImageView.image = theImage;
@@ -129,7 +128,7 @@
     }
 	[self.tableView deselectRowAtIndexPath:indexPath animated:TRUE];
 	
-    [self performSelector:@selector(refreshTableCells) withObject:self afterDelay:0.2];
+    [self performSelector:@selector(refreshTableCells) withObject:self afterDelay:0.1];
 }
 
 -(void) refreshTableCells {
@@ -218,3 +217,24 @@
 }
 
 @end
+
+@implementation CalendarCellView
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialization code
+    }
+    return self;
+}
+
+-(void)setBackgroundColor:(UIColor *)backgroundColor {
+    CGFloat alpha = CGColorGetAlpha(backgroundColor.CGColor);
+    if (alpha != 0) {
+        [super setBackgroundColor:backgroundColor];
+    }
+}
+
+@end
+

@@ -80,7 +80,7 @@
     UIImage *theImage = [[UIImage alloc] initWithContentsOfFile:filePath];
     
     destViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:theImage style:UIBarButtonItemStylePlain target:self.revealViewController action:@selector(revealToggle:)];
-    if (![[segue identifier] isEqualToString:@"showHome"]) {
+    if (![[segue identifier] isEqualToString:@"showHome"] && ![[segue identifier] isEqualToString:@"showNews"]) {
          [destViewController.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
     }
     

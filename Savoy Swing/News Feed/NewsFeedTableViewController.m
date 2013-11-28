@@ -97,13 +97,14 @@
     _newsSettingsButton.target = self;
     _newsSettingsButton.action = @selector(showNewsSettings:);
     
+    [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
 }
 
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     //put graphic image for loading graphic
     self.navigationController.navigationBarHidden = YES;
-    loaderImageView =[[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+    loaderImageView =[[UIImageView alloc] initWithFrame:CGRectMake(0.0f, (self.view.bounds.size.height-568.0f)/2, self.view.frame.size.width, 568.0f)];
     
     UIImage *theImage = [UIImage imageNamed:@"R4Default.png"];
     loaderImageView.image = theImage;
@@ -441,13 +442,6 @@
     [label sizeToFit];
     
 	[tableView deselectRowAtIndexPath:indexPath animated:TRUE];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController: self.detailView];
-    navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-    self.detailView.navigationItem.titleView = label;
-    UIColor *backgroundColor = [UIColor colorWithRed:235.0/255.0 green:119.0/255.0 blue:24.0/255.0 alpha:1.0];
-    self.detailView.navigationController.navigationBar.barTintColor = backgroundColor;
-    self.detailView.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.detailView.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"< News"  style:UIBarButtonItemStylePlain target:self action:@selector(returnToNewsFeedDetail:)];
 
     BOOL isFacebook = NO;
     BOOL isTwitter = NO;
@@ -526,7 +520,14 @@
     self.detailView.date_display = date;
     self.detailView.message = message;
     
-    [[self navigationController] presentViewController:navigationController animated:YES completion:nil];
+    
+    self.detailView.navigationItem.titleView = label;
+    UIColor *backgroundColor = [UIColor colorWithRed:235.0/255.0 green:119.0/255.0 blue:24.0/255.0 alpha:1.0];
+    self.detailView.navigationController.navigationBar.barTintColor = backgroundColor;
+    self.detailView.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.detailView.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"< News"  style:UIBarButtonItemStylePlain target:self action:@selector(returnToNewsFeedDetail:)];
+    
+    [[self navigationController] pushViewController:self.detailView animated:YES];
 }
 
 -(void) returnToNewsFeedDetail:(id)sender {

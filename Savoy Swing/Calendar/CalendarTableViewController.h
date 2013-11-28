@@ -32,3 +32,8 @@
 -(void) startLoading;
 
 @end
+
+
+@interface CalendarCellView : UIView
+
+@end

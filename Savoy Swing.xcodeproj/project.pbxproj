@@ -31,8 +31,6 @@
 		D21210F3183FEEC700A2F349 /* menu-gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21210EF183FEEC700A2F349 /* menu-gear@2x.png */; };
 		D21210F4183FEEC700A2F349 /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = D21210F0183FEEC700A2F349 /* menu.png */; };
 		D21210F5183FEEC700A2F349 /* menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21210F1183FEEC700A2F349 /* menu@2x.png */; };
-		D21210FC183FEEE200A2F349 /* CalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210F7183FEEE200A2F349 /* CalendarCell.m */; };
-		D21210FD183FEEE200A2F349 /* CalendarCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210F9183FEEE200A2F349 /* CalendarCellView.m */; };
 		D21210FE183FEEE200A2F349 /* CalendarTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210FB183FEEE200A2F349 /* CalendarTableViewController.m */; };
 		D2121119183FEF1100A2F349 /* NSDateFormatter+STTwitter.m in Sources */ = {isa = PBXBuildFile; fileRef = D2121101183FEF1100A2F349 /* NSDateFormatter+STTwitter.m */; };
 		D212111A183FEF1100A2F349 /* NSString+STTwitter.m in Sources */ = {isa = PBXBuildFile; fileRef = D2121103183FEF1100A2F349 /* NSString+STTwitter.m */; };
@@ -48,6 +46,7 @@
 		D2121126183FEF3B00A2F349 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2121125183FEF3B00A2F349 /* SWRevealViewController.m */; };
 		D212112B183FEF6F00A2F349 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D212112A183FEF6F00A2F349 /* main.m */; };
 		D252CE9318467C9500F29DAC /* home_bg_solid.png in Resources */ = {isa = PBXBuildFile; fileRef = D252CE9218467C9500F29DAC /* home_bg_solid.png */; };
+		D252CE961847A69F00F29DAC /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D252CE951847A69F00F29DAC /* AboutViewController.m */; };
 		D2542017183D8D83001BA3E1 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2542016183D8D83001BA3E1 /* FacebookSDK.framework */; };
 		D273FCF11844166F00C04977 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D273FCF01844166F00C04977 /* HomeViewController.m */; };
 		D273FCF318441AC600C04977 /* SHIM-SHAM.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D273FCF218441AC600C04977 /* SHIM-SHAM.jpg */; };
@@ -122,10 +121,6 @@
 		D21210EF183FEEC700A2F349 /* menu-gear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "menu-gear@2x.png"; path = "Images/menu-gear@2x.png"; sourceTree = "<group>"; };
 		D21210F0183FEEC700A2F349 /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu.png; path = Images/menu.png; sourceTree = "<group>"; };
 		D21210F1183FEEC700A2F349 /* menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "menu@2x.png"; path = "Images/menu@2x.png"; sourceTree = "<group>"; };
-		D21210F6183FEEE200A2F349 /* CalendarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CalendarCell.h; path = Calendar/CalendarCell.h; sourceTree = "<group>"; };
-		D21210F7183FEEE200A2F349 /* CalendarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CalendarCell.m; path = Calendar/CalendarCell.m; sourceTree = "<group>"; };
-		D21210F8183FEEE200A2F349 /* CalendarCellvIew.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CalendarCellvIew.h; path = Calendar/CalendarCellvIew.h; sourceTree = "<group>"; };
-		D21210F9183FEEE200A2F349 /* CalendarCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CalendarCellView.m; path = Calendar/CalendarCellView.m; sourceTree = "<group>"; };
 		D21210FA183FEEE200A2F349 /* CalendarTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CalendarTableViewController.h; path = Calendar/CalendarTableViewController.h; sourceTree = "<group>"; };
 		D21210FB183FEEE200A2F349 /* CalendarTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CalendarTableViewController.m; path = Calendar/CalendarTableViewController.m; sourceTree = "<group>"; };
 		D2121100183FEF1100A2F349 /* NSDateFormatter+STTwitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+STTwitter.h"; sourceTree = "<group>"; };
@@ -157,6 +152,8 @@
 		D2121128183FEF5900A2F349 /* Savoy Swing-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Savoy Swing-Prefix.pch"; path = "Supporting Files/Savoy Swing-Prefix.pch"; sourceTree = "<group>"; };
 		D212112A183FEF6F00A2F349 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "Supporting Files/main.m"; sourceTree = "<group>"; };
 		D252CE9218467C9500F29DAC /* home_bg_solid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home_bg_solid.png; sourceTree = "<group>"; };
+		D252CE941847A69F00F29DAC /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
+		D252CE951847A69F00F29DAC /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		D2542016183D8D83001BA3E1 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		D273FCEF1844166F00C04977 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		D273FCF01844166F00C04977 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
@@ -333,14 +330,16 @@
 		D296A6571839894F00D35795 /* Main Navigation */ = {
 			isa = PBXGroup;
 			children = (
-				D273FCEF1844166F00C04977 /* HomeViewController.h */,
-				D273FCF01844166F00C04977 /* HomeViewController.m */,
 				D296A6541839894600D35795 /* MasterNavViewController.h */,
 				D296A6551839894600D35795 /* MasterNavViewController.m */,
+				D273FCEF1844166F00C04977 /* HomeViewController.h */,
+				D273FCF01844166F00C04977 /* HomeViewController.m */,
+				D2BB47C9183B39E800EF80B8 /* News Feed */,
+				D252CE941847A69F00F29DAC /* AboutViewController.h */,
+				D252CE951847A69F00F29DAC /* AboutViewController.m */,
+				D2D2105D183AE7360041B301 /* Calendar */,
 				D2D8660E183ABBA9002B2575 /* AccountTableViewController.h */,
 				D2D8660F183ABBA9002B2575 /* AccountTableViewController.m */,
-				D2BB47C9183B39E800EF80B8 /* News Feed */,
-				D2D2105D183AE7360041B301 /* Calendar */,
 			);
 			name = "Main Navigation";
 			sourceTree = "<group>";
@@ -493,10 +492,6 @@
 		D2D2105D183AE7360041B301 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
-				D21210F6183FEEE200A2F349 /* CalendarCell.h */,
-				D21210F7183FEEE200A2F349 /* CalendarCell.m */,
-				D21210F8183FEEE200A2F349 /* CalendarCellvIew.h */,
-				D21210F9183FEEE200A2F349 /* CalendarCellView.m */,
 				D21210FA183FEEE200A2F349 /* CalendarTableViewController.h */,
 				D21210FB183FEEE200A2F349 /* CalendarTableViewController.m */,
 			);
@@ -652,6 +647,7 @@
 				D21210ED183FEEAE00A2F349 /* NewsFeedTableViewController.m in Sources */,
 				D212111A183FEF1100A2F349 /* NSString+STTwitter.m in Sources */,
 				D295D5E11840CAFB00D796C5 /* NewsFeedHeaderView.m in Sources */,
+				D252CE961847A69F00F29DAC /* AboutViewController.m in Sources */,
 				D2121126183FEF3B00A2F349 /* SWRevealViewController.m in Sources */,
 				D295D5DF1840CAFB00D796C5 /* NewsFeedFooterView.m in Sources */,
 				D21210EA183FEEAE00A2F349 /* NewsFeedSettingsViewController.m in Sources */,
@@ -668,11 +664,9 @@
 				D21210FE183FEEE200A2F349 /* CalendarTableViewController.m in Sources */,
 				D212111B183FEF1100A2F349 /* STHTTPRequest+STTwitter.m in Sources */,
 				D21210B9183FEE3000A2F349 /* SSCNewsFeeds.m in Sources */,
-				D21210FD183FEEE200A2F349 /* CalendarCellView.m in Sources */,
 				D21210B8183FEE3000A2F349 /* BannerEvent.m in Sources */,
 				D29EF7A71838B3780087B04F /* LoginViewController.m in Sources */,
 				D212111C183FEF1100A2F349 /* STTwitterAPI.m in Sources */,
-				D21210FC183FEEE200A2F349 /* CalendarCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
