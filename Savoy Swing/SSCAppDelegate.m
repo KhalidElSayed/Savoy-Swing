@@ -24,6 +24,8 @@
     
     [self makeNewFeeds];
     
+    reloadDataTimer = [NSTimer scheduledTimerWithTimeInterval:300 target:self selector:@selector(retrieveNewData) userInfo:nil repeats:YES];
+    
     return YES;
 }
 
@@ -31,6 +33,8 @@
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    [reloadDataTimer invalidate];
+    
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -42,6 +46,8 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    [self retrieveNewData];
+    reloadDataTimer = [NSTimer scheduledTimerWithTimeInterval:300 target:self selector:@selector(retrieveNewData) userInfo:nil repeats:YES];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -75,6 +81,16 @@
     
     if ([_theFeed hasFeeds]) {
         [_theFeed generateFeeds];
+    }
+}
+
+-(void) retrieveNewData {
+    NSLog(@"detecting new news feeds...");
+    NSInteger prevCount = [_theFeed.allData count];
+    [_theFeed getUpdatedPosts:@"new"];
+    NSInteger nextCount = [_theFeed.allData count];
+    if (nextCount > prevCount) {
+        _containsNewData = YES;
     }
 }
 

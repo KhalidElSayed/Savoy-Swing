@@ -137,13 +137,8 @@
     loadingFromMemory = NO;
     loadingLabel.text = theAppDel.theFeed.status_update;
     _loadingScreenText = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updateLoadingScreen) userInfo:nil repeats:YES];
-    if ([theAppDel.theFeed allDone]) {
-        loadingFromMemory = YES;
-        [self finalizeFeed];
-        
-    } else {
-        _finalizeData = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(finalizeFeed) userInfo:nil repeats:YES];
-    }
+    _detectData = [NSTimer scheduledTimerWithTimeInterval:100.0 target:self selector:@selector(newNewsPostDetected) userInfo:nil repeats:YES];
+    [self finalizeFeed];
 }
 
 -(void) updateLoadingScreen {
@@ -178,10 +173,7 @@
 
 
 -(void) finalizeFeed {
-    if (loadingFromMemory || [theAppDel.theFeed allDone]) {
-        if (_finalizeData) {
-            [_finalizeData invalidate];
-        }
+    if ([theAppDel.theFeed allDone]) {
         _refreshImage = [NSTimer scheduledTimerWithTimeInterval:12.0 target:self selector:@selector(switchImageView) userInfo:nil repeats:YES];
         
         [self.tableView reloadData];
@@ -213,6 +205,14 @@
         return indexPath.row;
     } else {
         return indexPath.section;
+    }
+}
+
+-(void) newNewsPostDetected {
+    NSLog(@"Checking news Feed Data for new Posts...");
+    if (theAppDel.containsNewData) {
+        NSLog(@"New Post Detected...");
+        [self.tableView reloadData];
     }
 }
 

@@ -13,8 +13,10 @@
 @interface SSCAppDelegate : UIResponder <UIApplicationDelegate> {
     NSString *user;
     BOOL didInitialize;
+    NSTimer *reloadDataTimer;
 }
 
+@property (nonatomic) BOOL containsNewData;
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) NSString *user;
 @property (strong, nonatomic) NSMutableArray *newsFeedData;
@@ -24,5 +26,6 @@
 @property (nonatomic) BOOL newsFeedFacebookActive;
 
 -(void) makeNewFeeds;
+-(void) retrieveNewData;
 
 @end

@@ -80,8 +80,10 @@
 }
 
 -(void) putNewsFeedSingle {
+    NSLog(@"Detecting home news post update...");
     if ([theAppDel.theFeed allDone]) {
         [_singleNewsTimer invalidate];
+        _singleNewsTimer = [NSTimer scheduledTimerWithTimeInterval:100.0 target:self selector:@selector(putNewsFeedSingle) userInfo:nil repeats:YES];
         [_Home_info_view.news_teaser reloadData];
     }
 }

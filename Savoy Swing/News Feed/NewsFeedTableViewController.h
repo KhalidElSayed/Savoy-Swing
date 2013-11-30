@@ -33,7 +33,7 @@
 @property (strong,retain) NSMutableArray *imageArr;
 @property (nonatomic) CGFloat basicCellHeight;
 @property (strong)  NSTimer *refreshImage;
-@property (strong)  NSTimer *finalizeData;
+@property (strong)  NSTimer *detectData;
 @property (nonatomic, strong) NSMutableArray *allData;
 @property (nonatomic, strong) NSMutableArray *archivedData;
 @property (nonatomic, retain) UITableViewCell *imageSlider;
@@ -47,5 +47,26 @@
 @property (nonatomic, strong) NSArray *FacebookPosts;
 @property (strong)  NSTimer *sortCellLoader;
 @property (strong)  NSTimer *tweetLoader;
+
+//the methods
+-(void) startLoading;
+-(void) updateLoadingScreen;
+-(void) finalizeFeed;
+-(BOOL) listByRows;
+-(NSInteger) rowsOrSectionsReturn: (NSIndexPath*) indexPath;
+-(void) newNewsPostDetected;
+-(void) pinHeaderView;
+-(void) unpinHeaderView;
+-(BOOL) refresh;
+-(void) refreshCompleted;
+-(void) willBeginLoadingMore;
+-(void) loadMoreCompleted;
+-(BOOL) loadMore;
+-(void) loadImages;
+-(void) switchImageView;
+-(void) showNewsSettings:(id) sender;
+-(void) returnToNewsFeedDetail:(id) sender;
+-(void) removePreviousCellInfoFromView: (UITableViewCell*) cell;
+
 
 @end
