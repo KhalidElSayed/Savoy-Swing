@@ -48,6 +48,7 @@
 		D252CE9318467C9500F29DAC /* home_bg_solid.png in Resources */ = {isa = PBXBuildFile; fileRef = D252CE9218467C9500F29DAC /* home_bg_solid.png */; };
 		D252CE961847A69F00F29DAC /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D252CE951847A69F00F29DAC /* AboutViewController.m */; };
 		D2542017183D8D83001BA3E1 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2542016183D8D83001BA3E1 /* FacebookSDK.framework */; };
+		D2667050184AEB8200E8DDC9 /* EventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D266704F184AEB8200E8DDC9 /* EventsViewController.m */; };
 		D273FCF11844166F00C04977 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D273FCF01844166F00C04977 /* HomeViewController.m */; };
 		D273FCF318441AC600C04977 /* SHIM-SHAM.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D273FCF218441AC600C04977 /* SHIM-SHAM.jpg */; };
 		D273FCFC18441FAF00C04977 /* home_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = D273FCFB18441FAF00C04977 /* home_bg.png */; };
@@ -155,6 +156,8 @@
 		D252CE941847A69F00F29DAC /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		D252CE951847A69F00F29DAC /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		D2542016183D8D83001BA3E1 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
+		D266704E184AEB8200E8DDC9 /* EventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventsViewController.h; path = Calendar/EventsViewController.h; sourceTree = "<group>"; };
+		D266704F184AEB8200E8DDC9 /* EventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventsViewController.m; path = Calendar/EventsViewController.m; sourceTree = "<group>"; };
 		D273FCEF1844166F00C04977 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		D273FCF01844166F00C04977 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		D273FCF218441AC600C04977 /* SHIM-SHAM.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "SHIM-SHAM.jpg"; sourceTree = "<group>"; };
@@ -494,6 +497,8 @@
 			children = (
 				D21210FA183FEEE200A2F349 /* CalendarTableViewController.h */,
 				D21210FB183FEEE200A2F349 /* CalendarTableViewController.m */,
+				D266704E184AEB8200E8DDC9 /* EventsViewController.h */,
+				D266704F184AEB8200E8DDC9 /* EventsViewController.m */,
 			);
 			name = Calendar;
 			sourceTree = "<group>";
@@ -655,6 +660,7 @@
 				D2121121183FEF1100A2F349 /* BAVPlistNode.m in Sources */,
 				D2121122183FEF1100A2F349 /* JSONSyntaxHighlight.m in Sources */,
 				D212111E183FEF1100A2F349 /* STTwitterHTML.m in Sources */,
+				D2667050184AEB8200E8DDC9 /* EventsViewController.m in Sources */,
 				D295D5D71840C96A00D796C5 /* STableViewController.m in Sources */,
 				D212111F183FEF1100A2F349 /* STTwitterOAuth.m in Sources */,
 				D2D86610183ABBA9002B2575 /* AccountTableViewController.m in Sources */,

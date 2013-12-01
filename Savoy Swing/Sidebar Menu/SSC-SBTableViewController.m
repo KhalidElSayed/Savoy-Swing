@@ -80,9 +80,7 @@
     UIImage *theImage = [[UIImage alloc] initWithContentsOfFile:filePath];
     
     destViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:theImage style:UIBarButtonItemStylePlain target:self.revealViewController action:@selector(revealToggle:)];
-    if (![[segue identifier] isEqualToString:@"showHome"] && ![[segue identifier] isEqualToString:@"showNews"]) {
-         [destViewController.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
-    }
+
     
     if ( [segue isKindOfClass: [SWRevealViewControllerSegue class]] ) {
         SWRevealViewControllerSegue *swSegue = (SWRevealViewControllerSegue*) segue;
@@ -95,6 +93,9 @@
             if ( nav && [[nav topViewController] class] == [dvc class] && ([[nav topViewController].title isEqualToString:dvc.title]  )) {
                 [self.revealViewController revealToggleAnimated:YES];
             } else {
+                if (![[segue identifier] isEqualToString:@"showHome"] && ![[segue identifier] isEqualToString:@"showNews"]) {
+                    [destViewController.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
+                }
                 //setup header title
                 UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
                 label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];

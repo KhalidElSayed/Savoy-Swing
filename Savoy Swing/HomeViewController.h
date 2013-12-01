@@ -24,6 +24,7 @@
 
 @interface HomeViewController : UIViewController  <UITableViewDelegate, UITableViewDataSource> {
     SSCAppDelegate *theAppDel;
+    UIActivityIndicatorView *first_news_loading;
 }
 
 @property (strong, nonatomic) NewsFeedDetailViewController *detailView;

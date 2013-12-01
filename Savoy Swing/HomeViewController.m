@@ -231,6 +231,7 @@
     theAppDel = (SSCAppDelegate *)[[UIApplication sharedApplication] delegate];
     UITableViewCell *cell;
     if (indexPath.section == 0 && indexPath.row == 0 && [theAppDel.theFeed allDone]) {
+        first_news_loading = nil;
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
         
         if ([[theAppDel.theFeed.allData objectAtIndex:0] objectForKey:@"created_at"]) {
@@ -239,17 +240,22 @@
             cell = [theAppDel.theFeed addFacebookCell:cell withIndex:0];
         }
         UILabel *title = (UILabel*)[cell viewWithTag:1];
-        title.frame = CGRectMake(20.0f, 13.0f, 219.0f, 22.0f);
+        title.frame = CGRectMake(20.0f, 8.0f, 219.0f, 22.0f);
         UILabel *date = (UILabel*)[cell viewWithTag:2];
-        date.frame = CGRectMake(20.0f, 32.0f, 219.0f, 22.0f);
+        date.frame = CGRectMake(20.0f, 25.0f, 219.0f, 22.0f);
         UILabel *text = (UILabel*)[cell viewWithTag:3];
-        text.frame = CGRectMake(20.0f, 43.0f, 219.0f, 56.0f);
+        text.frame = CGRectMake(20.0f, 40.0f, 219.0f, 56.0f);
         [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+        
     } else if (indexPath.section ==0 && indexPath.row == 1) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"newsMore" forIndexPath:indexPath];
     } else {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"newsTeaser"];
+        first_news_loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [first_news_loading startAnimating];
+        first_news_loading.center = CGPointMake(140.0f, 50.0f);
+        [cell addSubview:first_news_loading];
     }
     return cell;
 }

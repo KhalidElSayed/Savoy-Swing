@@ -1,27 +1,32 @@
 //
-//  CalendarTableViewController.m
+//  EventsViewController.m
 //  Savoy Swing
 //
-//  Created by Steven Stevenson on 11/18/13.
+//  Created by Steven Stevenson on 11/30/13.
 //  Copyright (c) 2013 Steven Stevenson. All rights reserved.
 //
 
-#import "CalendarTableViewController.h"
-#import  "BannerEvents.h"
+#import "EventsViewController.h"
 
-@implementation CalendarTableViewController
+@interface EventsViewController ()
 
--(void) viewDidLoad {
+@end
+
+@implementation EventsViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
     
     theAppDel = (SSCAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     self.theTableView.delegate = self;
     self.theTableView.dataSource = self;
     
+
 }
 
 -(void) viewWillAppear:(BOOL)animated {
-    
     //put graphic image for loading graphic
     self.navigationController.navigationBarHidden = YES;
     loaderImageView =[[UIImageView alloc] initWithFrame:CGRectMake(0.0f, (self.view.bounds.size.height-568.0f)/2, self.view.frame.size.width, 568.0f)];
@@ -34,7 +39,7 @@
     loadingLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
     loadingLabel.textAlignment = NSTextAlignmentCenter;
     loadingLabel.textColor = [UIColor whiteColor];
-    loadingLabel.text = @"Getting Weekly Events";
+    loadingLabel.text = @"Getting Special Events";
     [loadingLabel sizeToFit];
     loadingLabel.frame = CGRectMake(0, 0, self.view.frame.size.width, loadingLabel.frame.size.height);
     loadingLabel.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height / 2)+160);
@@ -53,102 +58,21 @@
     [self.view addSubview:preloaderView];
 }
 
--(void)viewDidAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
+-(void) viewDidAppear:(BOOL)animated {
     [self performSelector:@selector(startLoading) withObject:self afterDelay:.25];
 }
 
 -(void) startLoading {
-    
-    basicCellHeight = 150.0f;
-    NSArray *allWeeklyEvents = [theAppDel.theBanners getWeeklyBanners];
     theImages = [[NSMutableDictionary alloc] init];
-    allBannerEvents = [[NSMutableDictionary alloc] init];
-    allDays = [[NSMutableArray alloc] init];
-    for (int i=0; i<[allWeeklyEvents count];i++ ){
-        NSString *dayName = [[allWeeklyEvents objectAtIndex:i] objectForKey:@"weekday"];
-        if (![allDays containsObject:dayName] ) {
-            NSMutableArray *eventsOnDay = [[NSMutableArray alloc] init];
-            [eventsOnDay addObject:[allWeeklyEvents objectAtIndex:i]];
-            [allBannerEvents setObject:eventsOnDay forKey:dayName];
-            [allDays addObject:dayName];
-        } else  {
-            NSMutableArray *eventsOnDay = [allBannerEvents objectForKey:dayName];
-            [eventsOnDay addObject:[allWeeklyEvents objectAtIndex:i]];
-        }
-    }
+    _allEvents = [theAppDel.theBanners getSpecialBanners];
     [self.theTableView reloadData];
+    loadingLabel.text = @"Configuring View";
     self.navigationController.navigationBarHidden = NO;
     [preloaderView removeFromSuperview];
-    
-    selectedIndexes = [[NSMutableDictionary alloc] init];
-    loadingLabel.text = @"Refreshing Table";
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return [allDays count];
-}
-
-- (BOOL)cellIsSelected:(NSString *) comboString {
-    if ([[selectedIndexes objectForKey:comboString] isEqualToString:@"1"]) {
-        return YES;
-    } else{
-        return NO;
-    }
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if([self cellIsSelected:[NSString stringWithFormat:@"%d-%d",indexPath.section,indexPath.row]]) {
-        return basicCellHeight * 2.0;
-    }
-    return basicCellHeight;
 }
 
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if ([allDays count] > section ) {
-        return [[allBannerEvents objectForKey:[allDays objectAtIndex:section]] count];
-    }
-    return 0;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return [allDays objectAtIndex:section];
-}
-
-- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)];
-    headerView.backgroundColor = [UIColor clearColor];
-    UILabel *tempLabel=[[UILabel alloc]initWithFrame:CGRectMake(15,0,300,44)];
-    tempLabel.backgroundColor=[UIColor clearColor];
-    tempLabel.shadowOffset = CGSizeMake(0,2);
-    tempLabel.textColor = [UIColor whiteColor];
-    tempLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:19];
-    tempLabel.text=[self tableView:tableView titleForHeaderInSection:section];
-    
-    [headerView addSubview:tempLabel];
-    return headerView;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *thisAddress = [NSString stringWithFormat:@"%d-%d",indexPath.section,indexPath.row];
-	if ([self cellIsSelected:thisAddress]) {
-        [selectedIndexes setObject:@"0" forKey:thisAddress];
-    } else {
-        [selectedIndexes setObject:@"1" forKey:thisAddress];
-    }
-	[self.theTableView deselectRowAtIndexPath:indexPath animated:TRUE];
-	
-    [self performSelector:@selector(refreshTableCells) withObject:self afterDelay:0.1];
-}
-
--(void) refreshTableCells {
-    [self.theTableView beginUpdates];
-    [self.theTableView endUpdates];
-}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 - (UITableViewCell *)prepareCell: (NSDictionary*) thisEvent theCell: (UITableViewCell*) cell {
     //image from banner
@@ -163,7 +87,7 @@
     }
     
     //highlightView objects
-    CalendarCellView *highlightView = [[CalendarCellView alloc] initWithFrame:CGRectMake(140.0f, 80.0f, 181.0f, 70.0f)];
+    UIView *highlightView = [[UIView alloc] initWithFrame:CGRectMake(140.0f, 80.0f, 181.0f, 64.0f)];
     highlightView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.9f];
     
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(7.0f, 18.0f, 153.0f, 22.0f)];
@@ -218,37 +142,26 @@
     }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+
+-(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {
+    return 200.0f;
+}
+
+-(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
+    return [_allEvents count];
+}
+
+-(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 1;
+}
+
+-(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventCell" forIndexPath:indexPath];
-    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    [self removePreviousCellInfoFromView:cell];
-    //data for banner
-    NSArray *eventsOnDay = [allBannerEvents objectForKey:[allDays objectAtIndex:indexPath.section]];
-    NSDictionary *thisEvent = [eventsOnDay objectAtIndex:indexPath.row];
+    NSDictionary *thisEvent = [_allEvents objectAtIndex:indexPath.section];
     cell = [self prepareCell:thisEvent theCell:cell];
-    
     return cell;
 }
 
-@end
-
-@implementation CalendarCellView
-
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
-
--(void)setBackgroundColor:(UIColor *)backgroundColor {
-    CGFloat alpha = CGColorGetAlpha(backgroundColor.CGColor);
-    if (alpha != 0) {
-        [super setBackgroundColor:backgroundColor];
-    }
-}
 
 @end
-
