@@ -62,6 +62,7 @@
     [self performSelector:@selector(startLoading) withObject:self afterDelay:.25];
 }
 
+
 -(void) startLoading {
     theImages = [[NSMutableDictionary alloc] init];
     _allEvents = [theAppDel.theBanners getSpecialBanners];

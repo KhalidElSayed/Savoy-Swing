@@ -49,6 +49,9 @@
 		D252CE961847A69F00F29DAC /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D252CE951847A69F00F29DAC /* AboutViewController.m */; };
 		D2542017183D8D83001BA3E1 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2542016183D8D83001BA3E1 /* FacebookSDK.framework */; };
 		D2667050184AEB8200E8DDC9 /* EventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D266704F184AEB8200E8DDC9 /* EventsViewController.m */; };
+		D2667053184BDE4100E8DDC9 /* MembershipViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2667052184BDE4100E8DDC9 /* MembershipViewController.m */; };
+		D2667058184BEC8300E8DDC9 /* ssc_card_med_active.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D2667057184BEC8300E8DDC9 /* ssc_card_med_active.jpg */; };
+		D266705A184BF2CC00E8DDC9 /* ssc_card_med_inactive.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D2667059184BF2CC00E8DDC9 /* ssc_card_med_inactive.jpg */; };
 		D273FCF11844166F00C04977 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D273FCF01844166F00C04977 /* HomeViewController.m */; };
 		D273FCF318441AC600C04977 /* SHIM-SHAM.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D273FCF218441AC600C04977 /* SHIM-SHAM.jpg */; };
 		D273FCFC18441FAF00C04977 /* home_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = D273FCFB18441FAF00C04977 /* home_bg.png */; };
@@ -158,6 +161,10 @@
 		D2542016183D8D83001BA3E1 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		D266704E184AEB8200E8DDC9 /* EventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventsViewController.h; path = Calendar/EventsViewController.h; sourceTree = "<group>"; };
 		D266704F184AEB8200E8DDC9 /* EventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventsViewController.m; path = Calendar/EventsViewController.m; sourceTree = "<group>"; };
+		D2667051184BDE4100E8DDC9 /* MembershipViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MembershipViewController.h; sourceTree = "<group>"; };
+		D2667052184BDE4100E8DDC9 /* MembershipViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MembershipViewController.m; sourceTree = "<group>"; };
+		D2667057184BEC8300E8DDC9 /* ssc_card_med_active.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ssc_card_med_active.jpg; sourceTree = "<group>"; };
+		D2667059184BF2CC00E8DDC9 /* ssc_card_med_inactive.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ssc_card_med_inactive.jpg; sourceTree = "<group>"; };
 		D273FCEF1844166F00C04977 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		D273FCF01844166F00C04977 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		D273FCF218441AC600C04977 /* SHIM-SHAM.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "SHIM-SHAM.jpg"; sourceTree = "<group>"; };
@@ -343,6 +350,8 @@
 				D2D2105D183AE7360041B301 /* Calendar */,
 				D2D8660E183ABBA9002B2575 /* AccountTableViewController.h */,
 				D2D8660F183ABBA9002B2575 /* AccountTableViewController.m */,
+				D2667051184BDE4100E8DDC9 /* MembershipViewController.h */,
+				D2667052184BDE4100E8DDC9 /* MembershipViewController.m */,
 			);
 			name = "Main Navigation";
 			sourceTree = "<group>";
@@ -446,6 +455,8 @@
 				D29EF7881838B3540087B04F /* Images.xcassets */,
 				D273FCF618441CD100C04977 /* Home Page */,
 				D2D21057183ADF700041B301 /* Test Banners */,
+				D2667057184BEC8300E8DDC9 /* ssc_card_med_active.jpg */,
+				D2667059184BF2CC00E8DDC9 /* ssc_card_med_inactive.jpg */,
 				D21210EE183FEEC700A2F349 /* menu-gear.png */,
 				D21210EF183FEEC700A2F349 /* menu-gear@2x.png */,
 				D21210F0183FEEC700A2F349 /* menu.png */,
@@ -593,6 +604,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D266705A184BF2CC00E8DDC9 /* ssc_card_med_inactive.jpg in Resources */,
 				D21210A8183FEDB900A2F349 /* ssc-app-design@2x-76x76.png in Resources */,
 				D21210A3183FEDB900A2F349 /* ssc-app-design-oj.png in Resources */,
 				D296A65C183994DA00D35795 /* Storyboard.storyboard in Resources */,
@@ -617,6 +629,7 @@
 				D21210AC183FEDB900A2F349 /* ssc_logo_old.png in Resources */,
 				D21210A9183FEDB900A2F349 /* ssc-app-design@2x-152x152.png in Resources */,
 				D21210F2183FEEC700A2F349 /* menu-gear.png in Resources */,
+				D2667058184BEC8300E8DDC9 /* ssc_card_med_active.jpg in Resources */,
 				D21210AF183FEDB900A2F349 /* twitter-icon.png in Resources */,
 				D295D5E61840DA6600D796C5 /* NewsFeedEmptyCell.xib in Resources */,
 				D21210A1183FEDB900A2F349 /* 2xDefault.png in Resources */,
@@ -642,6 +655,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2667053184BDE4100E8DDC9 /* MembershipViewController.m in Sources */,
 				D2121120183FEF1100A2F349 /* STTwitterOS.m in Sources */,
 				D21210E2183FEE7A00A2F349 /* SSC-SBTableViewController.m in Sources */,
 				D2121123183FEF1100A2F349 /* STHTTPRequest.m in Sources */,

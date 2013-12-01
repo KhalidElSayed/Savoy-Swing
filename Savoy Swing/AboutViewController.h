@@ -7,9 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SSCAppDelegate.h"
 
-@interface AboutViewController : UIViewController
+@interface AboutViewController : UIViewController {
+    SSCAppDelegate *theAppDel;
+}
 
 @property (strong, nonatomic) IBOutlet UIView *shadowView;
+@property (strong, nonatomic) IBOutlet UITextView *aboutText;
 
 @end

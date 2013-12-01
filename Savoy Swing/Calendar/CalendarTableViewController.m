@@ -59,6 +59,8 @@
     [self performSelector:@selector(startLoading) withObject:self afterDelay:.25];
 }
 
+
+
 -(void) startLoading {
     
     basicCellHeight = 150.0f;

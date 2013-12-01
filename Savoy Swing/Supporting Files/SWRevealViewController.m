@@ -26,7 +26,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import <UIKit/UIGestureRecognizerSubclass.h>
-
+#import "MasterNavViewController.h"
 #import "SWRevealViewController.h"
 
 #pragma mark - SWDirectionPanGestureRecognizer
@@ -428,7 +428,6 @@ const int FrontViewPositionNone = 0xff;
     _draggableBorderWidth = 0.0f;
 }
 
-
 #pragma mark Storyboard support
 
 static NSString * const SWSegueRearIdentifier = @"sw_rear";
@@ -580,6 +579,23 @@ static NSString * const SWSegueRightIdentifier = @"sw_right";
     _userInteractionStore = _contentView.userInteractionEnabled;
 }
 
+
+- (BOOL)shouldAutorotate {
+    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+    MasterNavViewController *nav;
+    if ([self.frontViewController isKindOfClass:[MasterNavViewController class]] ) {
+        nav = (MasterNavViewController*)self.frontViewController;
+    }
+    if ((orientation == UIInterfaceOrientationLandscapeLeft ||
+         orientation == UIInterfaceOrientationLandscapeRight) &&
+        [nav.topViewController.title isEqualToString: @"Membership" ]) {
+        return YES;
+    }
+    if (orientation==UIInterfaceOrientationPortrait) {
+        return YES;
+    }
+    return NO;
+}
 
 - (NSUInteger)supportedInterfaceOrientations
 {

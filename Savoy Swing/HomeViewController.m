@@ -56,7 +56,8 @@
     [_Home_info_view.moreCommunity addTarget:self action:@selector(openFullSite) forControlEvents:UIControlEventTouchUpInside];
     [_Home_info_view.moreEducation addTarget:self action:@selector(openFullSite) forControlEvents:UIControlEventTouchUpInside];
     
-
+    UINavigationBar *bar = [self.navigationController navigationBar];
+    [bar setTintColor:[UIColor whiteColor]];
     
     _sidebarButton.tintColor = [UIColor whiteColor];
     _sidebarButton.target = self.revealViewController;
@@ -81,12 +82,6 @@
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:theURL]];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 -(void) putNewsFeedSingle {
     NSLog(@"Detecting home news post update...");
     if ([theAppDel.theFeed allDone]) {
@@ -95,9 +90,6 @@
         [_Home_info_view.news_teaser reloadData];
     }
 }
-
-
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -215,7 +207,6 @@
         UIColor *backgroundColor = [UIColor colorWithRed:235.0/255.0 green:119.0/255.0 blue:24.0/255.0 alpha:1.0];
         self.detailView.navigationController.navigationBar.barTintColor = backgroundColor;
         self.detailView.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        self.detailView.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"< Home"  style:UIBarButtonItemStylePlain target:self action:@selector(returnToNewsFeedDetail:)];
         
         [[self navigationController] pushViewController:self.detailView animated:YES];
     }

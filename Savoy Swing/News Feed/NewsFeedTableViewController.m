@@ -132,8 +132,9 @@
 
 -(void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self performSelector:@selector(startLoading) withObject:self afterDelay:1.0];
+    [self performSelector:@selector(startLoading) withObject:self afterDelay:.5];
 }
+
 
 -(void) startLoading {
     loadingFromMemory = NO;
@@ -530,7 +531,9 @@
         UIColor *backgroundColor = [UIColor colorWithRed:235.0/255.0 green:119.0/255.0 blue:24.0/255.0 alpha:1.0];
         self.detailView.navigationController.navigationBar.barTintColor = backgroundColor;
         self.detailView.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        self.detailView.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"< News"  style:UIBarButtonItemStylePlain target:self action:@selector(returnToNewsFeedDetail:)];
+        
+        UINavigationBar *bar = [self.navigationController navigationBar];
+        [bar setTintColor:[UIColor whiteColor]];
         
         [[self navigationController] pushViewController:self.detailView animated:YES];
     }

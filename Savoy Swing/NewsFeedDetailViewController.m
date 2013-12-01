@@ -62,6 +62,7 @@
     postTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
 }
 
+
 -(void) sharePost {
     NSArray *itemsToShare = @[message];
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:itemsToShare applicationActivities:nil];

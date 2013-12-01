@@ -14,7 +14,6 @@
 
 
 @synthesize user;
-@synthesize didInitialize;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -23,9 +22,15 @@
     _newsFeedTwitterActive = YES;
     
     [self makeNewFeeds];
+    [self getAbout];
     
     reloadDataTimer = [NSTimer scheduledTimerWithTimeInterval:300 target:self selector:@selector(retrieveNewData) userInfo:nil repeats:YES];
     
+    user = @{@"username" : @"awkLindyTurtle",
+             @"fullname" : @"Steven Stevenson",
+             @"unique_id" : @"1003",
+             @"exp_date" : @"4/1/2015",
+             @"status"  : @"PAID"};
     return YES;
 }
 
@@ -98,6 +103,16 @@
     if (nextCount > prevCount) {
         _containsNewData = YES;
     }
+}
+
+-(void) getAbout {
+    NSString *strURL = @"http://www.savoyswing.org/wp-content/plugins/ssc_iphone_app/lib/processMobileApp.php?appSend&aboutSSC";
+    NSData *dataURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:strURL]];
+    NSString *strResult = [[NSString alloc] initWithData:dataURL encoding:NSUTF8StringEncoding];
+    if ( ![strResult length] == 0 ) {
+        _aboutText = strResult;
+    }
+
 }
 
 @end

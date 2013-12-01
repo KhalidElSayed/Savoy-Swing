@@ -19,11 +19,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    theAppDel = (SSCAppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    _aboutText.text = theAppDel.aboutText;
+    _aboutText.textColor = [UIColor whiteColor];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-}
 
 @end
