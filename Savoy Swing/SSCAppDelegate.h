@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SWRevealViewController.h"
 #import "SSCNewsFeeds.h"
+#import "BannerEvents.h"
 
 @interface SSCAppDelegate : UIResponder <UIApplicationDelegate> {
     NSString *user;
@@ -19,8 +20,9 @@
 @property (nonatomic) BOOL containsNewData;
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) NSString *user;
-@property (strong, nonatomic) NSMutableArray *newsFeedData;
+//@property (strong, nonatomic) NSMutableArray *newsFeedData;
 @property (strong, nonatomic) SSCNewsFeeds *theFeed;
+@property (strong, nonatomic) BannerEvents *theBanners;
 @property (nonatomic) BOOL didInitialize;
 @property (nonatomic) BOOL newsFeedTwitterActive;
 @property (nonatomic) BOOL newsFeedFacebookActive;

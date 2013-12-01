@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SSCAppDelegate.h"
 
 @interface CalendarTableViewController : UITableViewController {
+    SSCAppDelegate *theAppDel;
+    
     //IBOutlet UITableView *the_tableView;
 	NSMutableDictionary *selectedIndexes;
     NSInteger basicCellHeight;

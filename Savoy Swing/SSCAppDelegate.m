@@ -41,6 +41,7 @@
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    [reloadDataTimer invalidate];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -82,6 +83,11 @@
     if ([_theFeed hasFeeds]) {
         [_theFeed generateFeeds];
     }
+    
+    
+    _theBanners = [[BannerEvents alloc]init];
+    [_theBanners generateEvents];
+    //NSLog(@"%@",_theBanners.allEvents);
 }
 
 -(void) retrieveNewData {

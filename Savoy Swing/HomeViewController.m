@@ -56,7 +56,7 @@
     [_Home_info_view.moreCommunity addTarget:self action:@selector(openFullSite) forControlEvents:UIControlEventTouchUpInside];
     [_Home_info_view.moreEducation addTarget:self action:@selector(openFullSite) forControlEvents:UIControlEventTouchUpInside];
     
-    _singleNewsTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(putNewsFeedSingle) userInfo:nil repeats:YES];
+
     
     _sidebarButton.tintColor = [UIColor whiteColor];
     _sidebarButton.target = self.revealViewController;
@@ -64,9 +64,17 @@
     
     [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
     
-    
     _detailView = [self.storyboard instantiateViewControllerWithIdentifier:@"detailView"];
 }
+
+-(void) viewWillAppear: (BOOL)animated {
+    _singleNewsTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(putNewsFeedSingle) userInfo:nil repeats:YES];
+}
+
+-(void) viewWillDisappear:(BOOL)animated {
+    [_singleNewsTimer invalidate];
+}
+
 
 -(void) openFullSite {
     NSString *theURL = @"https://www.savoyswing.org";
@@ -87,6 +95,8 @@
         [_Home_info_view.news_teaser reloadData];
     }
 }
+
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
