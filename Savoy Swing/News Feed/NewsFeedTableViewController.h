@@ -12,6 +12,7 @@
 #import "SSCAppDelegate.h"
 #import "STableViewController.h"
 #import "SSCNewsFeeds.h"
+#import "NewsFeedCell.h"
 
 @interface NewsFeedTableViewController : STableViewController {
     SSCAppDelegate *theAppDel;

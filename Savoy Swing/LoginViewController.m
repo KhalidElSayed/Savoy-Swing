@@ -105,8 +105,8 @@ bool isLoggingIn = NO;
             [user_textfield setDelegate:self];
             [user_textfield setEnablesReturnKeyAutomatically: TRUE];
             [user_textfield setReturnKeyType:UIReturnKeyDone];
-            SSCAppDelegate *appDel = (SSCAppDelegate *)[[UIApplication sharedApplication] delegate];
-            appDel.user = user_textfield.text;
+            //SSCAppDelegate *appDel = (SSCAppDelegate *)[[UIApplication sharedApplication] delegate];
+            //appDel.user = user_textfield.text;
         } else if ( [strResult isEqualToString:@""] ) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Error" message:@"Please check your internet settings and try again." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];

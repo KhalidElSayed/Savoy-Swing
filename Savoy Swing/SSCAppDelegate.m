@@ -9,6 +9,9 @@
 #import "SSCAppDelegate.h"
 #import "TestFlight.h"
 #import "SSCData.h"
+#import <sys/socket.h>
+#import <netinet/in.h>
+#import <SystemConfiguration/SystemConfiguration.h>
 
 @implementation SSCAppDelegate
 
@@ -20,17 +23,7 @@
     [TestFlight takeOff:@"b0affd4b-5867-49f6-8773-5064c47cf767"];
     _newsFeedFacebookActive = YES;
     _newsFeedTwitterActive = YES;
-    
-    [self makeNewFeeds];
-    [self getAbout];
-    
-    reloadDataTimer = [NSTimer scheduledTimerWithTimeInterval:300 target:self selector:@selector(retrieveNewData) userInfo:nil repeats:YES];
-    
-    user = @{@"username" : @"awkLindyTurtle",
-             @"fullname" : @"Steven Stevenson",
-             @"unique_id" : @"1003",
-             @"exp_date" : @"4/1/2015",
-             @"status"  : @"PAID"};
+
     return YES;
 }
 
@@ -95,6 +88,10 @@
     //NSLog(@"%@",_theBanners.allEvents);
 }
 
+-(void) retrieveDataTimer {
+    reloadDataTimer = [NSTimer scheduledTimerWithTimeInterval:300 target:self selector:@selector(retrieveNewData) userInfo:nil repeats:YES];
+}
+
 -(void) retrieveNewData {
     NSLog(@"detecting new news feeds...");
     NSInteger prevCount = [_theFeed.allData count];
@@ -113,6 +110,59 @@
         _aboutText = strResult;
     }
 
+}
+
+/*
+ Connectivity testing code pulled from Apple's Reachability Example: http://developer.apple.com/library/ios/#samplecode/Reachability
+ */
+-(BOOL)hasConnectivity {
+    struct sockaddr_in zeroAddress;
+    bzero(&zeroAddress, sizeof(zeroAddress));
+    zeroAddress.sin_len = sizeof(zeroAddress);
+    zeroAddress.sin_family = AF_INET;
+    
+    SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, (const struct sockaddr*)&zeroAddress);
+    if(reachability != NULL) {
+        //NetworkStatus retVal = NotReachable;
+        SCNetworkReachabilityFlags flags;
+        if (SCNetworkReachabilityGetFlags(reachability, &flags)) {
+            if ((flags & kSCNetworkReachabilityFlagsReachable) == 0)
+            {
+                // if target host is not reachable
+                return NO;
+            }
+            
+            if ((flags & kSCNetworkReachabilityFlagsConnectionRequired) == 0)
+            {
+                // if target host is reachable and no connection is required
+                //  then we'll assume (for now) that your on Wi-Fi
+                return YES;
+            }
+            
+            
+            if ((((flags & kSCNetworkReachabilityFlagsConnectionOnDemand ) != 0) ||
+                 (flags & kSCNetworkReachabilityFlagsConnectionOnTraffic) != 0))
+            {
+                // ... and the connection is on-demand (or on-traffic) if the
+                //     calling application is using the CFSocketStream or higher APIs
+                
+                if ((flags & kSCNetworkReachabilityFlagsInterventionRequired) == 0)
+                {
+                    // ... and no [user] intervention is needed
+                    return YES;
+                }
+            }
+            
+            if ((flags & kSCNetworkReachabilityFlagsIsWWAN) == kSCNetworkReachabilityFlagsIsWWAN)
+            {
+                // ... but WWAN connections are OK if the calling application
+                //     is using the CFNetwork (CFSocketStream?) APIs.
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
 }
 
 @end

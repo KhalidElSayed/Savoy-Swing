@@ -20,7 +20,7 @@
     [super viewDidLoad];
     theAppDel = (SSCAppDelegate *)[[UIApplication sharedApplication] delegate];
     membershipCardView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.height, self.view.bounds.size.width*2)];
-    membershipCardView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.9f];
+    membershipCardView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.7f];
     if (theAppDel.user) {
         [self makeMembershipCard];
     } else {
@@ -30,7 +30,7 @@
 
 -(void) makeVoidCard {
     UIImageView *cardBackground = [[UIImageView alloc] initWithFrame:CGRectMake(40, 20, self.view.bounds.size.height-80, self.view.bounds.size.width-40)];
-    UIImage *theCard = [UIImage imageNamed:@"ssc_card_med_inactive.jpg"];
+    UIImage *theCard = [UIImage imageNamed:@"ssc_card_med_inactive.tif"];
     cardBackground.image = theCard;
     [membershipCardView addSubview:cardBackground];
 }
@@ -38,7 +38,7 @@
 -(void) makeMembershipCard {
     
     UIImageView *cardBackground = [[UIImageView alloc] initWithFrame:CGRectMake(40, 20, self.view.bounds.size.height-80, self.view.bounds.size.width-40)];
-    UIImage *theCard = [UIImage imageNamed:@"ssc_card_med_active.jpg"];
+    UIImage *theCard = [UIImage imageNamed:@"ssc_card_med_active.tif"];
     cardBackground.image = theCard;
     
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(300, 158, 200, 20)];

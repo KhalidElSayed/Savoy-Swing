@@ -57,6 +57,13 @@
 -(void) generateFeeds;
 -(NSMutableArray*) getData;
 -(void) getUpdatedPosts: (NSString*) type;
+-(float) thisCellHeight: (NSInteger) dataIndex;
 -(UITableViewCell *) addFacebookCell: (UITableViewCell *) theCell withIndex: (NSInteger) dataIndex;
 -(UITableViewCell *) addTwitterCell: (UITableViewCell*) theCell withIndex: (NSInteger) dataIndex;
+-(UITableViewCell*) makeCell: (UITableViewCell*) theCell
+                       title: (NSString*) title
+                        date: (NSString*) date
+                  dateFormat: (NSString*) dateFormat
+                        text: (NSString*) text
+                    errCheck: (NSString*) errCheck;
 @end

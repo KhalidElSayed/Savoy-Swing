@@ -1,13 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A598" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="1RN-hY-tgf">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A598" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="c8M-aJ-rug">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
+        <!--Initial View Controller-->
+        <scene sceneID="buR-3Z-Cpf">
+            <objects>
+                <viewController id="c8M-aJ-rug" customClass="InitialViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cRc-dh-9AN"/>
+                        <viewControllerLayoutGuide type="bottom" id="xax-MG-gRu"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ikf-Am-5qd">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="R4Default.png" translatesAutoresizingMaskIntoConstraints="NO" id="GoA-Kn-zJy">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="GoA-Kn-zJy" secondAttribute="trailing" id="28w-Ya-VG9"/>
+                            <constraint firstItem="xax-MG-gRu" firstAttribute="top" secondItem="GoA-Kn-zJy" secondAttribute="bottom" id="4C4-JA-LqG"/>
+                            <constraint firstItem="GoA-Kn-zJy" firstAttribute="leading" secondItem="ikf-Am-5qd" secondAttribute="leading" id="74l-RO-dzd"/>
+                            <constraint firstItem="GoA-Kn-zJy" firstAttribute="top" secondItem="ikf-Am-5qd" secondAttribute="top" id="adw-CO-CwR"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="v6N-4i-9GG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-704" y="-25"/>
+        </scene>
         <!--Reveal View Controller-->
         <scene sceneID="Lsi-6h-6Ld">
             <objects>
-                <viewController id="1RN-hY-tgf" customClass="SWRevealViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="revealController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1RN-hY-tgf" customClass="SWRevealViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wyK-n8-Mv8"/>
                         <viewControllerLayoutGuide type="bottom" id="YJE-n6-aJ8"/>
@@ -30,7 +60,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="982-vi-Us3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-295" y="-25"/>
+            <point key="canvasLocation" x="-325" y="-25"/>
         </scene>
         <!--Table View Controller-->
         <scene sceneID="rfR-yu-yn2">
@@ -1196,6 +1226,8 @@
                                             <constraint firstAttribute="height" constant="133" id="swQ-in-oWh"/>
                                             <constraint firstAttribute="width" constant="280" id="teb-2B-6wP"/>
                                         </constraints>
+                                        <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="sectionIndexColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="newsTeaser" rowHeight="99" id="j5Z-YB-zVk">
@@ -1204,6 +1236,7 @@
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="j5Z-YB-zVk" id="893-Ik-17F">
                                                     <rect key="frame" x="0.0" y="0.0" width="280" height="99"/>
                                                     <autoresizingMask key="autoresizingMask"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </tableViewCellContentView>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </tableViewCell>
@@ -1218,11 +1251,12 @@
                                                             <rect key="frame" x="131" y="6" width="109" height="21"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
                                                 </tableViewCellContentView>
-                                                <color key="backgroundColor" red="0.95061990489130432" green="0.95061990489130432" blue="0.95061990489130432" alpha="0.65000000000000002" colorSpace="calibratedRGB"/>
+                                                <color key="backgroundColor" red="0.61176472900000001" green="0.78823536630000002" blue="0.98039221759999995" alpha="0.10000000000000001" colorSpace="deviceRGB"/>
                                                 <connections>
                                                     <segue destination="NKf-xo-lXc" kind="push" id="0GL-ua-YN6"/>
                                                 </connections>
@@ -1451,6 +1485,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="R4Default.png" width="640" height="1136"/>
         <image name="home_bg_solid.png" width="320" height="568"/>
         <image name="menu-gear.png" width="25" height="25"/>
         <image name="menu.png" width="28" height="20"/>
@@ -1462,7 +1497,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="NW5-Me-SoA"/>
         <segue reference="mH0-uZ-oSB"/>
+        <segue reference="0GL-ua-YN6"/>
     </inferredMetricsTieBreakers>
 </document>

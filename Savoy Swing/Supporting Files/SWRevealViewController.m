@@ -579,7 +579,6 @@ static NSString * const SWSegueRightIdentifier = @"sw_right";
     _userInteractionStore = _contentView.userInteractionEnabled;
 }
 
-
 - (BOOL)shouldAutorotate {
     UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
     MasterNavViewController *nav;
@@ -589,9 +588,11 @@ static NSString * const SWSegueRightIdentifier = @"sw_right";
     if ((orientation == UIInterfaceOrientationLandscapeLeft ||
          orientation == UIInterfaceOrientationLandscapeRight) &&
         [nav.topViewController.title isEqualToString: @"Membership" ]) {
+        [nav.topViewController.view removeGestureRecognizer:self.panGestureRecognizer];
         return YES;
     }
     if (orientation==UIInterfaceOrientationPortrait) {
+        [nav.topViewController.view addGestureRecognizer:self.panGestureRecognizer];
         return YES;
     }
     return NO;

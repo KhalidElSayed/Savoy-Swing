@@ -25,6 +25,8 @@
 @property (nonatomic) BOOL newsFeedFacebookActive;
 
 -(void) makeNewFeeds;
+-(void) retrieveDataTimer;
 -(void) retrieveNewData;
 -(void) getAbout;
+-(BOOL) hasConnectivity;
 @end

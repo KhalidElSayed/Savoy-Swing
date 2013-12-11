@@ -43,11 +43,14 @@
     
     UIColor *backgroundColor = [UIColor colorWithRed:235.0/255.0 green:119.0/255.0 blue:24.0/255.0 alpha:1.0];
     self.navigationController.navigationBar.barTintColor = backgroundColor;
-    self.view.backgroundColor = [UIColor lightGrayColor];
+    self.view.backgroundColor = [UIColor clearColor];
+    UIImageView *backImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
+    backImageView.image = [UIImage imageNamed:@"home_bg_solid.png"];
+    [self.view addSubview:backImageView];
     
     [super viewDidLoad];
     //basic Cell Height
-    self.basicCellHeight = 120.0f;
+    self.basicCellHeight = 240.0f;
     
     theAppDel = (SSCAppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -81,8 +84,8 @@
     nib = [[NSBundle mainBundle] loadNibNamed:@"NewsFeedEmptyCell" owner:self options:nil];
     _BasicCell =[nib objectAtIndex:0];
     
-    //self.tableView.separatorColor = [UIColor groupTableViewBackgroundColor];
     self.tableView.backgroundColor = [UIColor clearColor];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     
     // Set the side bar button action. When it's tapped, it'll show up the sidebar.
@@ -284,6 +287,7 @@
     [fv.activityIndicator startAnimating];
 }
 
+
 - (void) loadMoreCompleted
 {
     [super loadMoreCompleted];
@@ -300,6 +304,7 @@
 
 - (BOOL) loadMore
 {
+    /*
     if (![super loadMore])
         return NO;
     [theAppDel.theFeed getUpdatedPosts:@"old"];
@@ -307,6 +312,8 @@
     return YES;
     
     return YES;
+    */
+    return NO;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -461,7 +468,6 @@
         } else if ( [[theAppDel.theFeed.allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1] objectForKey:@"created_time"]) {
             isFacebook = YES;
         }
-        //NSLog(@"%@", [theAppDel.theFeed.allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1]);
         if (isFacebook) {
             self.detailView.post_type = @"Facebook";
             NSDictionary *fbPost = [theAppDel.theFeed.allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1];
@@ -556,9 +562,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0 && indexPath.row == 0 ) {
-        return 215.0f;
+        return 225.0f;
     }
-    return self.basicCellHeight;
+    return [theAppDel.theFeed thisCellHeight:[self rowsOrSectionsReturn:indexPath]-1];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -598,46 +604,35 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell;
+    
     NSString *CellIdentifier = @"Cell";
-    UIImageView *soc_icon = [[UIImageView alloc] initWithFrame:CGRectMake(11.0f, 35.0f, 50.0f, 50.0f)];
     if (indexPath.section == 0 && indexPath.row == 0 ) {
-        cell = _imageSlider;
+        UITableViewCell *cell = _imageSlider;
         self.home_background = [[UIImageView alloc] initWithFrame:CGRectMake(-75.0f, 0.0f, 470.0f, 215.0f)];
         [cell addSubview: self.home_background];
-    } else if ([[theAppDel.theFeed.allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1] objectForKey:@"created_at"]) {
+        return cell;
+    }
+    
+    
+    UIImageView *soc_icon = [[UIImageView alloc] initWithFrame:CGRectMake(11.0f, 20.0f, 50.0f, 50.0f)];
+    NewsFeedCell *cell = [[NewsFeedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier height:[theAppDel.theFeed thisCellHeight:[self rowsOrSectionsReturn:indexPath]-1]];
+    [self removePreviousCellInfoFromView:cell];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    if ([[theAppDel.theFeed.allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1] objectForKey:@"created_at"]) {
         //twitter post
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        [self removePreviousCellInfoFromView:cell];
-         UIImage *theImage = [UIImage imageNamed:@"twitter-icon.png"];
+        UIImage *theImage = [UIImage imageNamed:@"twitter-icon.png"];
         soc_icon.image = theImage;
-        
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        
-        UIView *topSeparator = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, cell.frame.size.width, 10.0f)];
-        topSeparator.backgroundColor = [UIColor groupTableViewBackgroundColor];
-        
-        [cell addSubview:topSeparator];
         [cell addSubview:soc_icon];
         [theAppDel.theFeed addTwitterCell:cell withIndex:[self rowsOrSectionsReturn:indexPath]-1];
     } else if ([[theAppDel.theFeed.allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1] objectForKey:@"created_time"]) {
         //facebook post
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        [self removePreviousCellInfoFromView:cell];
         UIImage *theImage = [UIImage imageNamed:@"facebook-icon.png"];
         soc_icon.image = theImage;
-        
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        
-        UIView *topSeparator = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, cell.frame.size.width, 10.0f)];
-        topSeparator.backgroundColor = [UIColor groupTableViewBackgroundColor];
-        
-        [cell addSubview:topSeparator];
         [cell addSubview:soc_icon];
         [theAppDel.theFeed addFacebookCell:cell withIndex:[self rowsOrSectionsReturn:indexPath]-1];
     }
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+        cell = [[NewsFeedCell alloc] initWithStyle:UITableViewCellStyleDefault
                                        reuseIdentifier:CellIdentifier];
     }
     return cell;

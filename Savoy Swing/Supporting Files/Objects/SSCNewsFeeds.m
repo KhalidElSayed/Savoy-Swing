@@ -416,61 +416,45 @@
 
 /*
  *
+ *      see Cell Height
+ *
+ */
+-(float) thisCellHeight: (NSInteger) dataIndex {
+    float totalHeight = 43; //start of text
+    NSString *text;
+    NSDictionary *entry = [_allData objectAtIndex:dataIndex];
+    if ([entry valueForKeyPath:@"message"]) {
+        text = [entry valueForKeyPath:@"message"];
+    } else if ( [entry valueForKeyPath:@"text"] ) {
+        text = [entry valueForKeyPath:@"text"];
+    }
+    UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 43.0f, 180, 180.0f)];
+    textLabel.font = [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:14.0];
+    textLabel.textAlignment = NSTextAlignmentLeft;
+    textLabel.text = text;
+    textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    textLabel.numberOfLines = 0;
+    [textLabel sizeToFit];
+    
+    totalHeight += textLabel.frame.size.height; //sum value according to size of text
+    totalHeight += 20; //padding on bottom
+    
+    return totalHeight;
+}
+
+/*
+ *
  *      making Twitter Cell
  *
  */
 -(UITableViewCell *) addFacebookCell: (UITableViewCell *) theCell withIndex: (NSInteger) dataIndex {
     NSDictionary *fbPost = [_allData objectAtIndex:dataIndex];
+    NSString *title = [NSString stringWithFormat:@"@%@:",[fbPost valueForKeyPath:@"from.name"]];
+    NSString *dateFormatter = @"yyyy-MM-dd'T'HH:mm:ssZ";
+    NSString *date = [fbPost valueForKeyPath:@"created_time"];
+    NSString *text = [fbPost valueForKeyPath:@"message"];
     
-    UILabel *tag = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 13.0f, 219.0f, 22.0f)];
-    tag.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:17.0];
-    tag.textAlignment = NSTextAlignmentLeft;
-    tag.textColor = [UIColor blackColor];
-    tag.text = [NSString stringWithFormat:@"%@:",[[fbPost valueForKeyPath:@"from"] valueForKey:@"name"]];
-    [tag sizeToFit];
-    tag.tag = 1;
-    
-    NSString *fbDate =[fbPost valueForKeyPath:@"created_time"];
-    
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
-    NSDate *thisDate = [dateFormatter dateFromString:fbDate];
-    [dateFormatter setDateFormat:@"E MMM, d yyyy hh:mm"];
-    NSString *thisDateText = [dateFormatter stringFromDate:thisDate];
-    
-    UILabel *date = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 32.0f, 219.0f, 22.0f)];
-    date.tag = 101;
-    date.font = [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:11.5];
-    date.textAlignment = NSTextAlignmentLeft;
-    date.textColor = [UIColor blackColor];
-    date.text = thisDateText;
-    [date sizeToFit];
-    date.tag = 2;
-    
-    
-    NSString *message =[fbPost valueForKeyPath:@"message"];
-    NSRange foundRange = [message rangeOfString:@"\n"];
-    if (foundRange.location != NSNotFound) {
-        message = [message stringByReplacingOccurrencesOfString:@"\n"
-                                                     withString:@""
-                                                        options:0
-                                                          range:foundRange];
-    }
-    
-    UILabel *text = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 43.0f, 219.0f, 56.0f)];
-    text.font = [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:14.0];
-    text.textAlignment = NSTextAlignmentLeft;
-    text.textColor = [UIColor blackColor];
-    text.text = message;
-    text.lineBreakMode = NSLineBreakByWordWrapping;
-    text.numberOfLines = 0;
-    text.tag = 3;
-    
-    [theCell.contentView addSubview:tag];
-    [theCell.contentView addSubview:date];
-    [theCell.contentView addSubview:text];
-    
-    return theCell;
+    return [self makeCell:theCell title:title date:date dateFormat:dateFormatter text:text errCheck:@"facebook"];
 }
 
 /*
@@ -480,64 +464,89 @@
  */
 -(UITableViewCell *) addTwitterCell: (UITableViewCell*) theCell withIndex: (NSInteger) dataIndex {
     NSDictionary *status = [_allData objectAtIndex:dataIndex];
+    NSString *title = [NSString stringWithFormat:@"@%@:",[status valueForKeyPath:@"user.screen_name"]];
+    NSString *dateFormatter = @"E MMM d HH:mm:ss +0000 yyyy";
+    NSString *date = [status valueForKeyPath:@"created_at"];
+    NSString *text = [status valueForKeyPath:@"text"];
+
+    return [self makeCell:theCell title:title date:date dateFormat:dateFormatter text:text errCheck:@"twitter"];
+}
+
+-(UITableViewCell*) makeCell: (UITableViewCell*) theCell
+                       title: (NSString*) title
+                        date: (NSString*) date
+                  dateFormat: (NSString*) dateFormat
+                        text: (NSString*) text
+                    errCheck: (NSString*) errCheck {
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 13.0f, 219.0f, 22.0f)];
+    titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:17.0];
+    titleLabel.textAlignment = NSTextAlignmentLeft;
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.text = title;
+    [titleLabel sizeToFit];
+    titleLabel.tag = 1;
     
-    UILabel *tag = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 13.0f, 219.0f, 22.0f)];
-    tag.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:17.0];
-    tag.textAlignment = NSTextAlignmentLeft;
-    tag.textColor = [UIColor blackColor];
-    tag.text = [NSString stringWithFormat:@"@%@:",[status valueForKeyPath:@"user.screen_name"]];
-    [tag sizeToFit];
-    tag.tag = 1;
-    
-    NSString *twitterDate =[status valueForKeyPath:@"created_at"];
+    NSString *twitterDate = date;
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"E MMM d HH:mm:ss +0000 yyyy"];
+    [dateFormatter setDateFormat:dateFormat];
     NSDate *thisDate = [dateFormatter dateFromString:twitterDate];
     [dateFormatter setDateFormat:@"E MMM, d yyyy hh:mm"];
     NSString *thisDateText = [dateFormatter stringFromDate:thisDate];
     
-    UILabel *date = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 32.0f, 219.0f, 22.0f)];
-    date.tag = 101;
-    date.font = [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:11.5];
-    date.textAlignment = NSTextAlignmentLeft;
-    date.textColor = [UIColor blackColor];
-    date.text = thisDateText;
-    [date sizeToFit];
-    date.tag = 2;
+    UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 32.0f, 219.0f, 22.0f)];
+    dateLabel.font = [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:11.5];
+    dateLabel.textAlignment = NSTextAlignmentLeft;
+    dateLabel.textColor = [UIColor whiteColor];
+    dateLabel.text = thisDateText;
+    [dateLabel sizeToFit];
+    dateLabel.tag = 2;
     
-    UILabel *text = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 43.0f, 219.0f, 56.0f)];
-    text.font = [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:14.0];
-    text.textAlignment = NSTextAlignmentLeft;
-    text.textColor = [UIColor blackColor];
-    text.text = [status valueForKeyPath:@"text"];
-    text.lineBreakMode = NSLineBreakByWordWrapping;
-    text.numberOfLines = 0;
-    text.tag = 3;
+    UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 43.0f, 180, 180.0f)];
+    textLabel.font = [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:14.0];
+    textLabel.textAlignment = NSTextAlignmentLeft;
+    textLabel.textColor = [UIColor whiteColor];
+    textLabel.text = text;
+    textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    textLabel.numberOfLines = 0;
+    textLabel.tag = 3;
+    [textLabel sizeToFit];
     
     NSError *errRegex = NULL;
-    NSRegularExpression *regex = [NSRegularExpression
-                                  regularExpressionWithPattern:@"RT @.*: "
-                                  options:NSRegularExpressionCaseInsensitive
-                                  error:&errRegex];
+    if ([errCheck  isEqual: @"twitter"]) {
+        NSRegularExpression *regex = [NSRegularExpression
+                                      regularExpressionWithPattern:@"RT @.*: "
+                                      options:NSRegularExpressionCaseInsensitive
+                                      error:&errRegex];
+        
+        [regex enumerateMatchesInString:textLabel.text options:0
+                                  range:NSMakeRange(0, [textLabel.text length])
+                             usingBlock:^(NSTextCheckingResult *match,
+                                          NSMatchingFlags flags, BOOL *stop) {
+                                 
+                                 NSString *matchFull = [textLabel.text substringWithRange:[match range]];
+                                 titleLabel.text = matchFull;
+                                 [titleLabel sizeToFit];
+                                 
+                                 textLabel.text = [textLabel.text stringByReplacingOccurrencesOfString:titleLabel.text withString:@""];
+                                 [textLabel sizeToFit];
+                             }];
+        
+    } else if ([errCheck  isEqual: @"facebook"]) {
+        NSRange foundRange = [textLabel.text rangeOfString:@"\n"];
+        if (foundRange.location != NSNotFound) {
+            textLabel.text = [textLabel.text stringByReplacingOccurrencesOfString:@"\n"
+                                                                       withString:@""
+                                                                          options:0
+                                                                            range:foundRange];
+        }
+
+    }
     
-    [regex enumerateMatchesInString:text.text options:0
-                              range:NSMakeRange(0, [text.text length])
-                         usingBlock:^(NSTextCheckingResult *match,
-                                      NSMatchingFlags flags, BOOL *stop) {
-                             
-                             NSString *matchFull = [text.text substringWithRange:[match range]];
-                             tag.text = matchFull;
-                             [tag sizeToFit];
-                             
-                             text.text = [text.text stringByReplacingOccurrencesOfString:tag.text withString:@""];
-                             [text sizeToFit];
-                         }];
-    
-    [theCell.contentView addSubview:tag];
-    [theCell.contentView addSubview:date];
-    [theCell.contentView addSubview:text];
-    
+    [theCell addSubview:titleLabel];
+    [theCell addSubview:dateLabel];
+    [theCell addSubview:textLabel];
     return theCell;
 }
+
 @end

@@ -34,7 +34,7 @@
     
     UIColor *backgroundColor = [UIColor colorWithRed:235.0/255.0 green:119.0/255.0 blue:24.0/255.0 alpha:1.0];
     self.navigationController.navigationBar.barTintColor = backgroundColor;
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor clearColor];
     
     //setup header title
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -236,6 +236,7 @@
         date.frame = CGRectMake(20.0f, 25.0f, 219.0f, 22.0f);
         UILabel *text = (UILabel*)[cell viewWithTag:3];
         text.frame = CGRectMake(20.0f, 40.0f, 219.0f, 56.0f);
+        cell.backgroundColor = [UIColor colorWithWhite:0.0f alpha:.1f];
         [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
         
