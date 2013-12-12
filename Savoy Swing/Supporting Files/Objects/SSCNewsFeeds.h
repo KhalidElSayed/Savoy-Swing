@@ -12,10 +12,12 @@
     
     BOOL twitterReady;
     BOOL facebookReady;
+    BOOL wordpressReady;
     BOOL postsSorted;
     BOOL dataReady;
     
     BOOL twitterActive;
+    BOOL wordpressActive;
     BOOL facebookActive;
 
     BOOL updateNewer;
@@ -34,6 +36,7 @@
     NSString *twitterOathToken;
     NSString *twitterOathTokenSecret;
     
+    NSString *wordpress_urlToFeed;
     
     NSString *facebook_username;
     NSString *facebookClient_id;
@@ -42,6 +45,7 @@
 
 @property (strong, nonatomic) NSString *status_update;
 @property (nonatomic, strong) NSArray *TwitterStatuses;
+@property (nonatomic, strong) NSArray *WordpressPosts;
 @property (nonatomic, strong) NSArray *FacebookPosts;
 @property (strong, nonatomic) NSTimer *sortCellLoader;
 @property (strong, nonatomic) NSTimer *finishedLoader;
@@ -50,6 +54,7 @@
 @property (strong, nonatomic) NSMutableArray *archivedData;
 
 -(void) addTwitterFeed: (NSString*) username andTweetList: (NSString*) tweetList andParams: (NSArray*) params;
+-(void) addWordpressFeed: (NSString *) urlToFeed;
 -(void) addFacebookFeed: (NSString *) username andParams: (NSArray*) params;
 -(BOOL) hasFeeds;
 -(BOOL) postsReady;
@@ -59,6 +64,7 @@
 -(void) getUpdatedPosts: (NSString*) type;
 -(float) thisCellHeight: (NSInteger) dataIndex;
 -(UITableViewCell *) addFacebookCell: (UITableViewCell *) theCell withIndex: (NSInteger) dataIndex;
+-(UITableViewCell *) addWordpressCell: (UITableViewCell *) theCell withIndex: (NSInteger) dataIndex;
 -(UITableViewCell *) addTwitterCell: (UITableViewCell*) theCell withIndex: (NSInteger) dataIndex;
 -(UITableViewCell*) makeCell: (UITableViewCell*) theCell
                        title: (NSString*) title

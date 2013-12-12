@@ -23,6 +23,7 @@
     [TestFlight takeOff:@"b0affd4b-5867-49f6-8773-5064c47cf767"];
     _newsFeedFacebookActive = YES;
     _newsFeedTwitterActive = YES;
+    _newsFeedWordpressActive = YES;
 
     return YES;
 }
@@ -77,15 +78,16 @@
         //[theFeed addTwitterFeed:@"savoyswing" andTweetList:nil];      //for user tweets only
         [_theFeed addTwitterFeed:@"savoyswing" andTweetList:@"seattle-swing-feeds" andParams:twitterParams];
     }
+    if (_newsFeedWordpressActive) {
+        [_theFeed addWordpressFeed:@"http://www.savoyswing.org/wp-content/plugins/ssc_iphone_app/lib/processMobileApp.php?appSend&newsFeed"];
+    }
     
     if ([_theFeed hasFeeds]) {
         [_theFeed generateFeeds];
     }
     
-    
     _theBanners = [[BannerEvents alloc]init];
     [_theBanners generateEvents];
-    //NSLog(@"%@",_theBanners.allEvents);
 }
 
 -(void) retrieveDataTimer {
@@ -93,12 +95,14 @@
 }
 
 -(void) retrieveNewData {
-    NSLog(@"detecting new news feeds...");
-    NSInteger prevCount = [_theFeed.allData count];
-    [_theFeed getUpdatedPosts:@"new"];
-    NSInteger nextCount = [_theFeed.allData count];
-    if (nextCount > prevCount) {
-        _containsNewData = YES;
+    if ([self hasConnectivity]) {
+        NSLog(@"detecting new news feeds...");
+        NSInteger prevCount = [_theFeed.allData count];
+        [_theFeed getUpdatedPosts:@"new"];
+        NSInteger nextCount = [_theFeed.allData count];
+        if (nextCount > prevCount) {
+            _containsNewData = YES;
+        }
     }
 }
 

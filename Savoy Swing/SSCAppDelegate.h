@@ -23,6 +23,7 @@
 @property (strong, nonatomic) NSString *aboutText;
 @property (nonatomic) BOOL newsFeedTwitterActive;
 @property (nonatomic) BOOL newsFeedFacebookActive;
+@property (nonatomic) BOOL newsFeedWordpressActive;
 
 -(void) makeNewFeeds;
 -(void) retrieveDataTimer;

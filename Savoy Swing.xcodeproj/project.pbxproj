@@ -31,7 +31,7 @@
 		D21210F3183FEEC700A2F349 /* menu-gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21210EF183FEEC700A2F349 /* menu-gear@2x.png */; };
 		D21210F4183FEEC700A2F349 /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = D21210F0183FEEC700A2F349 /* menu.png */; };
 		D21210F5183FEEC700A2F349 /* menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21210F1183FEEC700A2F349 /* menu@2x.png */; };
-		D21210FE183FEEE200A2F349 /* CalendarTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210FB183FEEE200A2F349 /* CalendarTableViewController.m */; };
+		D21210FE183FEEE200A2F349 /* WeeklyTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210FB183FEEE200A2F349 /* WeeklyTableViewController.m */; };
 		D2121119183FEF1100A2F349 /* NSDateFormatter+STTwitter.m in Sources */ = {isa = PBXBuildFile; fileRef = D2121101183FEF1100A2F349 /* NSDateFormatter+STTwitter.m */; };
 		D212111A183FEF1100A2F349 /* NSString+STTwitter.m in Sources */ = {isa = PBXBuildFile; fileRef = D2121103183FEF1100A2F349 /* NSString+STTwitter.m */; };
 		D212111B183FEF1100A2F349 /* STHTTPRequest+STTwitter.m in Sources */ = {isa = PBXBuildFile; fileRef = D2121105183FEF1100A2F349 /* STHTTPRequest+STTwitter.m */; };
@@ -78,6 +78,7 @@
 		D29EF7A71838B3780087B04F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D29EF7A61838B3780087B04F /* LoginViewController.m */; };
 		D2CCB7931858F4AE005DDF0E /* ssc_card_med_active.tif in Resources */ = {isa = PBXBuildFile; fileRef = D2CCB7911858F4AE005DDF0E /* ssc_card_med_active.tif */; };
 		D2CCB7941858F4AE005DDF0E /* ssc_card_med_inactive.tif in Resources */ = {isa = PBXBuildFile; fileRef = D2CCB7921858F4AE005DDF0E /* ssc_card_med_inactive.tif */; };
+		D2CCB79718590FCF005DDF0E /* CalendarTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2CCB79618590FCF005DDF0E /* CalendarTableViewCell.m */; };
 		D2D21056183ADF6C0041B301 /* banner_sav_mon_.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D2D21054183ADF6C0041B301 /* banner_sav_mon_.jpg */; };
 		D2D21059183AE1070041B301 /* blues_underground.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D2D21058183AE1070041B301 /* blues_underground.jpg */; };
 		D2D86610183ABBA9002B2575 /* AccountTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D8660F183ABBA9002B2575 /* AccountTableViewController.m */; };
@@ -127,8 +128,8 @@
 		D21210EF183FEEC700A2F349 /* menu-gear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "menu-gear@2x.png"; path = "Images/menu-gear@2x.png"; sourceTree = "<group>"; };
 		D21210F0183FEEC700A2F349 /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu.png; path = Images/menu.png; sourceTree = "<group>"; };
 		D21210F1183FEEC700A2F349 /* menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "menu@2x.png"; path = "Images/menu@2x.png"; sourceTree = "<group>"; };
-		D21210FA183FEEE200A2F349 /* CalendarTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CalendarTableViewController.h; path = Calendar/CalendarTableViewController.h; sourceTree = "<group>"; };
-		D21210FB183FEEE200A2F349 /* CalendarTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CalendarTableViewController.m; path = Calendar/CalendarTableViewController.m; sourceTree = "<group>"; };
+		D21210FA183FEEE200A2F349 /* WeeklyTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WeeklyTableViewController.h; path = Calendar/WeeklyTableViewController.h; sourceTree = "<group>"; };
+		D21210FB183FEEE200A2F349 /* WeeklyTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WeeklyTableViewController.m; path = Calendar/WeeklyTableViewController.m; sourceTree = "<group>"; };
 		D2121100183FEF1100A2F349 /* NSDateFormatter+STTwitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+STTwitter.h"; sourceTree = "<group>"; };
 		D2121101183FEF1100A2F349 /* NSDateFormatter+STTwitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+STTwitter.m"; sourceTree = "<group>"; };
 		D2121102183FEF1100A2F349 /* NSString+STTwitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+STTwitter.h"; sourceTree = "<group>"; };
@@ -204,6 +205,8 @@
 		D29EF7A61838B3780087B04F /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		D2CCB7911858F4AE005DDF0E /* ssc_card_med_active.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ssc_card_med_active.tif; path = Images/ssc_card_med_active.tif; sourceTree = "<group>"; };
 		D2CCB7921858F4AE005DDF0E /* ssc_card_med_inactive.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ssc_card_med_inactive.tif; path = Images/ssc_card_med_inactive.tif; sourceTree = "<group>"; };
+		D2CCB79518590FCF005DDF0E /* CalendarTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CalendarTableViewCell.h; path = Calendar/CalendarTableViewCell.h; sourceTree = "<group>"; };
+		D2CCB79618590FCF005DDF0E /* CalendarTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CalendarTableViewCell.m; path = Calendar/CalendarTableViewCell.m; sourceTree = "<group>"; };
 		D2D21054183ADF6C0041B301 /* banner_sav_mon_.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = banner_sav_mon_.jpg; path = Images/banner_sav_mon_.jpg; sourceTree = "<group>"; };
 		D2D21058183AE1070041B301 /* blues_underground.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = blues_underground.jpg; path = Images/blues_underground.jpg; sourceTree = "<group>"; };
 		D2D8660E183ABBA9002B2575 /* AccountTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountTableViewController.h; sourceTree = "<group>"; };
@@ -514,8 +517,10 @@
 		D2D2105D183AE7360041B301 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
-				D21210FA183FEEE200A2F349 /* CalendarTableViewController.h */,
-				D21210FB183FEEE200A2F349 /* CalendarTableViewController.m */,
+				D21210FA183FEEE200A2F349 /* WeeklyTableViewController.h */,
+				D21210FB183FEEE200A2F349 /* WeeklyTableViewController.m */,
+				D2CCB79518590FCF005DDF0E /* CalendarTableViewCell.h */,
+				D2CCB79618590FCF005DDF0E /* CalendarTableViewCell.m */,
 				D266704E184AEB8200E8DDC9 /* EventsViewController.h */,
 				D266704F184AEB8200E8DDC9 /* EventsViewController.m */,
 			);
@@ -690,8 +695,9 @@
 				D273FCF11844166F00C04977 /* HomeViewController.m in Sources */,
 				D212111D183FEF1100A2F349 /* STTwitterAppOnly.m in Sources */,
 				D2E481931857BBC2008D19B8 /* NewsFeedCell.m in Sources */,
-				D21210FE183FEEE200A2F349 /* CalendarTableViewController.m in Sources */,
+				D21210FE183FEEE200A2F349 /* WeeklyTableViewController.m in Sources */,
 				D212111B183FEF1100A2F349 /* STHTTPRequest+STTwitter.m in Sources */,
+				D2CCB79718590FCF005DDF0E /* CalendarTableViewCell.m in Sources */,
 				D21210B9183FEE3000A2F349 /* SSCNewsFeeds.m in Sources */,
 				D21210B8183FEE3000A2F349 /* BannerEvents.m in Sources */,
 				D2E48190185306EB008D19B8 /* InitialViewController.m in Sources */,

@@ -1,5 +1,5 @@
 //
-//  CalendarTableViewController.h
+//  WeekylTableViewController.h
 //  Savoy Swing
 //
 //  Created by Steven Stevenson on 11/18/13.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SSCAppDelegate.h"
 
-@interface CalendarTableViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
+@interface WeeklyTableViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
     SSCAppDelegate *theAppDel;
     
     //IBOutlet UITableView *the_tableView;

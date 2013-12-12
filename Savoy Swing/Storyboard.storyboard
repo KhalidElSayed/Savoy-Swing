@@ -1426,10 +1426,10 @@
             </objects>
             <point key="canvasLocation" x="1503" y="-1232"/>
         </scene>
-        <!--Calendar Table View Controller - Weekly Calendar-->
+        <!--Weekly Table View Controller - Weekly Calendar-->
         <scene sceneID="Eh8-qC-gKb">
             <objects>
-                <viewController title="Weekly Calendar" id="mfZ-rk-P8m" customClass="CalendarTableViewController" sceneMemberID="viewController">
+                <viewController title="Weekly Calendar" id="mfZ-rk-P8m" customClass="WeeklyTableViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="6z8-sX-szP"/>
                         <viewControllerLayoutGuide type="bottom" id="PTB-ba-kLQ"/>
@@ -1460,7 +1460,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>

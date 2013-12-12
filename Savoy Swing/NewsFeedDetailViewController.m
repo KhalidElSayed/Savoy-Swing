@@ -136,28 +136,27 @@
         botShare.layer.cornerRadius = 5;
         botShare.layer.masksToBounds = YES;
         
-        if (![post_type isEqualToString:@"Twitter"]) {
+        if ([post_type isEqualToString:@"Facebook"]) {
             UIButton *likeButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 280.0f/2.0f, 40.0f)];
             [likeButton setTitle:@"Like" forState:UIControlStateNormal];
             [likeButton setTitleColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
             [likeButton addTarget:self action:@selector(likePost) forControlEvents:UIControlEventTouchUpInside];
             [likeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
             [botShare addSubview:likeButton];
-            
-            UIButton *shareButton = [[UIButton alloc] initWithFrame:CGRectMake(280.0f/2.0f, 0.0f, 280.0f/2.0f, 40.0f)];
-            [shareButton setTitle:@"Share" forState:UIControlStateNormal];
-            [shareButton setTitleColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
-            [shareButton addTarget:self action:@selector(sharePost) forControlEvents:UIControlEventTouchUpInside];
-            [shareButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
-            [botShare addSubview:shareButton];
-        } else {
-            UIButton *shareButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 280.0f, 40.0f)];
-            [shareButton setTitle:@"Share" forState:UIControlStateNormal];
-            [shareButton setTitleColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
-            [shareButton addTarget:self action:@selector(sharePost) forControlEvents:UIControlEventTouchUpInside];
-            [shareButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
-            [botShare addSubview:shareButton];
+        } else if ([post_type isEqualToString:@"Facebook"]) {
+            UIButton *likeButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 280.0f/2.0f, 40.0f)];
+            [likeButton setTitle:@"ReTweet" forState:UIControlStateNormal];
+            [likeButton setTitleColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
+            [likeButton addTarget:self action:@selector(likePost) forControlEvents:UIControlEventTouchUpInside];
+            [likeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+            [botShare addSubview:likeButton];
         }
+        UIButton *shareButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 280.0f, 40.0f)];
+        [shareButton setTitle:@"Share" forState:UIControlStateNormal];
+        [shareButton setTitleColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
+        [shareButton addTarget:self action:@selector(sharePost) forControlEvents:UIControlEventTouchUpInside];
+        [shareButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+        [botShare addSubview:shareButton];
         
         
         float yPostForMenuTop = cellHeight-45.0f;

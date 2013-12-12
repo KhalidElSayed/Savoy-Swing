@@ -77,7 +77,8 @@
 
 - (UITableViewCell *)prepareCell: (NSDictionary*) thisEvent theCell: (UITableViewCell*) cell {
     //image from banner
-    UIImageView *bannerImageView =[[UIImageView alloc] initWithFrame:CGRectMake(-29.0f, 0.0f, 349.0f, 80.0f)];
+    float height = cell.frame.size.width/283.5f*60.0f;
+    UIImageView *bannerImageView =[[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, cell.frame.size.width, height)];
     if (![theImages valueForKey:[thisEvent objectForKey:@"image_url"]]) {
         NSData *dataFromURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:[thisEvent objectForKey:@"image_url"]]];
         UIImage *theImage = [UIImage imageWithData: dataFromURL];
@@ -88,7 +89,7 @@
     }
     
     //highlightView objects
-    UIView *highlightView = [[UIView alloc] initWithFrame:CGRectMake(140.0f, 80.0f, 181.0f, 64.0f)];
+    UIView *highlightView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, height, cell.frame.size.width, 64.0f)];
     highlightView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.9f];
     
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(7.0f, 18.0f, 153.0f, 22.0f)];
@@ -161,6 +162,9 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventCell" forIndexPath:indexPath];
     NSDictionary *thisEvent = [_allEvents objectAtIndex:indexPath.section];
     cell = [self prepareCell:thisEvent theCell:cell];
+    cell.layer.cornerRadius = 5;
+    cell.layer.masksToBounds = YES;
+    cell.backgroundColor = [UIColor whiteColor];
     return cell;
 }
 

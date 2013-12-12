@@ -22,9 +22,11 @@
     if (self) {
         twitterActive = NO;
         facebookActive = NO;
+        wordpressActive = NO;
         
         twitterReady = NO;
         facebookReady = NO;
+        wordpressReady = NO;
         postsSorted = NO;
         
         dataReady = NO;
@@ -58,12 +60,18 @@
     }
 }
 
+-(void) addWordpressFeed: (NSString *) urlToFeed {
+    status_update = @"News Feeds Initializing";
+    wordpress_urlToFeed = urlToFeed;
+    wordpressActive = YES;
+}
+
 -(BOOL) hasFeeds {
-    return (facebookActive || twitterActive);
+    return (facebookActive || twitterActive || wordpressActive);
 }
 
 -(BOOL) postsReady {
-    return (facebookReady && twitterReady && postsSorted);
+    return (facebookReady && twitterReady && wordpressActive && postsSorted);
 }
 
 -(BOOL) allDone {
@@ -71,7 +79,7 @@
 }
 
 -(BOOL) readyToSort {
-    return twitterReady && facebookReady;
+    return twitterReady && facebookReady && wordpressReady;
 }
 
 -(void) generateFeeds {
@@ -81,6 +89,11 @@
             [self makeTwitterFeed: nil];
         } else {
             twitterReady = YES;
+        }
+        if (wordpressActive) {
+            [self makeWordpressFeed:nil];
+        } else {
+            wordpressReady = YES;
         }
         if (facebookActive) {
             [self makeFacebookFeed: nil];
@@ -117,77 +130,118 @@
         status_update = @"Sorting News Feed";
         [_sortCellLoader invalidate];
         _sortCellLoader = nil;
-        if ( !_FacebookPosts ) {
-            _allData =  [_TwitterStatuses mutableCopy];
-        } else {
-            _allData = [[NSMutableArray alloc] init];
+        _allData = [[NSMutableArray alloc] init];
             
-            NSInteger fb_count = 0;
-            NSInteger twi_count = 0;
-            NSInteger totalData =([_FacebookPosts count]+[_TwitterStatuses count]);
-            for (int i=0; i<totalData;i++ ){
-                //facebook date
-                NSDate *fb_date;
-                if (fb_count < [_FacebookPosts count]) {
-                    NSDictionary *fb_obj = [_FacebookPosts objectAtIndex:fb_count];
-                    if (![fb_obj valueForKeyPath:@"message"]) {
-                        fb_count++;
-                        totalData--;
-                        continue;
-                    }
-                    NSString *fb_unformDate =[fb_obj valueForKeyPath:@"created_time"];
-                    NSDateFormatter *fb_dateFormatter = [[NSDateFormatter alloc] init];
-                    [fb_dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
-                    fb_date = [fb_dateFormatter dateFromString:fb_unformDate];
-                }
-                
-                //twitter date
-                NSDate *twi_date;
-                if (twi_count < [_TwitterStatuses count]) {
-                    NSData *twi_obj = [_TwitterStatuses objectAtIndex:twi_count];
-                    //remove if possibly retweeting self occured (may be unnecessary in current twitter API)
-                    if ([twi_obj valueForKeyPath:@"retweeted_status"] &&
-                        ![[twi_obj valueForKey:@"reteeted_status.user.screen_name"] isEqualToString:twitter_username]) {
-                        twi_count++;
-                        totalData--;
-                        continue;
-                    }
-                    NSString *twi_unformDate = [twi_obj valueForKeyPath:@"created_at"];
-                    NSDateFormatter *twi_dateFormatter = [[NSDateFormatter alloc] init];
-                    [twi_dateFormatter setDateFormat:@"E MMM d HH:mm:ss +0000 yyyy"];
-                    twi_date = [twi_dateFormatter dateFromString:twi_unformDate];
-                }
-                
-                if (twi_date && fb_date) {
-                    //find most recent date
-                    switch ([fb_date compare: twi_date]) {
-                        case NSOrderedAscending:{
-                            [_allData addObject:[_TwitterStatuses objectAtIndex:twi_count]];
-                            twi_count++;
-                            break;
-                        }
-                        case NSOrderedSame: {
-                            
-                            [_allData addObject:[_FacebookPosts objectAtIndex:fb_count]];
-                            fb_count++;
-                            break;
-                        }
-                        case NSOrderedDescending: {
-                            
-                            [_allData addObject:[_FacebookPosts objectAtIndex:fb_count]];
-                            fb_count++;
-                            break;
-                        }
-                    }
-                } else if (twi_date) {
-                    
-                    [_allData addObject:[_TwitterStatuses objectAtIndex:twi_count]];
-                    twi_count++;
-                } else if (fb_date){
-                    
-                    [_allData addObject:[_FacebookPosts objectAtIndex:fb_count]];
+        NSInteger fb_count = 0;
+        NSInteger twi_count = 0;
+        NSInteger wp_count = 0;
+        NSInteger totalData =([_FacebookPosts count]+[_TwitterStatuses count]+[_WordpressPosts count]);
+        for (int i=0; i<totalData;i++ ){
+            //facebook date
+            NSDate *fb_date;
+            if (fb_count < [_FacebookPosts count]) {
+                NSDictionary *fb_obj = [_FacebookPosts objectAtIndex:fb_count];
+                if (![fb_obj valueForKeyPath:@"message"]) {
                     fb_count++;
+                    totalData--;
+                    continue;
                 }
+                NSString *fb_unformDate =[fb_obj valueForKeyPath:@"created_time"];
+                NSDateFormatter *fb_dateFormatter = [[NSDateFormatter alloc] init];
+                [fb_dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
+                fb_date = [fb_dateFormatter dateFromString:fb_unformDate];
+            }
+            
+            //twitter date
+            NSDate *twi_date;
+            if (twi_count < [_TwitterStatuses count]) {
+                NSData *twi_obj = [_TwitterStatuses objectAtIndex:twi_count];
+                //remove if possibly retweeting self occured (may be unnecessary in current twitter API)
+                if ([twi_obj valueForKeyPath:@"retweeted_status"] &&
+                    ![[twi_obj valueForKey:@"reteeted_status.user.screen_name"] isEqualToString:twitter_username]) {
+                    twi_count++;
+                    totalData--;
+                    continue;
+                }
+                NSString *twi_unformDate = [twi_obj valueForKeyPath:@"created_at"];
+                NSDateFormatter *twi_dateFormatter = [[NSDateFormatter alloc] init];
+                [twi_dateFormatter setDateFormat:@"E MMM d HH:mm:ss +0000 yyyy"];
+                twi_date = [twi_dateFormatter dateFromString:twi_unformDate];
+                NSTimeInterval secondsInEightHours = -8 * 60 * 60;
+                twi_date = [twi_date dateByAddingTimeInterval:secondsInEightHours];
+            }
+            
+            //wordpress date
+            NSDate *wp_date;
+            if (wp_count < [_WordpressPosts count]) {
+                NSData *wp_obj = [_WordpressPosts objectAtIndex:wp_count];
+                
+                NSString *wp_unformDate = [wp_obj valueForKeyPath:@"post_date"];
+                NSDateFormatter *wp_dateFormatter = [[NSDateFormatter alloc] init];
+                [wp_dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+                wp_date = [wp_dateFormatter dateFromString:wp_unformDate];
+            }
+            
+            NSDate *mostRecentNews = nil;
+            NSString *mostRecentType = @"";
+            NSInteger mostRecentIndex = -1;
+            if (twi_date && fb_date) {
+                //find most recent date
+                switch ([fb_date compare: twi_date]) {
+                    case NSOrderedAscending:{
+                        mostRecentNews = twi_date;
+                        mostRecentType = @"Twitter";
+                        mostRecentIndex = twi_count;
+                        break;
+                    }
+                    case NSOrderedSame: {
+                        mostRecentNews = fb_date;
+                        mostRecentType = @"Facebook";
+                        mostRecentIndex = fb_count;
+                        break;
+                    }
+                    case NSOrderedDescending: {
+                        mostRecentNews = fb_date;
+                        mostRecentType = @"Facebook";
+                        mostRecentIndex = fb_count;
+                        break;
+                    }
+                }
+            } else {
+                mostRecentNews = (fb_date) ? fb_date : twi_date;
+                mostRecentType = (fb_date) ? @"Facebook" : @"Twitter";
+                mostRecentIndex = (fb_date) ? fb_count : twi_count;
+            }
+            if (mostRecentNews && wp_date) {
+                //find most recent date
+                switch ([mostRecentNews compare: wp_date]) {
+                    case NSOrderedAscending:{
+                        mostRecentNews = wp_date;
+                        mostRecentType = @"Wordpress";
+                        mostRecentIndex = wp_count;
+                        break;
+                    }
+                    case NSOrderedSame: {
+                        break;
+                    }
+                    case NSOrderedDescending: {
+                        break;
+                    }
+                }
+            } else {
+                mostRecentNews = (wp_date) ? wp_date : mostRecentNews;
+                mostRecentType = (wp_date) ? @"Wordpress" : mostRecentType;
+                mostRecentIndex = (wp_date) ? wp_count : mostRecentIndex;
+            }
+            if ([mostRecentType isEqualToString:@"Twitter"]) {
+                [_allData addObject:[_TwitterStatuses objectAtIndex:mostRecentIndex]];
+                twi_count++;
+            } else if ([mostRecentType isEqualToString:@"Facebook"]){
+                [_allData addObject:[_FacebookPosts objectAtIndex:mostRecentIndex]];
+                fb_count++;
+            } else if ([mostRecentType isEqualToString:@"Wordpress"]){
+                [_allData addObject:[_WordpressPosts objectAtIndex:mostRecentIndex]];
+                wp_count++;
             }
         }
         NSLog(@"Data Sorted (total entries: %d)",[_allData count]);
@@ -228,8 +282,13 @@
      if (facebookActive) {
          [self makeFacebookFeed:type];
      }else{
-         twitterReady = NO;
+         twitterReady = YES;
      }
+    if (wordpressActive) {
+        [self makeWordpressFeed:type];
+    } else{
+        wordpressReady = YES;
+    }
     if ([type isEqualToString:@"new"]) {
         updateNewer = YES;
     } else if ([type isEqualToString:@"old"]) {
@@ -298,6 +357,36 @@
         NSLog(@"-- error: no Token Received!");
     }
 }
+
+/*
+ *
+ *      Twitter Feed
+ *
+ */
+-(void) makeWordpressFeed: (NSString*) type {
+    NSData *dataURL;
+    if ([type isEqualToString:@"new"]) {
+        NSString *excludes = @"";
+        for (NSDictionary *post in _WordpressPosts) {
+            excludes = [NSString stringWithFormat:@"%@%@,",excludes,[post objectForKey:@"post_id"]];
+        }
+        _WordpressPosts = @[];
+        wordpress_urlToFeed = [NSString stringWithFormat:@"%@%@",wordpress_urlToFeed,excludes];
+        dataURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:wordpress_urlToFeed]];
+    } else {
+        wordpress_urlToFeed = [NSString stringWithFormat:@"%@&excludingPosts=",wordpress_urlToFeed];
+        dataURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:wordpress_urlToFeed]];
+    }
+    NSString *strResult = [[NSString alloc] initWithData:dataURL encoding:NSUTF8StringEncoding];
+    if ( ![strResult length] == 0 ) {
+        NSData *theData = [strResult dataUsingEncoding:NSUTF8StringEncoding];
+        NSError *e;
+        _WordpressPosts = [NSJSONSerialization JSONObjectWithData:theData options:kNilOptions error:&e];
+        NSLog(@"Wordpress Feed Success!");
+    }
+    wordpressReady = YES;
+}
+
 
 /*
  *
@@ -414,6 +503,18 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+-(NSString*) getFeedText: (NSDictionary*) entry {
+    NSString* text = @"";
+    if ([entry valueForKeyPath:@"message"]) {
+        text = [entry valueForKeyPath:@"message"];
+    } else if ( [entry valueForKeyPath:@"text"] ) {
+        text = [entry valueForKeyPath:@"text"];
+    } else if ( [entry valueForKeyPath:@"post_content"] ) {
+        text = [entry valueForKeyPath:@"post_content"];
+    }
+    return text;
+}
+
 /*
  *
  *      see Cell Height
@@ -423,11 +524,7 @@
     float totalHeight = 43; //start of text
     NSString *text;
     NSDictionary *entry = [_allData objectAtIndex:dataIndex];
-    if ([entry valueForKeyPath:@"message"]) {
-        text = [entry valueForKeyPath:@"message"];
-    } else if ( [entry valueForKeyPath:@"text"] ) {
-        text = [entry valueForKeyPath:@"text"];
-    }
+    text = [self getFeedText:entry];
     UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(77.0f, 43.0f, 180, 180.0f)];
     textLabel.font = [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:14.0];
     textLabel.textAlignment = NSTextAlignmentLeft;
@@ -459,6 +556,21 @@
 
 /*
  *
+ *      making Wordpress Cell
+ *
+ */
+-(UITableViewCell *) addWordpressCell: (UITableViewCell *) theCell withIndex: (NSInteger) dataIndex {
+    NSDictionary *wpPost = [_allData objectAtIndex:dataIndex];
+    NSString *title = [NSString stringWithFormat:@"%@",[wpPost valueForKeyPath:@"post_title"]];
+    NSString *dateFormatter = @"yyyy-MM-dd HH:mm:ss";
+    NSString *date = [wpPost valueForKeyPath:@"post_date"];
+    NSString *text = [wpPost valueForKeyPath:@"post_content"];
+    
+    return [self makeCell:theCell title:title date:date dateFormat:dateFormatter text:text errCheck:@"wordpress"];
+}
+
+/*
+ *
  *      making Twitter Cell
  *
  */
@@ -466,7 +578,14 @@
     NSDictionary *status = [_allData objectAtIndex:dataIndex];
     NSString *title = [NSString stringWithFormat:@"@%@:",[status valueForKeyPath:@"user.screen_name"]];
     NSString *dateFormatter = @"E MMM d HH:mm:ss +0000 yyyy";
-    NSString *date = [status valueForKeyPath:@"created_at"];
+    NSString *twit_date = [status valueForKeyPath:@"created_at"];
+    
+    NSDateFormatter *theFormatter = [[NSDateFormatter alloc] init];
+    [theFormatter setDateFormat:dateFormatter];
+    NSDate *thisDate = [theFormatter dateFromString:twit_date];
+    NSTimeInterval secondsInEightHours = -8 * 60 * 60;
+    thisDate = [thisDate dateByAddingTimeInterval:secondsInEightHours];
+    NSString *date = [theFormatter stringFromDate:thisDate];
     NSString *text = [status valueForKeyPath:@"text"];
 
     return [self makeCell:theCell title:title date:date dateFormat:dateFormatter text:text errCheck:@"twitter"];

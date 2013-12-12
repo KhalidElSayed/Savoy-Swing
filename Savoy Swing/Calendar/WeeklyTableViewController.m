@@ -1,15 +1,16 @@
 //
-//  CalendarTableViewController.m
+//  WeeklyTableViewController.m
 //  Savoy Swing
 //
 //  Created by Steven Stevenson on 11/18/13.
 //  Copyright (c) 2013 Steven Stevenson. All rights reserved.
 //
 
-#import "CalendarTableViewController.h"
-#import  "BannerEvents.h"
+#import "WeeklyTableViewController.h"
+#import "BannerEvents.h"
+#import "CalendarTableViewCell.h"
 
-@implementation CalendarTableViewController
+@implementation WeeklyTableViewController
 
 -(void) viewDidLoad {
     
@@ -165,7 +166,7 @@
     }
     
     //highlightView objects
-    CalendarCellView *highlightView = [[CalendarCellView alloc] initWithFrame:CGRectMake(140.0f, 80.0f, 181.0f, 70.0f)];
+    CalendarCellView *highlightView = [[CalendarCellView alloc] initWithFrame:CGRectMake(5.0f, 80.0f, cell.frame.size.width, 70.0f)];
     highlightView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.9f];
     
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(7.0f, 18.0f, 153.0f, 22.0f)];
@@ -212,6 +213,10 @@
     return cell;
 }
 
+-(void) tableView:(UITableView *)tableView didUnhighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+}
+
 -(void) removePreviousCellInfoFromView: (UITableViewCell*) cell {
     for(UIView *view in cell.contentView.subviews){
         if ([view isKindOfClass:[UIView class]]) {
@@ -224,11 +229,14 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventCell" forIndexPath:indexPath];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     [self removePreviousCellInfoFromView:cell];
+    cell.layer.cornerRadius = 5;
+    cell.layer.masksToBounds = YES;
+    cell.backgroundColor = [UIColor whiteColor];
     //data for banner
     NSArray *eventsOnDay = [allBannerEvents objectForKey:[allDays objectAtIndex:indexPath.section]];
     NSDictionary *thisEvent = [eventsOnDay objectAtIndex:indexPath.row];
     cell = [self prepareCell:thisEvent theCell:cell];
-    
+    cell = (CalendarTableViewCell*)cell;
     return cell;
 }
 

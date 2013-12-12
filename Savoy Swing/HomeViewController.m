@@ -127,6 +127,7 @@
         
         BOOL isFacebook = NO;
         BOOL isTwitter = NO;
+        BOOL isWordpress = NO;
         NSString *name;
         NSString *date;
         NSString *message;
@@ -136,6 +137,8 @@
             isTwitter = YES;
         } else if ( [[theAppDel.theFeed.allData objectAtIndex:indexPath.row] objectForKey:@"created_time"]) {
             isFacebook = YES;
+        } else if ( [[theAppDel.theFeed.allData objectAtIndex:indexPath.row] objectForKey:@"post_date"]) {
+            isWordpress = YES;
         }
         //NSLog(@"%@", [theAppDel.theFeed.allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1]);
         if (isFacebook) {
@@ -174,10 +177,12 @@
             name = [NSString stringWithFormat:@"@%@:",[status valueForKeyPath:@"user.screen_name"]];
             
             NSString *twitterDate =[status valueForKeyPath:@"created_at"];
-            
+        
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"E MMM d HH:mm:ss +0000 yyyy"];
             NSDate *thisDate = [dateFormatter dateFromString:twitterDate];
+            NSTimeInterval secondsInEightHours = -8 * 60 * 60;
+            thisDate = [thisDate dateByAddingTimeInterval:secondsInEightHours];
             [dateFormatter setDateFormat:@"E MMM, d yyyy hh:mm"];
             NSString *thisDateText = [dateFormatter stringFromDate:thisDate];
             date = thisDateText;
@@ -196,6 +201,22 @@
             } else {
                 image_url = [status valueForKeyPath:@"user.profile_image_url"];
             }
+        } else if (isWordpress) {
+            self.detailView.post_type = @"Wordpress";
+            NSDictionary *post = [theAppDel.theFeed.allData objectAtIndex:indexPath.row];
+            name = [NSString stringWithFormat:@"%@",[post valueForKeyPath:@"post_title"]];
+            
+            NSString *postDate =[post valueForKeyPath:@"post_date"];
+            
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+            NSDate *thisDate = [dateFormatter dateFromString:postDate];
+            [dateFormatter setDateFormat:@"E MMM, d yyyy hh:mm"];
+            NSString *thisDateText = [dateFormatter stringFromDate:thisDate];
+            date = thisDateText;
+            
+            message =[post valueForKeyPath:@"post_content"];
+            image_url = @"https://www.savoyswing.org/wp-content/uploads/2011/10/300683_10150309277453001_136441543000_8193471_1958483267_n-150x150.jpg";
         }
         self.detailView.image_url = image_url;
         self.detailView.post_title = name;
@@ -229,6 +250,8 @@
             cell = [theAppDel.theFeed addTwitterCell:cell withIndex:0];
         } else if ([[theAppDel.theFeed.allData objectAtIndex:0] objectForKey:@"created_time"]) {
             cell = [theAppDel.theFeed addFacebookCell:cell withIndex:0];
+        } else if ([[theAppDel.theFeed.allData objectAtIndex:0] objectForKey:@"post_date"]) {
+            cell = [theAppDel.theFeed addWordpressCell:cell withIndex:0];
         }
         UILabel *title = (UILabel*)[cell viewWithTag:1];
         title.frame = CGRectMake(20.0f, 8.0f, 219.0f, 22.0f);
