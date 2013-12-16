@@ -105,7 +105,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Home" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7mW-WB-7N5">
-                                            <rect key="frame" x="60" y="1" width="181" height="30"/>
+                                            <rect key="frame" x="40" y="1" width="181" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="181" id="4pc-my-on1"/>
@@ -117,7 +117,7 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="7mW-WB-7N5" firstAttribute="leading" secondItem="YVJ-CD-yBG" secondAttribute="leading" constant="60" id="JBy-9M-Ect"/>
+                                        <constraint firstItem="7mW-WB-7N5" firstAttribute="leading" secondItem="YVJ-CD-yBG" secondAttribute="leading" constant="40" id="JBy-9M-Ect"/>
                                         <constraint firstItem="7mW-WB-7N5" firstAttribute="top" relation="greaterThanOrEqual" secondItem="YVJ-CD-yBG" secondAttribute="top" constant="1" id="OzI-wb-Yig"/>
                                         <constraint firstItem="7mW-WB-7N5" firstAttribute="top" secondItem="YVJ-CD-yBG" secondAttribute="top" constant="1" id="gK0-OU-fql"/>
                                     </constraints>
@@ -135,7 +135,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="News" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ufN-CP-Y5V">
-                                            <rect key="frame" x="60" y="1" width="181" height="30"/>
+                                            <rect key="frame" x="40" y="1" width="181" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="181" id="0MH-ih-Lla"/>
@@ -147,7 +147,7 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="ufN-CP-Y5V" firstAttribute="leading" secondItem="qAi-Gy-rsf" secondAttribute="leading" constant="60" id="bBx-mj-aGp"/>
+                                        <constraint firstItem="ufN-CP-Y5V" firstAttribute="leading" secondItem="qAi-Gy-rsf" secondAttribute="leading" constant="40" id="bBx-mj-aGp"/>
                                         <constraint firstItem="ufN-CP-Y5V" firstAttribute="top" relation="greaterThanOrEqual" secondItem="qAi-Gy-rsf" secondAttribute="top" constant="1" id="iAa-b2-aA5"/>
                                         <constraint firstItem="ufN-CP-Y5V" firstAttribute="top" secondItem="qAi-Gy-rsf" secondAttribute="top" constant="1" id="qIQ-6f-0ae"/>
                                     </constraints>
@@ -165,7 +165,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About SSC" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Nf-bX-X9c">
-                                            <rect key="frame" x="60" y="1" width="181" height="30"/>
+                                            <rect key="frame" x="40" y="1" width="181" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="181" id="NYh-wr-grN"/>
@@ -177,8 +177,7 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="8Nf-bX-X9c" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="pOI-gI-fVt" secondAttribute="leading" constant="60" id="2hv-eF-2SN"/>
-                                        <constraint firstItem="8Nf-bX-X9c" firstAttribute="leading" secondItem="pOI-gI-fVt" secondAttribute="leading" constant="60" id="2xO-vW-nXc"/>
+                                        <constraint firstItem="8Nf-bX-X9c" firstAttribute="leading" secondItem="pOI-gI-fVt" secondAttribute="leading" constant="40" id="2xO-vW-nXc"/>
                                         <constraint firstItem="8Nf-bX-X9c" firstAttribute="top" secondItem="pOI-gI-fVt" secondAttribute="top" constant="1" id="pyc-AX-n7U"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -194,8 +193,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="31"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weekly Calendar" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h3t-PX-1SM">
-                                            <rect key="frame" x="60" y="1" width="181" height="30"/>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Calendar" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h3t-PX-1SM">
+                                            <rect key="frame" x="40" y="1" width="181" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="bvN-9K-Ili"/>
@@ -208,13 +207,12 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="h3t-PX-1SM" firstAttribute="top" secondItem="SVM-QM-bO4" secondAttribute="top" constant="1" id="6QX-Kw-ZYQ"/>
-                                        <constraint firstItem="h3t-PX-1SM" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="SVM-QM-bO4" secondAttribute="leading" constant="60" id="Yvc-cj-k03"/>
-                                        <constraint firstItem="h3t-PX-1SM" firstAttribute="leading" secondItem="SVM-QM-bO4" secondAttribute="leading" constant="60" id="yND-Ed-Yc6"/>
+                                        <constraint firstItem="h3t-PX-1SM" firstAttribute="leading" secondItem="SVM-QM-bO4" secondAttribute="leading" constant="40" id="yND-Ed-Yc6"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="mfZ-rk-P8m" kind="custom" customClass="SWRevealViewControllerSegue" id="R4J-cF-BDv"/>
+                                    <segue destination="mfZ-rk-P8m" kind="custom" identifier="showCalendar" customClass="SWRevealViewControllerSegue" id="R4J-cF-BDv"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="special" rowHeight="32" id="mbb-h9-Xyv">
@@ -224,8 +222,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="31"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Special Events" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dd1-v6-Ebn">
-                                            <rect key="frame" x="60" y="1" width="181" height="30"/>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weekend/Special Events" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dd1-v6-Ebn">
+                                            <rect key="frame" x="40" y="1" width="200" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="nXU-Dr-OsF"/>
@@ -237,9 +235,8 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="dd1-v6-Ebn" firstAttribute="leading" secondItem="MTn-A2-rFi" secondAttribute="leading" constant="60" id="2uA-Sz-o70"/>
+                                        <constraint firstItem="dd1-v6-Ebn" firstAttribute="leading" secondItem="MTn-A2-rFi" secondAttribute="leading" constant="40" id="2uA-Sz-o70"/>
                                         <constraint firstItem="dd1-v6-Ebn" firstAttribute="top" secondItem="MTn-A2-rFi" secondAttribute="top" constant="1" id="PJR-hZ-iOs"/>
-                                        <constraint firstItem="dd1-v6-Ebn" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="MTn-A2-rFi" secondAttribute="leading" constant="60" id="vFM-Uq-xKu"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -255,7 +252,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Classes" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UkE-SV-ei9">
-                                            <rect key="frame" x="60" y="1" width="181" height="30"/>
+                                            <rect key="frame" x="40" y="1" width="181" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="181" id="NWK-f1-AFW"/>
@@ -267,9 +264,8 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="UkE-SV-ei9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Wyn-IV-O8v" secondAttribute="leading" constant="60" id="Kkb-Nb-1Wo"/>
                                         <constraint firstItem="UkE-SV-ei9" firstAttribute="top" secondItem="Wyn-IV-O8v" secondAttribute="top" constant="1" id="W67-6V-jF1"/>
-                                        <constraint firstItem="UkE-SV-ei9" firstAttribute="leading" secondItem="Wyn-IV-O8v" secondAttribute="leading" constant="60" id="adK-YD-sjO"/>
+                                        <constraint firstItem="UkE-SV-ei9" firstAttribute="leading" secondItem="Wyn-IV-O8v" secondAttribute="leading" constant="40" id="adK-YD-sjO"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -285,7 +281,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get Involved" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qGu-r7-gOx">
-                                            <rect key="frame" x="60" y="1" width="181" height="30"/>
+                                            <rect key="frame" x="40" y="1" width="181" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="181" id="JXh-2J-QhR"/>
@@ -297,8 +293,7 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="qGu-r7-gOx" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="JS9-ax-HXk" secondAttribute="leading" constant="60" id="Kg2-es-bvj"/>
-                                        <constraint firstItem="qGu-r7-gOx" firstAttribute="leading" secondItem="JS9-ax-HXk" secondAttribute="leading" constant="60" id="jie-9y-g88"/>
+                                        <constraint firstItem="qGu-r7-gOx" firstAttribute="leading" secondItem="JS9-ax-HXk" secondAttribute="leading" constant="40" id="jie-9y-g88"/>
                                         <constraint firstItem="qGu-r7-gOx" firstAttribute="top" secondItem="JS9-ax-HXk" secondAttribute="top" constant="1" id="tkJ-tm-U20"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -1426,10 +1421,10 @@
             </objects>
             <point key="canvasLocation" x="1503" y="-1232"/>
         </scene>
-        <!--Weekly Table View Controller - Weekly Calendar-->
+        <!--Calendar Table View Controller - Weekly Calendar-->
         <scene sceneID="Eh8-qC-gKb">
             <objects>
-                <viewController title="Weekly Calendar" id="mfZ-rk-P8m" customClass="WeeklyTableViewController" sceneMemberID="viewController">
+                <viewController title="Weekly Calendar" id="mfZ-rk-P8m" customClass="CalendarTableViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="6z8-sX-szP"/>
                         <viewControllerLayoutGuide type="bottom" id="PTB-ba-kLQ"/>
@@ -1443,21 +1438,18 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="xaT-9j-jxu">
-                                <rect key="frame" x="10" y="63" width="300" height="505"/>
+                                <rect key="frame" x="0.0" y="30" width="320" height="538"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="300" id="8vg-Kk-08b"/>
-                                </constraints>
                                 <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="eventCell" id="iKf-Z7-9Fj">
-                                        <rect key="frame" x="0.0" y="55" width="300" height="44"/>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="eventCell" id="iKf-Z7-9Fj" customClass="CalendarTableViewCell">
+                                        <rect key="frame" x="0.0" y="55" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iKf-Z7-9Fj" id="4y0-4P-1rR">
-                                            <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1468,10 +1460,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="xaT-9j-jxu" firstAttribute="leading" secondItem="yd9-nW-jTf" secondAttribute="leading" id="289-5T-YjI"/>
                             <constraint firstItem="PTB-ba-kLQ" firstAttribute="top" secondItem="xaT-9j-jxu" secondAttribute="bottom" id="ViX-KD-vhU"/>
-                            <constraint firstItem="xaT-9j-jxu" firstAttribute="top" secondItem="yd9-nW-jTf" secondAttribute="top" constant="63" id="aNW-xc-D4A"/>
-                            <constraint firstItem="xaT-9j-jxu" firstAttribute="leading" secondItem="yd9-nW-jTf" secondAttribute="leading" constant="10" id="rrj-b0-WcP"/>
-                            <constraint firstAttribute="trailing" secondItem="xaT-9j-jxu" secondAttribute="trailing" constant="10" id="yj6-JN-FaB"/>
+                            <constraint firstAttribute="trailing" secondItem="xaT-9j-jxu" secondAttribute="trailing" id="WTE-Xo-O0r"/>
+                            <constraint firstItem="xaT-9j-jxu" firstAttribute="top" secondItem="yd9-nW-jTf" secondAttribute="top" constant="30" id="aNW-xc-D4A"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ULb-d5-fW8"/>
@@ -1498,7 +1490,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="NW5-Me-SoA"/>
         <segue reference="mH0-uZ-oSB"/>
-        <segue reference="0GL-ua-YN6"/>
     </inferredMetricsTieBreakers>
 </document>

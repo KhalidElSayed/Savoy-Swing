@@ -30,26 +30,67 @@
 }
 
 -(NSArray*) getWeeklyBanners {
-    NSDictionary *weekdays = @{@"Monday"   :@0,
-                               @"Tuesday"  :@1,
-                               @"Wednesday":@2,
-                               @"Thursday" :@3,
-                               @"Friday"   :@4,
-                               @"Saturday" :@5,
-                               @"Sunday"   :@6};
-    NSArray *sortedArray = [[[_allEvents objectAtIndex:0] copy] sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
-        NSNumber *first = (NSNumber*)[weekdays objectForKey:[(NSDictionary*)a objectForKey:@"weekday"]];
-        NSNumber *second = (NSNumber*)[weekdays objectForKey:[(NSDictionary*)b objectForKey:@"weekday"]];
-        return [first compare: second];
-    }];
-    NSArray *tempArray = @[sortedArray,[[_allEvents objectAtIndex:1] copy]];
-    _allEvents = nil;
-    _allEvents = tempArray;
+    /*
+    if ([[_allEvents objectAtIndex:0] count]>1){
+        NSDictionary *weekdays = @{@"Monday"   :@0,
+                                   @"Tuesday"  :@1,
+                                   @"Wednesday":@2,
+                                   @"Thursday" :@3,
+                                   @"Friday"   :@4,
+                                   @"Saturday" :@5,
+                                   @"Sunday"   :@6};
+        NSArray *sortedArray = [[[_allEvents objectAtIndex:0] copy] sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+            NSNumber *first = (NSNumber*)[weekdays objectForKey:[(NSArray*)[(NSDictionary*)a objectForKey:@"weekdays"] objectAtIndex:0]];
+            NSNumber *second = (NSNumber*)[weekdays objectForKey:[(NSArray*)[(NSDictionary*)a objectForKey:@"weekdays"] objectAtIndex:0]];
+            return [first compare: second];
+        }];
+        NSArray *tempArray = @[sortedArray,
+                               [[_allEvents objectAtIndex:1] copy],
+                               [[_allEvents objectAtIndex:2] copy],
+                               [[_allEvents objectAtIndex:3] copy]];
+        _allEvents = nil;
+        _allEvents = tempArray;
+    }
+    */
     return [[_allEvents objectAtIndex:0] copy];
 }
 
--(NSArray*) getSpecialBanners {
+
+-(NSArray*) getOtherFrequentBanners {
+    if ([[_allEvents objectAtIndex:1] count]>1){
+        NSDictionary *weekdays = @{@"Monday"   :@0,
+                                   @"Tuesday"  :@1,
+                                   @"Wednesday":@2,
+                                   @"Thursday" :@3,
+                                   @"Friday"   :@4,
+                                   @"Saturday" :@5,
+                                   @"Sunday"   :@6};
+        NSArray *sortedArray = [[[_allEvents objectAtIndex:1] copy] sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+            NSString *date_string_a = [(NSDictionary*)a objectForKey:@"date"];
+            NSArray *dateData_a = [date_string_a componentsSeparatedByString:@" | "];
+            NSNumber *first = (NSNumber*)[weekdays objectForKey:[dateData_a objectAtIndex:0]];
+            NSString *date_string_b = [(NSDictionary*)b objectForKey:@"date"];
+            NSArray *dateData_b = [date_string_b componentsSeparatedByString:@" | "];
+            NSNumber *second = (NSNumber*)[weekdays objectForKey:[dateData_b objectAtIndex:0]];
+            return [first compare: second];
+        }];
+        
+        NSArray *tempArray = @[[[_allEvents objectAtIndex:0] copy],
+                               sortedArray,
+                               [[_allEvents objectAtIndex:2] copy],
+                               [[_allEvents objectAtIndex:3] copy]];
+        _allEvents = nil;
+        _allEvents = tempArray;
+    }
     return [[_allEvents objectAtIndex:1] copy];
+}
+
+-(NSArray*) getSpecificDateBanners {
+    return [[_allEvents objectAtIndex:2] copy];
+}
+
+-(NSArray*) getSpecialBanners {
+    return [[_allEvents objectAtIndex:3] copy];
 }
 
 -(NSArray*) sortWeeklyBanners {

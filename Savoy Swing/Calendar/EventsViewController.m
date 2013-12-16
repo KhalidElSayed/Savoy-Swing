@@ -65,7 +65,7 @@
 
 -(void) startLoading {
     theImages = [[NSMutableDictionary alloc] init];
-    _allEvents = [theAppDel.theBanners getSpecialBanners];
+    _allEvents = [theAppDel.theBanners getSpecificDateBanners];
     [self.theTableView reloadData];
     loadingLabel.text = @"Configuring View";
     self.navigationController.navigationBarHidden = NO;

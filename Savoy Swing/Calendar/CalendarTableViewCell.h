@@ -1,5 +1,5 @@
 //
-//  WeeklyTableViewCell.h
+//  CalendarTableViewCell.h
 //  Savoy Swing
 //
 //  Created by Steven Stevenson on 12/11/13.

@@ -15,6 +15,8 @@
 
 -(void) generateEvents;
 -(NSArray*) getWeeklyBanners;
+-(NSArray*) getOtherFrequentBanners;
+-(NSArray*) getSpecificDateBanners;
 -(NSArray*) getSpecialBanners;
 
 @end

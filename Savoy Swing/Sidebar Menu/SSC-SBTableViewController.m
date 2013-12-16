@@ -41,7 +41,7 @@
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.3f alpha:0.5f];
     self.tableView.separatorColor = [UIColor colorWithWhite:0.15f alpha:0.4f];
     
-    _menuItems = @[@"menu_title",@"home",@"news",@"about",@"special",@"calendar",@"classes",@"get-involved",@"blank",@"account",@"membership",@"logout"];
+    _menuItems = @[@"menu_title",@"home",@"news",@"about",@"calendar",@"special",@"get-involved",@"blank",@"account",@"membership",@"logout"];
     
     //NSLog(@"%@",_menuItems);
 }
@@ -91,16 +91,18 @@
                     [destViewController.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
                 }
                 //setup header title
-                UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-                label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
-                label.textAlignment = NSTextAlignmentCenter;
-                // ^-Use UITextAlignmentCenter for older SDKs.
-                label.textColor = [UIColor whiteColor];
-                
-                NSString *theTitle = destViewController.title;
-                label.text = theTitle;
-                [label sizeToFit];
-                destViewController.navigationItem.titleView = label;
+                if (![[segue identifier] isEqualToString:@"showCalendar"]) {
+                    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+                    label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
+                    label.textAlignment = NSTextAlignmentCenter;
+                    // ^-Use UITextAlignmentCenter for older SDKs.
+                    label.textColor = [UIColor whiteColor];
+                    
+                    NSString *theTitle = destViewController.title;
+                    label.text = theTitle;
+                    [label sizeToFit];
+                    destViewController.navigationItem.titleView = label;
+                }
                 
                 destViewController.navigationItem.leftBarButtonItem.tintColor = [UIColor whiteColor];
                 
