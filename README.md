@@ -17,5 +17,10 @@ Features:
     - facebook
     - wordpress (self hosted, and customized)
     
+  - Banner Events:
+    - Banner Image driven Event with date to display information in calendar
+    - Use of Horizontal UITableView to display scrollable dates in a cell
+
 Updates:
   - 11/24/13 Pull to refresh branch ready for debug
+  - 12/15/13 Updated Banner Events Wordpress Plugin to conform to optimized data structure
