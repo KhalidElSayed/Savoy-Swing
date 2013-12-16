@@ -26,14 +26,7 @@
     [calendar_switch addTarget:self action:@selector(changeCalendarView) forControlEvents:UIControlEventValueChanged];
     self.navigationItem.titleView = calendar_switch;
     
-    NSCalendar *cal = [NSCalendar currentCalendar];
-    NSDateComponents *components = [cal components:( NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit ) fromDate:[[NSDate alloc] init]];
-    
-    
-    [components setHour:-[components hour]];
-    [components setMinute:-[components minute]];
-    [components setSecond:-[components second]];
-    _currentDate = [cal dateByAddingComponents:components toDate:[[NSDate alloc] init] options:0];
+    _currentDate = [[NSDate alloc] init];
 
 }
 
@@ -81,19 +74,17 @@
     [self.theTableView reloadData];
 }
 
--(void) startLoading {
-    
-    basicCellHeight = 150.0f;
-    theImages = [[NSMutableDictionary alloc] init];
-    allDays = [[NSMutableArray alloc] init];
-    
-    //get regular weekly dances
+-(void) addWeeklyDances {
     allWeeklyBannerEvents = [[NSMutableDictionary alloc] init];
     NSArray *allWeeklyEvents = [theAppDel.theBanners getWeeklyBanners];
     for (NSInteger i=0; i<[allWeeklyEvents count];i++ ){
         NSArray *daysOfEvent = [[allWeeklyEvents objectAtIndex:i] objectForKey:@"weekdays"];
         for (NSInteger j=0;j<[daysOfEvent count];j++ ) {
             NSString *dayNameWeekly = [daysOfEvent objectAtIndex:j];
+            if ([dayNameWeekly rangeOfString:@" : "].location != NSNotFound) {
+                NSArray *dayHour =[dayNameWeekly componentsSeparatedByString:@" : "];
+                dayNameWeekly = dayHour[0];
+            }
             if (![allDays containsObject:dayNameWeekly] ) {
                 NSMutableArray *eventsOnDay = [[NSMutableArray alloc] init];
                 [eventsOnDay addObject:[allWeeklyEvents objectAtIndex:i]];
@@ -105,6 +96,7 @@
             }
         }
     }
+
     NSDictionary *weekdays = @{@"Monday"   :@0,
                                @"Tuesday"  :@1,
                                @"Wednesday":@2,
@@ -115,9 +107,20 @@
     NSArray *sortedArray = [[allDays copy] sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
         NSNumber *first = (NSNumber*)[weekdays objectForKey:(NSString*)a];
         NSNumber *second = (NSNumber*)[weekdays objectForKey:(NSString*)b];
+
         return [first compare: second];
     }];
     allDays = [sortedArray mutableCopy];
+}
+
+-(void) startLoading {
+    basicCellHeight = 125.0f;
+    theImages = [[NSMutableDictionary alloc] init];
+    allDays = [[NSMutableArray alloc] init];
+    
+    
+    //get regular weekly dances
+    [self addWeeklyDances];
     
     //get other frequency dances
     NSArray *otherFrequentEvents = [theAppDel.theBanners getOtherFrequentBanners];
@@ -137,6 +140,7 @@
     }
     
     //get specific dates
+    _specificDateEvents = [[NSMutableDictionary alloc] init];
     NSArray *specificEvents = [theAppDel.theBanners getSpecificDateBanners];
     for (NSInteger i=0;i<[specificEvents count];i++){
         NSString *date_string = [[specificEvents objectAtIndex:i] objectForKey:@"date"];
@@ -146,14 +150,10 @@
         if ([beginDate rangeOfString:@"specific:"].location != NSNotFound) {
             beginDate = [beginDate stringByReplacingOccurrencesOfString:@"specific:"
                                                  withString:@""];
-        } else {
-            beginDate = nil;
         }
         if ([endDate rangeOfString:@"specific:"].location != NSNotFound) {
             endDate = [endDate stringByReplacingOccurrencesOfString:@"specific:"
                                                              withString:@""];
-        } else {
-            endDate = nil;
         }
         
         
@@ -164,16 +164,17 @@
         NSDate *end;
         if (beginDate) {
             begin = [dateFormat dateFromString:beginDate];
+        } else {
+            begin = [[NSDate alloc] init];
         }
         if (endDate) {
             end = [dateFormat dateFromString:endDate];
+        } else {
+            end = begin;
         }
-        NSLog(@"%@ - %@",begin,end);
-        
         
         NSDate *currDate = begin;
         [dateFormat setDateFormat:@"MM/dd/yyyy"];
-        _specificDateEvents = [[NSMutableDictionary alloc] init];
         if ( ![_specificDateEvents objectForKey:currDate] ) {
             NSMutableArray *eventsOnDay = [[NSMutableArray alloc] init];
             [eventsOnDay addObject:[specificEvents objectAtIndex:i]];
@@ -276,9 +277,19 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *thisEvent;
     if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Weekly Dances"]) {
         if([self cellIsSelected:[NSString stringWithFormat:@"%d-%d",indexPath.section,indexPath.row]]) {
-            return basicCellHeight * 2.0;
+            NSArray *eventsOnDay = [allWeeklyBannerEvents objectForKey:[allDays objectAtIndex:indexPath.section]];
+            thisEvent = [eventsOnDay objectAtIndex:indexPath.row];
+            UILabel *main_text = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 60.0f, 280.0f, 22.0f)];
+            main_text.font = [UIFont fontWithName:@"HelveticaNeue" size:12.0];
+            main_text.textAlignment = NSTextAlignmentLeft;
+            main_text.textColor = [UIColor blackColor];
+            main_text.numberOfLines = 0;
+            main_text.text = [thisEvent objectForKey:@"post_text"];
+            [main_text sizeToFit];
+            return 150+main_text.frame.size.height;
         }
     } else if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Month Calendar"]) {
         if (indexPath.section == 0 && indexPath.row == 0 ) {
@@ -286,9 +297,30 @@
         }
         if([self cellIsSelected:[NSString stringWithFormat:@"%d-%d",indexPath.section,indexPath.row]]) {
             return basicCellHeight / 2.0;
-        } else {
-            return basicCellHeight * 2.0;
         }
+
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"EEEE"];
+        NSString *thisDay = [formatter stringFromDate:self.currentDate];
+        
+        NSArray *eventsOnDay;
+        [formatter setDateFormat:@"MM/dd/yyyy"];
+        NSString *thisDate = [formatter stringFromDate:self.currentDate];
+        if ([self.specificDateEvents objectForKey:thisDate]) {
+            eventsOnDay = [[self.specificDateEvents objectForKey:thisDate]
+                           arrayByAddingObjectsFromArray:[allWeeklyBannerEvents objectForKey:thisDay]];
+        } else {
+            eventsOnDay = [allWeeklyBannerEvents objectForKey:thisDay];
+        }
+        thisEvent = [eventsOnDay objectAtIndex:(indexPath.section-1)];
+        UILabel *main_text = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 60.0f, 280.0f, 22.0f)];
+        main_text.font = [UIFont fontWithName:@"HelveticaNeue" size:12.0];
+        main_text.textAlignment = NSTextAlignmentLeft;
+        main_text.textColor = [UIColor blackColor];
+        main_text.numberOfLines = 0;
+        main_text.text = [thisEvent objectForKey:@"post_text"];
+        [main_text sizeToFit];
+        return 150+main_text.frame.size.height;
     }
     return basicCellHeight;
 }
@@ -347,65 +379,6 @@
     [self.theTableView endUpdates];
 }
 
-- (UITableViewCell *)prepareCell: (NSDictionary*) thisEvent theCell: (UITableViewCell*) cell {
-    //image from banner
-    UIImageView *bannerImageView =[[UIImageView alloc] initWithFrame:CGRectMake(-29.0f, 0.0f, 349.0f, 80.0f)];
-    if (![theImages valueForKey:[thisEvent objectForKey:@"image_url"]]) {
-        NSData *dataFromURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:[thisEvent objectForKey:@"image_url"]]];
-        UIImage *theImage = [UIImage imageWithData: dataFromURL];
-        bannerImageView.image = theImage;
-        [theImages setValue:theImage forKey:[thisEvent objectForKey:@"image_url"]];
-    } else {
-        bannerImageView.image = [theImages valueForKey:[thisEvent objectForKey:@"image_url"]];
-    }
-    
-    //highlightView objects
-    CalendarCellView *highlightView = [[CalendarCellView alloc] initWithFrame:CGRectMake(5.0f, 80.0f, cell.frame.size.width, 70.0f)];
-    highlightView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.9f];
-    
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(7.0f, 18.0f, 153.0f, 22.0f)];
-    title.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:18.0];
-    title.textAlignment = NSTextAlignmentLeft;
-    title.textColor = [UIColor blackColor];
-    title.text = [thisEvent objectForKey:@"post_title"];
-    [title sizeToFit];
-    
-    UILabel *hood = [[UILabel alloc] initWithFrame:CGRectMake(7.0f, 4.0f, 153.0f, 22.0f)];
-    hood.font = [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:13.0];
-    hood.textAlignment = NSTextAlignmentLeft;
-    hood.textColor = [UIColor colorWithRed:235.0/255.0 green:119.0/255.0 blue:24.0/255.0 alpha:1.0];
-    hood.shadowColor = [UIColor lightGrayColor];
-    hood.shadowOffset = CGSizeMake(0.0f, 0.0f);
-    hood.text = @"need_to_update";
-    [hood sizeToFit];
-    
-    UILabel *cats = [[UILabel alloc] initWithFrame:CGRectMake(7.0f, 39.0f, 153.0f, 22.0f)];
-    cats.font = [UIFont fontWithName:@"HelveticaNeue" size:12.0];
-    cats.textAlignment = NSTextAlignmentLeft;
-    cats.textColor = [UIColor blackColor];
-    cats.text = @"need_to_update";
-    [cats sizeToFit];
-    
-    //add labels to highlightView
-    [highlightView addSubview:title];
-    [highlightView addSubview:hood];
-    [highlightView addSubview:cats];
-    
-    //more Detail Objects
-    UILabel *sub_title = [[UILabel alloc] initWithFrame:CGRectMake(6.0f, 81.0f, 309.0f, 22.0f)];
-    sub_title.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:16.0];
-    sub_title.textAlignment = NSTextAlignmentLeft;
-    sub_title.textColor = [UIColor blackColor];
-    [sub_title sizeToFit];
-    
-    //add all the views
-    [cell.contentView addSubview:bannerImageView];
-    [cell.contentView addSubview:highlightView];
-    [cell.contentView addSubview:sub_title];
-    
-    return cell;
-}
-
 -(void) removePreviousCellInfoFromView: (UITableViewCell*) cell {
     for(UIView *view in cell.contentView.subviews){
         if ([view isKindOfClass:[UIView class]]) {
@@ -424,7 +397,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell;
+    CalendarTableViewCell *cell;
     if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Weekly Dances"]) {
         cell  = [tableView dequeueReusableCellWithIdentifier:@"eventCell" forIndexPath:indexPath];
         [self removePreviousCellInfoFromView:cell];
@@ -435,7 +408,20 @@
         //data for banner
         NSArray *eventsOnDay = [allWeeklyBannerEvents objectForKey:[allDays objectAtIndex:indexPath.section]];
         NSDictionary *thisEvent = [eventsOnDay objectAtIndex:indexPath.row];
-        cell = [self prepareCell:thisEvent theCell:cell];
+        
+        float height = cell.frame.size.width/283.5f*60.0f;
+        UIImageView *bannerImageView =[[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, cell.frame.size.width, height)];
+        if (![theImages valueForKey:[thisEvent objectForKey:@"image_url"]]) {
+            NSData *dataFromURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:[thisEvent objectForKey:@"image_url"]]];
+            UIImage *theImage = [UIImage imageWithData: dataFromURL];
+            bannerImageView.image = theImage;
+            [theImages setValue:theImage forKey:[thisEvent objectForKey:@"image_url"]];
+        } else {
+            bannerImageView.image = [theImages valueForKey:[thisEvent objectForKey:@"image_url"]];
+        }
+        [cell.contentView addSubview:bannerImageView];
+        
+        cell = [cell prepareCell:thisEvent theCell:cell];
     } else if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Month Calendar"]) {
         if (indexPath.section ==0 && indexPath.row == 0 ) {
             if ( !self.horizontalDateCell) {
@@ -469,7 +455,20 @@
                 eventsOnDay = [allWeeklyBannerEvents objectForKey:thisDay];
             }
             NSDictionary *thisEvent = [eventsOnDay objectAtIndex:(indexPath.section-1)];
-            cell = [self prepareCell:thisEvent theCell:cell];
+            
+            float height = cell.frame.size.width/283.5f*60.0f;
+            UIImageView *bannerImageView =[[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, cell.frame.size.width, height)];
+            if (![theImages valueForKey:[thisEvent objectForKey:@"image_url"]]) {
+                NSData *dataFromURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:[thisEvent objectForKey:@"image_url"]]];
+                UIImage *theImage = [UIImage imageWithData: dataFromURL];
+                bannerImageView.image = theImage;
+                [theImages setValue:theImage forKey:[thisEvent objectForKey:@"image_url"]];
+            } else {
+                bannerImageView.image = [theImages valueForKey:[thisEvent objectForKey:@"image_url"]];
+            }
+            [cell.contentView addSubview:bannerImageView];
+            
+            cell = [cell prepareCell:thisEvent theCell:cell];
         }
     }
     return cell;

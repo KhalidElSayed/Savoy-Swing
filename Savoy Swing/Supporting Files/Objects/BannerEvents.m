@@ -14,6 +14,7 @@
     self = [super self];
     if ( self ) {
         _allEvents = [[NSArray alloc] init];
+        _indicesSorted = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -30,34 +31,12 @@
 }
 
 -(NSArray*) getWeeklyBanners {
-    /*
-    if ([[_allEvents objectAtIndex:0] count]>1){
-        NSDictionary *weekdays = @{@"Monday"   :@0,
-                                   @"Tuesday"  :@1,
-                                   @"Wednesday":@2,
-                                   @"Thursday" :@3,
-                                   @"Friday"   :@4,
-                                   @"Saturday" :@5,
-                                   @"Sunday"   :@6};
-        NSArray *sortedArray = [[[_allEvents objectAtIndex:0] copy] sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
-            NSNumber *first = (NSNumber*)[weekdays objectForKey:[(NSArray*)[(NSDictionary*)a objectForKey:@"weekdays"] objectAtIndex:0]];
-            NSNumber *second = (NSNumber*)[weekdays objectForKey:[(NSArray*)[(NSDictionary*)a objectForKey:@"weekdays"] objectAtIndex:0]];
-            return [first compare: second];
-        }];
-        NSArray *tempArray = @[sortedArray,
-                               [[_allEvents objectAtIndex:1] copy],
-                               [[_allEvents objectAtIndex:2] copy],
-                               [[_allEvents objectAtIndex:3] copy]];
-        _allEvents = nil;
-        _allEvents = tempArray;
-    }
-    */
     return [[_allEvents objectAtIndex:0] copy];
 }
 
 
 -(NSArray*) getOtherFrequentBanners {
-    if ([[_allEvents objectAtIndex:1] count]>1){
+    if ([[_allEvents objectAtIndex:1] count]>1 && ![_indicesSorted containsObject:@"1"]){
         NSDictionary *weekdays = @{@"Monday"   :@0,
                                    @"Tuesday"  :@1,
                                    @"Wednesday":@2,
@@ -81,11 +60,55 @@
                                [[_allEvents objectAtIndex:3] copy]];
         _allEvents = nil;
         _allEvents = tempArray;
+        [_indicesSorted addObject:@"1"];
     }
     return [[_allEvents objectAtIndex:1] copy];
 }
 
 -(NSArray*) getSpecificDateBanners {
+    if ([[_allEvents objectAtIndex:2] count]>1 && ![_indicesSorted containsObject:@"2"]){
+        NSArray *sortedArray = [[[_allEvents objectAtIndex:2] copy] sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+            NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+            [dateFormat setDateFormat:@"MM/dd/yyyy"];
+            //first
+            NSString *date_string_a = [(NSDictionary*)a objectForKey:@"date"];
+            NSArray *dateData_a = [date_string_a componentsSeparatedByString:@" | "];
+            NSString *beginDate_a = [dateData_a objectAtIndex:0];
+            if ([beginDate_a rangeOfString:@"specific:"].location != NSNotFound) {
+                beginDate_a = [beginDate_a stringByReplacingOccurrencesOfString:@"specific:"
+                                                                 withString:@""];
+            }
+            NSDate *first;
+            if (beginDate_a) {
+                first = [dateFormat dateFromString:beginDate_a];
+            } else {
+                first = [[NSDate alloc] init];
+            }
+            //second
+            NSString *date_string_b = [(NSDictionary*)b objectForKey:@"date"];
+            NSArray *dateData_b = [date_string_b componentsSeparatedByString:@" | "];
+            NSString *beginDate_b = [dateData_b objectAtIndex:0];
+            if ([beginDate_b rangeOfString:@"specific:"].location != NSNotFound) {
+                beginDate_b = [beginDate_b stringByReplacingOccurrencesOfString:@"specific:"
+                                                                 withString:@""];
+            }
+            NSDate *second;
+            if (beginDate_b) {
+                second = [dateFormat dateFromString:beginDate_b];
+            } else {
+                second = [[NSDate alloc] init];
+            }
+            return [first compare: second];
+        }];
+        NSArray *tempArray = @[[[_allEvents objectAtIndex:0] copy],
+                               [[_allEvents objectAtIndex:1] copy],
+                               sortedArray,
+                               [[_allEvents objectAtIndex:3] copy]];
+        _allEvents = nil;
+        _allEvents = tempArray;
+        [_indicesSorted addObject:@"2"];
+        
+    }
     return [[_allEvents objectAtIndex:2] copy];
 }
 

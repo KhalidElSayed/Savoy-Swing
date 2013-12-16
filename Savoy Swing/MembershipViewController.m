@@ -66,7 +66,11 @@
     if ( toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft ||
         toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
         self.navigationController.navigationBar.hidden = YES;
-
+        //check if reveal occured and remove if so
+        
+        if ([self.revealViewController frontViewPosition] == FrontViewPositionRight) {
+            [self.revealViewController revealToggleAnimated:YES];
+        }
         [self.view addSubview:membershipCardView];
     } else if ( toInterfaceOrientation == UIInterfaceOrientationPortrait ) {
         self.navigationController.navigationBar.hidden = NO;

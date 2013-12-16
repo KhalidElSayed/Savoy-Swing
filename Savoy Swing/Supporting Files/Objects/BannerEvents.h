@@ -11,6 +11,7 @@
 @interface BannerEvents : NSObject
 
 @property (strong, nonatomic) NSArray *allEvents;
+@property (strong, nonatomic) NSMutableArray *indicesSorted;
 @property (strong, nonatomic) NSTimer *processDataRequest;
 
 -(void) generateEvents;

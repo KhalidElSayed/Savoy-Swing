@@ -10,4 +10,6 @@
 
 @interface CalendarTableViewCell : UITableViewCell
 
+- (CalendarTableViewCell *)prepareCell: (NSDictionary*) thisEvent theCell: (CalendarTableViewCell*) cell;
+
 @end
