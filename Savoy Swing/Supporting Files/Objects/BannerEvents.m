@@ -15,6 +15,7 @@
     if ( self ) {
         _allEvents = [[NSArray alloc] init];
         _indicesSorted = [[NSMutableArray alloc] init];
+        _allEventImages = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -27,6 +28,21 @@
         NSData *theData = [strResult dataUsingEncoding:NSUTF8StringEncoding];
         NSError *e;
         _allEvents = [NSJSONSerialization JSONObjectWithData:theData options:kNilOptions error:&e];
+        [self loadImagesToMemory];
+    }
+}
+
+-(void) loadImagesToMemory {
+    for (NSInteger i = 0;i<[_allEvents count];i++ ){
+        for (NSInteger j = 0;j<[[_allEvents objectAtIndex:i] count];j++ ){
+            NSDictionary *thisEvent = [[_allEvents objectAtIndex:i] objectAtIndex:j];
+            if ([thisEvent objectForKey:@"image_url"] && ![[thisEvent objectForKey:@"image_url"] isEqualToString:@""]){
+                NSData *dataFromURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:[thisEvent objectForKey:@"image_url"]]];
+                UIImage *theImage = [UIImage imageWithData: dataFromURL];
+                NSString *thisKey = [thisEvent objectForKey:@"post_id"];
+                [_allEventImages setObject:theImage forKey:thisKey];
+            }
+        }
     }
 }
 
@@ -114,15 +130,6 @@
 
 -(NSArray*) getSpecialBanners {
     return [[_allEvents objectAtIndex:3] copy];
-}
-
--(NSArray*) sortWeeklyBanners {
-    return [[NSArray alloc] init];
-    
-}
-
--(NSArray*) sortSpecialBanners {
-    return [[NSArray alloc] init];
 }
 
 

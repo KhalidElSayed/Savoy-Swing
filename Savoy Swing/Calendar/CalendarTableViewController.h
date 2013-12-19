@@ -19,7 +19,6 @@
     
     NSMutableDictionary *allWeeklyBannerEvents;
     NSMutableArray *allDays;
-    NSMutableDictionary *theImages;
     
     
     //preloading image
@@ -41,6 +40,9 @@
 @property (strong,nonatomic) NSMutableArray *currentDateCells;
 @property (strong,nonatomic) NSDate *currentDate;
 @property (strong,nonatomic) NSMutableDictionary *specificDateEvents;
+
+//load indicator
+@property (strong, nonatomic) UIActivityIndicatorView *cellIndicator;
 
 
 -(void) startLoading;

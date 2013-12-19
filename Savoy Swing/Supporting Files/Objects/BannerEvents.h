@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) NSArray *allEvents;
 @property (strong, nonatomic) NSMutableArray *indicesSorted;
+@property (strong, nonatomic) NSMutableDictionary *allEventImages;
 @property (strong, nonatomic) NSTimer *processDataRequest;
 
 -(void) generateEvents;

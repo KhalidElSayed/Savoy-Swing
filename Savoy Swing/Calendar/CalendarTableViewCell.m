@@ -17,7 +17,70 @@
     [super setFrame:frame];
 }
 
-- (CalendarTableViewCell *)prepareCell: (NSDictionary*) thisEvent theCell: (CalendarTableViewCell*) cell {
+- (void)addGoogleInfo:(NSDictionary *)thisEvent theCell:(CalendarTableViewCell *)cell onDate: (NSDate*) theDate{
+    theAppDel = (SSCAppDelegate*)[[UIApplication sharedApplication] delegate];
+    approvedGoogleData = [[NSMutableDictionary alloc] init];
+    if ([theAppDel hasConnectivity] && thisEvent && [[thisEvent objectForKey:@"google_urls"] isKindOfClass: [NSArray class]]){
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    
+        NSArray *allGoogleIDS = [thisEvent objectForKey:@"google_urls"];
+        NSArray *weekdays = [thisEvent objectForKey:@"weekdays"];
+        [formatter setDateFormat:@"EEEE"];
+        NSString *this_day = [formatter stringFromDate:theDate];
+        NSString *googleID = @"";
+        NSString *begin_time = @"";
+        for (NSInteger i=0;i<[weekdays count];i++) {
+            
+            NSString *dayNameWeekly = [weekdays objectAtIndex:i];
+            if ([dayNameWeekly rangeOfString:@" : "].location != NSNotFound) {
+                NSArray *dayHour =[dayNameWeekly componentsSeparatedByString:@" : "];
+                dayNameWeekly = [dayHour objectAtIndex:0];
+                begin_time = [dayHour objectAtIndex:1];
+                if ([begin_time rangeOfString:@" - "].location != NSNotFound) {
+                    NSArray *timeSplit =[begin_time  componentsSeparatedByString:@" - "];
+                    begin_time = timeSplit[0];
+                }
+            }
+            if ([this_day isEqualToString: dayNameWeekly] ) {
+                googleID = [allGoogleIDS objectAtIndex:i];
+                break;
+            }
+        }
+        if ( ![googleID isEqualToString:@""]) {
+            double beginDouble = [begin_time doubleValue];
+            beginDouble = (beginDouble+800.0f);
+            NSInteger beginInt = (int)(beginDouble + (beginDouble>0 ? 0.5 : -0.5));
+            NSInteger dayDiff = (beginInt+2400-100)/beginInt;
+            beginInt = beginInt % 2400;
+            NSString *theTime = (beginInt <1000) ? [NSString stringWithFormat:@"0%d", beginInt] : [NSString stringWithFormat:@"%d", beginInt];
+
+            NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+            [dateComponents setDay:+dayDiff];
+            theDate = [[NSCalendar currentCalendar] dateByAddingComponents:dateComponents toDate:theDate options:0];
+            
+            [formatter setDateFormat:@"yyyyMMdd"];
+            NSString *thisDate = [formatter stringFromDate:theDate];
+            NSString *timeInUTC = [NSString stringWithFormat:@"_%@T%@00Z",thisDate,theTime];   //format: @"_20131221T050000Z";
+            NSString *strURL = [NSString stringWithFormat:@"%@%@?alt=json",googleID,timeInUTC];
+            NSData *dataURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:strURL]];
+            NSString *strResult = [[NSString alloc] initWithData:dataURL encoding:NSUTF8StringEncoding];
+            if ( ![strResult length] == 0 ) {
+                NSData *theData = [strResult dataUsingEncoding:NSUTF8StringEncoding];
+                NSError *e;
+                NSDictionary *googleData = [NSJSONSerialization JSONObjectWithData:theData options:kNilOptions error:&e];
+                NSDictionary *googleEntry = [googleData objectForKey:@"entry"];
+                [approvedGoogleData setValue:[[googleEntry objectForKey:@"title"] objectForKey:@"$t"] forKey:@"post_title"];
+            }
+        }
+    }
+}
+
+- (void)prepareCell: (NSDictionary*) thisEvent theCell: (CalendarTableViewCell*) cell onDate: (NSDate*) theDate{
+    if ( theDate ) {
+        [self addGoogleInfo:thisEvent theCell:cell onDate: (NSDate*) theDate];
+    }
+        
+    //standard height of cell
     float height = cell.frame.size.width/283.5f*60.0f;
     
     //highlightView objects
@@ -37,7 +100,11 @@
     title.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:18.0];
     title.textAlignment = NSTextAlignmentLeft;
     title.textColor = [UIColor blackColor];
-    title.text = [thisEvent objectForKey:@"post_title"];
+    if ([approvedGoogleData objectForKey:@"post_title"]) {
+        title.text = [approvedGoogleData objectForKey:@"post_title"];
+    } else {
+        title.text = [thisEvent objectForKey:@"post_title"];
+    }
     [title sizeToFit];
     
     UILabel *cats = [[UILabel alloc] initWithFrame:CGRectMake(7.0f, 39.0f, cell.frame.size.width, 22.0f)];
@@ -73,8 +140,6 @@
     //add all the views
     [cell.contentView addSubview:highlightView];
     [cell.contentView addSubview:sub_title];
-    
-    return cell;
 }
 
 @end

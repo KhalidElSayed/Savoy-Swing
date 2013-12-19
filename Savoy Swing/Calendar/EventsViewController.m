@@ -56,11 +56,11 @@
     [preloaderView addSubview: imageIndicator];
     [preloaderView addSubview:loadingLabel];
     
-    [self.view addSubview:preloaderView];
+    //[self.view addSubview:preloaderView];
 }
 
 -(void) viewDidAppear:(BOOL)animated {
-    [self performSelector:@selector(startLoading) withObject:self afterDelay:.25];
+    [self startLoading];
 }
 
 
@@ -70,7 +70,7 @@
     [self.theTableView reloadData];
     loadingLabel.text = @"Configuring View";
     self.navigationController.navigationBarHidden = NO;
-    [preloaderView removeFromSuperview];
+    //[preloaderView removeFromSuperview];
 }
 
 
@@ -112,17 +112,10 @@
     
     float height = cell.frame.size.width/283.5f*60.0f;
     UIImageView *bannerImageView =[[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, cell.frame.size.width, height)];
-    if (![theImages valueForKey:[thisEvent objectForKey:@"image_url"]]) {
-        NSData *dataFromURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:[thisEvent objectForKey:@"image_url"]]];
-        UIImage *theImage = [UIImage imageWithData: dataFromURL];
-        bannerImageView.image = theImage;
-        [theImages setValue:theImage forKey:[thisEvent objectForKey:@"image_url"]];
-    } else {
-        bannerImageView.image = [theImages valueForKey:[thisEvent objectForKey:@"image_url"]];
-    }
+    bannerImageView.image = [theAppDel.theBanners.allEventImages objectForKey:[thisEvent objectForKey:@"post_id"]];
     [cell.contentView addSubview:bannerImageView];
     
-    cell = [cell prepareCell:thisEvent theCell:cell];
+    [cell prepareCell:thisEvent theCell:cell onDate:nil];
     cell.layer.cornerRadius = 5;
     cell.layer.masksToBounds = YES;
     cell.backgroundColor = [UIColor whiteColor];

@@ -7,9 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SSCAppDelegate.h"
 
-@interface CalendarTableViewCell : UITableViewCell
+@interface CalendarTableViewCell : UITableViewCell {
+    SSCAppDelegate *theAppDel;
+    NSMutableDictionary *approvedGoogleData;
+}
 
-- (CalendarTableViewCell *)prepareCell: (NSDictionary*) thisEvent theCell: (CalendarTableViewCell*) cell;
+- (void)prepareCell: (NSDictionary*) thisEvent theCell: (CalendarTableViewCell*) cell onDate: (NSDate*) theDate;
+- (void)addGoogleInfo: (NSDictionary*) thisEvent theCell: (CalendarTableViewCell*) cell onDate: (NSDate*) theDate;
 
 @end

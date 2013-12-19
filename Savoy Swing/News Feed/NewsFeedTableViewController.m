@@ -264,11 +264,20 @@
 
 - (BOOL) refresh
 {
-    if (![super refresh])
+    if (![super refresh] || ![theAppDel hasConnectivity]) {
+        [self refreshFailed];
         return NO;
+    }
     [theAppDel.theFeed getUpdatedPosts:@"new"];
     [self performSelector:@selector(refreshCompleted) withObject:nil afterDelay:2.0];
     return YES;
+}
+
+- (void) refreshFailed {
+    NewsFeedHeaderView *hv = (NewsFeedHeaderView *)self.headerView;
+    [hv.activityIndicator startAnimating];
+    hv.title.text = @"No Connection Found";
+    [self performSelector:@selector(refreshCompleted) withObject:nil afterDelay:2.0];
 }
 
 - (void) refreshCompleted {

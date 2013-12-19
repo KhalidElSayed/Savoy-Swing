@@ -115,9 +115,8 @@
 
 -(void) startLoading {
     basicCellHeight = 125.0f;
-    theImages = [[NSMutableDictionary alloc] init];
     allDays = [[NSMutableArray alloc] init];
-    
+    selectedIndexes = [[NSMutableDictionary alloc] init];
     
     //get regular weekly dances
     [self addWeeklyDances];
@@ -213,7 +212,6 @@
     self.navigationController.navigationBarHidden = NO;
     [preloaderView removeFromSuperview];
     
-    selectedIndexes = [[NSMutableDictionary alloc] init];
     loadingLabel.text = @"Refreshing Table";
 }
 
@@ -411,17 +409,10 @@
         
         float height = cell.frame.size.width/283.5f*60.0f;
         UIImageView *bannerImageView =[[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, cell.frame.size.width, height)];
-        if (![theImages valueForKey:[thisEvent objectForKey:@"image_url"]]) {
-            NSData *dataFromURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:[thisEvent objectForKey:@"image_url"]]];
-            UIImage *theImage = [UIImage imageWithData: dataFromURL];
-            bannerImageView.image = theImage;
-            [theImages setValue:theImage forKey:[thisEvent objectForKey:@"image_url"]];
-        } else {
-            bannerImageView.image = [theImages valueForKey:[thisEvent objectForKey:@"image_url"]];
-        }
+        bannerImageView.image = [theAppDel.theBanners.allEventImages objectForKey:[thisEvent objectForKey:@"post_id"]];
         [cell.contentView addSubview:bannerImageView];
         
-        cell = [cell prepareCell:thisEvent theCell:cell];
+        [cell prepareCell:thisEvent theCell:cell onDate:nil];
     } else if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Month Calendar"]) {
         if (indexPath.section ==0 && indexPath.row == 0 ) {
             if ( !self.horizontalDateCell) {
@@ -458,20 +449,23 @@
             
             float height = cell.frame.size.width/283.5f*60.0f;
             UIImageView *bannerImageView =[[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, cell.frame.size.width, height)];
-            if (![theImages valueForKey:[thisEvent objectForKey:@"image_url"]]) {
-                NSData *dataFromURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:[thisEvent objectForKey:@"image_url"]]];
-                UIImage *theImage = [UIImage imageWithData: dataFromURL];
-                bannerImageView.image = theImage;
-                [theImages setValue:theImage forKey:[thisEvent objectForKey:@"image_url"]];
-            } else {
-                bannerImageView.image = [theImages valueForKey:[thisEvent objectForKey:@"image_url"]];
-            }
+            bannerImageView.image = [theAppDel.theBanners.allEventImages objectForKey:[thisEvent objectForKey:@"post_id"]];
             [cell.contentView addSubview:bannerImageView];
+            _cellIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             
-            cell = [cell prepareCell:thisEvent theCell:cell];
+            _cellIndicator.center = CGPointMake(cell.frame.size.width / 2, ((height+cell.frame.size.height) / 2));
+            [_cellIndicator startAnimating];
+            [cell addSubview:_cellIndicator];
+            [self performSelector:@selector(getInfoForCell:) withObject:@[cell,thisEvent] afterDelay:.1];
         }
     }
     return cell;
+}
+
+-(void) getInfoForCell: (NSArray*) data {
+    [[data objectAtIndex:0] prepareCell:[data objectAtIndex:1] theCell:[data objectAtIndex:0] onDate:self.currentDate];
+    [_cellIndicator stopAnimating];
+    [_cellIndicator removeFromSuperview];
 }
 
 @end
