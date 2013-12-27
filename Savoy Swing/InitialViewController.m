@@ -20,13 +20,12 @@
     
     theAppDel = (SSCAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    _theImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-    UIImage *theImage = [UIImage imageNamed:@"R4Default.png"];
-    _theImageView.image = theImage;
-    [self.view addSubview:_theImageView];
+    theAppDel.theLoadingScreen = [[loadingScreenImageView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:theAppDel.theLoadingScreen];
 }
 
 -(void) viewDidAppear:(BOOL)animated {
+    /*
     [super viewDidAppear:animated];
 
     CGPoint origin = _theImageView.center;
@@ -39,8 +38,12 @@
     [_theImageView.layer addAnimation:bounce forKey:@"position"];
     
     _theImageView.center = target;
-
+     */
     [self performSelector:@selector(doStuff) withObject:self afterDelay:1.5];
+}
+
+-(void) viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
 }
 
 - (BOOL)shouldAutorotate {
@@ -56,46 +59,41 @@
 }
 
 -(void) doStuff {
-    _imageIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    
-    _imageIndicator.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height / 2)-15);
-    [_imageIndicator startAnimating];
-    
-    loadingLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    loadingLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
-    loadingLabel.textAlignment = NSTextAlignmentCenter;
-    loadingLabel.textColor = [UIColor whiteColor];
-    loadingLabel.text = @"Connecting";
-    [loadingLabel sizeToFit];
-    loadingLabel.frame = CGRectMake(0, 0, self.view.frame.size.width, loadingLabel.frame.size.height);
-    loadingLabel.center = CGPointMake(self.view.frame.size.width/2, (self.view.frame.size.height / 2)+15);
-    
-    [self.view addSubview:_imageIndicator];
-    [self.view addSubview: loadingLabel];
+    theAppDel.theLoadingScreen.imageIndicator.hidden = NO;
+    [theAppDel.theLoadingScreen.imageIndicator startAnimating];
+    [theAppDel.theLoadingScreen changeLabelText:@"Connecting"];
     
     if ([theAppDel hasConnectivity]) {
-        [self performSelector:@selector(getInternetData) withObject:self afterDelay:1.5];
+        [theAppDel.theLoadingScreen changeLabelText:@"Connection Established"];
+        [self performSelector:@selector(getInternetData) withObject:self afterDelay:1];
     } else {
-        [_imageIndicator stopAnimating];
-        loadingLabel.text = @"Server Unavailable";
+        [theAppDel.theLoadingScreen.imageIndicator stopAnimating];
+        [theAppDel.theLoadingScreen changeLabelText:@"Server Unavailable"];
+        UIButton *retryButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 140, 45)];
+        retryButton.backgroundColor = [UIColor colorWithWhite:0 alpha:.2];
+        retryButton.center = CGPointMake(self.view.frame.size.width/2,120);
+        [retryButton setTitle:@"Retry" forState:UIControlStateNormal];
+        [retryButton addTarget:self action:@selector(retryDoStuff) forControlEvents:UIControlEventTouchUpInside];
+        retryButton.tag = 201;
+        [self.view addSubview:retryButton];
     }
 }
 
+-(void) retryDoStuff {
+    UIButton *retryButton = (UIButton*)[self.view viewWithTag:201];
+    [retryButton removeFromSuperview];
+    [self performSelector:@selector(doStuff) withObject:Nil afterDelay:.5];
+}
+
 -(void) getInternetData {
-    
-    loadingLabel.text = @"Connection Established";
-    [theAppDel makeNewFeeds];
+    [theAppDel makeNewFeedsWithNews:YES withBanners:YES];
     [theAppDel getAbout];
     [theAppDel retrieveDataTimer];
+    [theAppDel loadImages];
     
-    theAppDel.user = @{@"username" : @"awkLindyTurtle",
-             @"fullname" : @"Steven Stevenson",
-             @"unique_id" : @"1003",
-             @"exp_date" : @"4/1/2015",
-             @"status"  : @"PAID"};
-    
-    
-    [_imageIndicator stopAnimating];
+    [theAppDel.theLoadingScreen.imageIndicator stopAnimating];
+    theAppDel.theLoadingScreen.imageIndicator.hidden = YES;
+    [theAppDel.theLoadingScreen changeLabelText:@"Loading Home Screen"];
     [self performSelector:@selector(getFirstViewController) withObject:self afterDelay:2];
 }
 

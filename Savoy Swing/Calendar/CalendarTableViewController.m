@@ -127,6 +127,10 @@
         NSString *day_string = [[otherFrequentEvents objectAtIndex:i] objectForKey:@"date"];
         NSArray *dayData = [day_string componentsSeparatedByString:@" | "];
         NSString *dayName = [dayData objectAtIndex:0];
+        if ([dayName rangeOfString:@" : "].location != NSNotFound) {
+            NSArray *dayHour =[dayName componentsSeparatedByString:@" : "];
+            dayName = dayHour[0];
+        }
         if (![allDays containsObject:dayName] ) {
             NSMutableArray *eventsOnDay = [[NSMutableArray alloc] init];
             [eventsOnDay addObject:[otherFrequentEvents objectAtIndex:i]];
@@ -249,7 +253,7 @@
                 eventsOnDay += 1;
             }
         }
-        return eventsOnDay;
+        return eventsOnDay+1;
     }
     return 0;
 }
@@ -274,26 +278,64 @@
     }
 }
 
+-(CGFloat) heightOfEvent: (NSDictionary*) thisEvent {
+    float ongoingHeight = 0.0;
+    
+    ongoingHeight += 4.0f;
+    UILabel *hood = [[UILabel alloc] initWithFrame:CGRectMake(7.0f, ongoingHeight, self.theTableView.frame.size.width-14, 22.0f)];
+    hood.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:13.0];
+    hood.textAlignment = NSTextAlignmentLeft;
+    hood.textColor = [UIColor colorWithRed:235.0/255.0 green:119.0/255.0 blue:24.0/255.0 alpha:1.0];
+    hood.numberOfLines = 0;
+    hood.shadowColor = [UIColor lightGrayColor];
+    hood.shadowOffset = CGSizeMake(0.0f, 0.0f);
+    hood.text = [thisEvent objectForKey:@"date"];
+    [hood sizeToFit];
+    ongoingHeight += hood.frame.size.height;
+    
+    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(7.0f, ongoingHeight, self.theTableView.frame.size.width-14, 50.0f)];
+    title.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:18.0];
+    title.textAlignment = NSTextAlignmentLeft;
+    title.textColor = [UIColor blackColor];
+    title.numberOfLines = 2;
+    [title sizeToFit];
+    ongoingHeight += title.frame.size.height;
+    
+    UILabel *cats = [[UILabel alloc] initWithFrame:CGRectMake(7.0f, ongoingHeight, self.theTableView.frame.size.width, 22.0f)];
+    cats.font = [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:12.0];
+    cats.textAlignment = NSTextAlignmentLeft;
+    cats.textColor = [UIColor blackColor];
+    cats.numberOfLines = 0;
+    cats.text = [thisEvent objectForKey:@"post_sub"];
+    [cats sizeToFit];
+    ongoingHeight += cats.frame.size.height;
+    
+    
+    ongoingHeight += 14;
+    UILabel *main_text = [[UILabel alloc] initWithFrame:CGRectMake(7.0f, ongoingHeight, self.theTableView.frame.size.width-14.0f, 22.0f)];
+    main_text.font = [UIFont fontWithName:@"HelveticaNeue" size:12.0];
+    main_text.textAlignment = NSTextAlignmentLeft;
+    main_text.textColor = [UIColor blackColor];
+    main_text.numberOfLines = 0;
+    main_text.text = [thisEvent objectForKey:@"post_text"];
+    [main_text sizeToFit];
+    ongoingHeight += main_text.frame.size.height;
+
+    return 150+ongoingHeight;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *thisEvent;
     if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Weekly Dances"]) {
         if([self cellIsSelected:[NSString stringWithFormat:@"%d-%d",indexPath.section,indexPath.row]]) {
             NSArray *eventsOnDay = [allWeeklyBannerEvents objectForKey:[allDays objectAtIndex:indexPath.section]];
             thisEvent = [eventsOnDay objectAtIndex:indexPath.row];
-            UILabel *main_text = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 60.0f, 280.0f, 22.0f)];
-            main_text.font = [UIFont fontWithName:@"HelveticaNeue" size:12.0];
-            main_text.textAlignment = NSTextAlignmentLeft;
-            main_text.textColor = [UIColor blackColor];
-            main_text.numberOfLines = 0;
-            main_text.text = [thisEvent objectForKey:@"post_text"];
-            [main_text sizeToFit];
-            return 150+main_text.frame.size.height;
+            return [self heightOfEvent:thisEvent];
         }
     } else if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Month Calendar"]) {
         if (indexPath.section == 0 && indexPath.row == 0 ) {
             return 120.0f;
-        }
-        if([self cellIsSelected:[NSString stringWithFormat:@"%d-%d",indexPath.section,indexPath.row]]) {
+        } else if(![self cellIsSelected:[NSString stringWithFormat:@"%d-%d",indexPath.section,indexPath.row]]) {
             return basicCellHeight / 2.0;
         }
 
@@ -310,15 +352,11 @@
         } else {
             eventsOnDay = [allWeeklyBannerEvents objectForKey:thisDay];
         }
+        if ([self numberOfSectionsInTableView:self.theTableView] == indexPath.section+1) {
+            return basicCellHeight / 2.0;
+        }
         thisEvent = [eventsOnDay objectAtIndex:(indexPath.section-1)];
-        UILabel *main_text = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 60.0f, 280.0f, 22.0f)];
-        main_text.font = [UIFont fontWithName:@"HelveticaNeue" size:12.0];
-        main_text.textAlignment = NSTextAlignmentLeft;
-        main_text.textColor = [UIColor blackColor];
-        main_text.numberOfLines = 0;
-        main_text.text = [thisEvent objectForKey:@"post_text"];
-        [main_text sizeToFit];
-        return 150+main_text.frame.size.height;
+        return [self heightOfEvent:thisEvent];
     }
     return basicCellHeight;
 }
@@ -337,7 +375,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Weekly Dances"]) {
-        return [allDays objectAtIndex:section];
+        return [NSString stringWithFormat:@"%@s",[allDays objectAtIndex:section]];
     }
     return @"";
 }
@@ -362,7 +400,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *thisAddress = [NSString stringWithFormat:@"%d-%d",indexPath.section,indexPath.row];
-    if ([self cellIsSelected:thisAddress]) {
+    if ([self cellIsSelected:thisAddress] ) {
         [selectedIndexes setObject:@"0" forKey:thisAddress];
     } else {
         [selectedIndexes setObject:@"1" forKey:thisAddress];
@@ -412,9 +450,10 @@
         bannerImageView.image = [theAppDel.theBanners.allEventImages objectForKey:[thisEvent objectForKey:@"post_id"]];
         [cell.contentView addSubview:bannerImageView];
         
-        [cell prepareCell:thisEvent theCell:cell onDate:nil];
+        [cell prepareCell:thisEvent theCell:cell onDate:[allDays objectAtIndex:indexPath.section]];
     } else if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Month Calendar"]) {
         if (indexPath.section ==0 && indexPath.row == 0 ) {
+            _cellIndicators = [[NSMutableDictionary alloc] init];
             if ( !self.horizontalDateCell) {
                 CalendarHorizontalCell *cell  = [[CalendarHorizontalCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"HorizontalCalendarContainer"];
                 cell.delegate = self;
@@ -423,14 +462,7 @@
             } else {
                 return self.horizontalDateCell;
             }
-        } else {
-            cell  = [tableView dequeueReusableCellWithIdentifier:@"eventCell" forIndexPath:indexPath];
-            [self removePreviousCellInfoFromView:cell];
-            cell.layer.cornerRadius = 5;
-            cell.layer.masksToBounds = YES;
-            cell.backgroundColor = [UIColor whiteColor];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            //data for banner
+        } else {            //data for banner
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
             [formatter setDateFormat:@"EEEE"];
             NSString *thisDay = [formatter stringFromDate:self.currentDate];
@@ -445,27 +477,54 @@
             } else {
                 eventsOnDay = [allWeeklyBannerEvents objectForKey:thisDay];
             }
-            NSDictionary *thisEvent = [eventsOnDay objectAtIndex:(indexPath.section-1)];
-            
-            float height = cell.frame.size.width/283.5f*60.0f;
-            UIImageView *bannerImageView =[[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, cell.frame.size.width, height)];
-            bannerImageView.image = [theAppDel.theBanners.allEventImages objectForKey:[thisEvent objectForKey:@"post_id"]];
-            [cell.contentView addSubview:bannerImageView];
-            _cellIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            
-            _cellIndicator.center = CGPointMake(cell.frame.size.width / 2, ((height+cell.frame.size.height) / 2));
-            [_cellIndicator startAnimating];
-            [cell addSubview:_cellIndicator];
-            [self performSelector:@selector(getInfoForCell:) withObject:@[cell,thisEvent] afterDelay:.1];
+            if ( [self numberOfSectionsInTableView:self.theTableView] == indexPath.section+1 ) {
+                UITableViewCell *infoCell = [tableView dequeueReusableCellWithIdentifier:@"TapBannerMoreInfo" forIndexPath:indexPath];
+                infoCell.backgroundColor = [UIColor colorWithWhite:1 alpha:.05];
+                infoCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                if (![infoCell viewWithTag:1002]) {
+                    UILabel *info = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 00.0f, infoCell.frame.size.width, 22)];
+                    info.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:18.0];
+                    info.textAlignment = NSTextAlignmentCenter;
+                    info.textColor = [UIColor whiteColor];
+                    info.text = @"Tap Banner For More Info";
+                    info.tag = 1002;
+                    [infoCell addSubview:info];
+                    info.center = CGPointMake(infoCell.frame.size.width/2, (62.5)/2);
+                }
+                return infoCell;
+            } else {
+                cell  = [tableView dequeueReusableCellWithIdentifier:@"eventCell" forIndexPath:indexPath];
+                [self removePreviousCellInfoFromView:cell];
+                cell.layer.cornerRadius = 5;
+                cell.layer.masksToBounds = YES;
+                cell.backgroundColor = [UIColor whiteColor];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+                NSDictionary *thisEvent = [eventsOnDay objectAtIndex:(indexPath.section-1)];
+                
+                float height = cell.frame.size.width/283.5f*60.0f;
+                UIImageView *bannerImageView =[[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, cell.frame.size.width, height)];
+                bannerImageView.image = [theAppDel.theBanners.allEventImages objectForKey:[thisEvent objectForKey:@"post_id"]];
+                [cell.contentView addSubview:bannerImageView];
+                UIActivityIndicatorView *thisCellIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+                thisCellIndicator.color = [UIColor colorWithRed:235.0/255.0 green:119.0/255.0 blue:24.0/255.0 alpha:1.0];
+                thisCellIndicator.center = CGPointMake(cell.frame.size.width / 2, (height/ 2));
+                [thisCellIndicator startAnimating];
+                [cell addSubview:thisCellIndicator];
+                [_cellIndicators setObject:thisCellIndicator forKey:[NSString stringWithFormat:@"%@",thisEvent]];
+                [self performSelector:@selector(getInfoForCell:) withObject:@[cell,thisEvent] afterDelay:.1];
+            }
         }
     }
     return cell;
 }
 
 -(void) getInfoForCell: (NSArray*) data {
+    
     [[data objectAtIndex:0] prepareCell:[data objectAtIndex:1] theCell:[data objectAtIndex:0] onDate:self.currentDate];
-    [_cellIndicator stopAnimating];
-    [_cellIndicator removeFromSuperview];
+    UIActivityIndicatorView *thisIndicator = [_cellIndicators objectForKey:[NSString stringWithFormat:@"%@",[data objectAtIndex:1]]];
+    [thisIndicator removeFromSuperview];
+    [_cellIndicators removeObjectForKey:[data objectAtIndex:1]];
 }
 
 @end

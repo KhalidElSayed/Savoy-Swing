@@ -25,14 +25,20 @@
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
+    BOOL nonce = NO;
     if (_facebookSwitch.on != _theAppDel.newsFeedFacebookActive ){
         _theAppDel.newsFeedFacebookActive = _facebookSwitch.on;
-        [_theAppDel makeNewFeeds];
+        [self performSelector:@selector(makeNewFeedsWait) withObject:nil afterDelay:.5];
+        nonce = YES;
     }
-    if (_twitterSwitch.on != _theAppDel.newsFeedTwitterActive ){
+    if (!nonce && _twitterSwitch.on != _theAppDel.newsFeedTwitterActive ){
         _theAppDel.newsFeedTwitterActive = _twitterSwitch.on;
-        [_theAppDel makeNewFeeds];
+        [self performSelector:@selector(makeNewFeedsWait) withObject:nil afterDelay:.5];
     }
+}
+
+-(void) makeNewFeedsWait {
+        [_theAppDel makeNewFeedsWithNews:YES withBanners:NO];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

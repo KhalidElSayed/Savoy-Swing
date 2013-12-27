@@ -8,14 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "SSCAppDelegate.h"
-#import "SWRevealViewController.h"
+#import "SSCRevealViewController.h"
 
 @interface InitialViewController : UIViewController {
     SSCAppDelegate *theAppDel;
-    UILabel *loadingLabel;
 }
 
 @property (strong, nonatomic) UIImageView *theImageView;
-@property (strong, nonatomic) UIActivityIndicatorView *imageIndicator;
 
 @end

@@ -30,7 +30,7 @@
     [components setHour:-[components hour]];
     [components setMinute:-[components minute]];
     [components setSecond:-[components second]];
-    for (NSInteger i=0;i<31;i++) {
+    for (NSInteger i=0;i<62;i++) {
         [components setDay:i];
         NSDate *this_day = [cal dateByAddingComponents:components toDate:[[NSDate alloc] init] options:0];
         [self.horizontalData addObject:this_day];
@@ -58,12 +58,7 @@
     bigDate.transform = rotateTable;
     bigDate.tag = 201;
     
-    UILabel *monthLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 0,150,100)];
-    monthLabel.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:18.0];
-    monthLabel.textAlignment = NSTextAlignmentCenter;
-    monthLabel.textColor = ojColor;
-    monthLabel.transform = rotateTable;
-    monthLabel.tag = 202;
+
     
     UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, 0,150,100)];
     weekdayLabel.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:20.0];
@@ -77,15 +72,26 @@
     bigDate.text = [formatter stringFromDate:[self.horizontalData objectAtIndex:indexPath.row]];
     
     
-    [formatter setDateFormat:@"MMMM"];
-    monthLabel.text = [formatter stringFromDate:[self.horizontalData objectAtIndex:indexPath.row]];
-    
     [formatter setDateFormat:@"EEEE"];
     weekdayLabel.text = [formatter stringFromDate:[self.horizontalData objectAtIndex:indexPath.row]];
     
+
+    
+    if (indexPath.row == 0 || [bigDate.text isEqualToString:@"1"] ) {
+        UILabel *monthLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 10,150,100)];
+        monthLabel.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:75.0];
+        monthLabel.textAlignment = NSTextAlignmentCenter;
+        monthLabel.textColor = [ojColor colorWithAlphaComponent:.15];
+        //monthLabel.transform = rotateTable;
+        monthLabel.tag = 302;
+        [formatter setDateFormat:@"MMM"];
+        monthLabel.text = [formatter stringFromDate:[self.horizontalData objectAtIndex:indexPath.row]];
+        [cell addSubview:monthLabel];
+    }
+    
     [cell addSubview:bigDate];
-    //[cell addSubview:monthLabel];
     [cell addSubview:weekdayLabel];
+    
     return cell;
 }
 

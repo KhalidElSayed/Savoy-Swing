@@ -23,6 +23,8 @@
 
     _aboutText.text = theAppDel.aboutText;
     _aboutText.textColor = [UIColor whiteColor];
+    _aboutText.layer.cornerRadius = 5;
+    _aboutText.layer.masksToBounds = YES;
 }
 
 

@@ -6,31 +6,31 @@
 //  Copyright (c) 2013 Steven Stevenson. All rights reserved.
 //
 
-#import "AccountTableViewController.h"
+#import "AccountViewController.h"
 
-@implementation AccountTableViewController
+@implementation AccountViewController
 
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    self.accountSection =@[@"username",@"status",@"exp_date"];
-    self.profileSection = @[@"name",@"add1",@"add2",@"city",@"state",@"zip",@"phone",@"email"];
+    self.accountSection =@[@"username",@"status",@"exp_date",@"email"];
+    self.profileSection = @[@"name",@"add1",@"add2",@"city",@"state",@"zip",@"phone"];
+}
+
+-(void)viewDidAppear:(BOOL)animated  {
+    [super viewDidAppear:animated];
+    [self.theTableView reloadData];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    self.theTableView.delegate = self;
+    self.theTableView.dataSource = self;
+    
+    self.navigationItem.rightBarButtonItem = nil;
 }
 
 
@@ -39,7 +39,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 2;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -69,11 +69,16 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell;
+    NSString *data = @"";
     if ( indexPath.section == 0 ){
-        cell = [tableView dequeueReusableCellWithIdentifier:[self.accountSection objectAtIndex:indexPath.row] forIndexPath:indexPath];
+        cell = [self.theTableView dequeueReusableCellWithIdentifier:[self.accountSection objectAtIndex:indexPath.row] forIndexPath:indexPath];
+        data = [theAppDel.user objectForKey:[self.accountSection objectAtIndex:indexPath.row]];
     } else if (indexPath.section == 1 ){
-        cell = [tableView dequeueReusableCellWithIdentifier:[self.profileSection objectAtIndex:indexPath.row] forIndexPath:indexPath];
+        cell = [self.theTableView dequeueReusableCellWithIdentifier:[self.profileSection objectAtIndex:indexPath.row] forIndexPath:indexPath];
+        data = [theAppDel.user objectForKey:[self.profileSection objectAtIndex:indexPath.row]];
     }
+    UILabel *readOnlyData = (UILabel*)[cell viewWithTag:101];
+    readOnlyData.text = data;
 
     
     return cell;

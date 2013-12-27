@@ -7,16 +7,9 @@
 //
 
 #import "NewsFeedTableViewController.h"
-#import "SWRevealViewController.h"
+#import "SSCRevealViewController.h"
 #import "NewsFeedFooterView.h"
 #import "NewsFeedHeaderView.h"
-
-#pragma convert to newsfeed class
-#import "STTwitter.h"
-
-@interface NewsFeedTableViewController  ()
-@property (nonatomic, strong) STTwitterAPI* _twitter;
-@end
 
 @implementation NewsFeedTableViewController
 
@@ -107,50 +100,28 @@
 
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    //put graphic image for loading graphic
-    self.navigationController.navigationBarHidden = YES;
-    loaderImageView =[[UIImageView alloc] initWithFrame:CGRectMake(0.0f, (self.view.bounds.size.height-568.0f)/2, self.view.frame.size.width, 568.0f)];
-    
-    UIImage *theImage = [UIImage imageNamed:@"R4Default.png"];
-    loaderImageView.image = theImage;
-    imageIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    
-    loadingLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    loadingLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
-    loadingLabel.textAlignment = NSTextAlignmentCenter;
-    loadingLabel.textColor = [UIColor whiteColor];
-    loadingLabel.text = @"Compiling News Data";
-    [loadingLabel sizeToFit];
-    loadingLabel.frame = CGRectMake(0, 0, self.view.frame.size.width, loadingLabel.frame.size.height);
-    loadingLabel.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height / 2)+160);
-    
-    [self.view addSubview:loaderImageView];
-    [self.view addSubview: imageIndicator];
-    [imageIndicator startAnimating];
-    imageIndicator.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height / 2)+120);
-    [self.view addSubview:loadingLabel];
 }
 
 
 
 -(void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self performSelector:@selector(startLoading) withObject:self afterDelay:.5];
+    //put graphic image for loading graphic
+    self.navigationController.navigationBarHidden = YES;
+    
+    theAppDel.theLoadingScreen = [[loadingScreenImageView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:theAppDel.theLoadingScreen];
+    [theAppDel.theLoadingScreen changeLabelText:@"Compiling News Data"];
+    [theAppDel.theLoadingScreen startAnimating];
+    [self startLoading];
 }
 
 
 -(void) startLoading {
     loadingFromMemory = NO;
-    loadingLabel.text = theAppDel.theFeed.status_update;
-    _loadingScreenText = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updateLoadingScreen) userInfo:nil repeats:YES];
     _detectData = [NSTimer scheduledTimerWithTimeInterval:100.0 target:self selector:@selector(newNewsPostDetected) userInfo:nil repeats:YES];
-    [self finalizeFeed];
+    self.finalizedTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(finalizeFeed) userInfo:nil repeats:YES];
 }
-
--(void) updateLoadingScreen {
-    loadingLabel.text = theAppDel.theFeed.status_update;
-}
-
 
 -(void) viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -162,6 +133,10 @@
     if (_refreshImage != nil ) {
         [_refreshImage invalidate];
         _refreshImage = nil;
+    }
+    if (_detectData != nil ) {
+        [_detectData invalidate];
+        _detectData = nil;
     }
 }
 
@@ -180,14 +155,12 @@
 
 -(void) finalizeFeed {
     if ([theAppDel.theFeed allDone]) {
+        [self.finalizedTimer invalidate];
         _refreshImage = [NSTimer scheduledTimerWithTimeInterval:12.0 target:self selector:@selector(switchImageView) userInfo:nil repeats:YES];
         
         [self.tableView reloadData];
-        
         [self setHeaderView:self.headerView];
-        
         [self loadImages];
-        [_loadingScreenText invalidate];
         [UIView animateWithDuration:0.25
                               delay:.5
                             options: UIViewAnimationOptionCurveEaseInOut
@@ -195,9 +168,7 @@
                              loaderImageView.alpha = 0;
                          }completion:^(BOOL finished){
                              self.navigationController.navigationBarHidden = NO;
-                             [imageIndicator removeFromSuperview];
-                             [loadingLabel removeFromSuperview];
-                             [loaderImageView removeFromSuperview];
+                             [theAppDel.theLoadingScreen removeFromSuperview];
                          }];
     }
 }
@@ -336,26 +307,11 @@
  */
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
 -(void)loadImages {
     //setup image
     if (self.imageArr == nil ) {
-        self.imageArr = [[NSMutableArray alloc]  init];
-        // GET information (update to POST if possible)
-        NSString *strURL = [NSString stringWithFormat:@"http://www.savoyswing.org/wp-content/plugins/ssc_iphone_app/lib/processMobileApp.php?appSend&sliders"];
-        NSData *dataURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:strURL]];
-        NSString *strResult = [[NSString alloc] initWithData:dataURL encoding:NSUTF8StringEncoding];
-        NSData *theData = [strResult dataUsingEncoding:NSUTF8StringEncoding];
-        NSError *e;
-        NSArray *imageStrArr = [NSJSONSerialization JSONObjectWithData:theData options:kNilOptions error:&e];
-        for (int i=1; i < [imageStrArr count]; i++ ){
-            if ( [strResult length] == 0 ) {
-                break;
-            } else {
-                UIImage *thisImage = [UIImage imageWithData: [NSData dataWithContentsOfURL:[NSURL URLWithString:[imageStrArr objectAtIndex:i]]]];
-                [self.imageArr addObject:thisImage];
-            }
-        }
+        self.imageArr = theAppDel.imageArr;
+        
         if ( [self.imageArr count] != 0 ) {
             NSInteger indexArr = 0;
             self.home_background.image = [imageArr objectAtIndex:indexArr];
@@ -375,7 +331,6 @@
         [self.home_background.layer addAnimation:transition forKey:nil];
     }
 }
-
 
 -(void)switchImageView
 {

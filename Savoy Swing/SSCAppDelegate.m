@@ -24,7 +24,9 @@
     _newsFeedFacebookActive = YES;
     _newsFeedTwitterActive = YES;
     _newsFeedWordpressActive = YES;
-
+    self.makingNewFeeds = NO;
+    self.loadingInfo = @"";
+    
     return YES;
 }
 
@@ -60,34 +62,39 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-
--(void) makeNewFeeds {
-    _theFeed = [[SSCNewsFeeds alloc] init];
-    SSCData *SSC_DATA = [[SSCData alloc] init];
-    if ( _newsFeedFacebookActive ) {
-        NSArray *facebookParams = @[SSC_DATA.facebookClient_id,
-                                    SSC_DATA.facebookClient_secret];
-        [_theFeed addFacebookFeed:@"SavoySwingClub" andParams:facebookParams];
-    }
-    if (_newsFeedTwitterActive ) {
-        NSArray *twitterParams = @[SSC_DATA.twitterConsumerName,
-                                   SSC_DATA.twitterConsumerKey,
-                                   SSC_DATA.twitterConsumerSecret,
-                                   SSC_DATA.twitterOathToken,
-                                   SSC_DATA.twitterOathTokenSecret];
-        //[theFeed addTwitterFeed:@"savoyswing" andTweetList:nil];      //for user tweets only
-        [_theFeed addTwitterFeed:@"savoyswing" andTweetList:@"seattle-swing-feeds" andParams:twitterParams];
-    }
-    if (_newsFeedWordpressActive) {
-        [_theFeed addWordpressFeed:@"http://www.savoyswing.org/wp-content/plugins/ssc_iphone_app/lib/processMobileApp.php?appSend&newsFeed"];
+-(void) makeNewFeedsWithNews:(BOOL)addNews withBanners:(BOOL)addBanners {
+    if (addNews) {
+        self.makingNewFeeds = YES;
+        _theFeed = [[SSCNewsFeeds alloc] init];
+        SSCData *SSC_DATA = [[SSCData alloc] init];
+        if ( _newsFeedFacebookActive ) {
+            NSArray *facebookParams = @[SSC_DATA.facebookClient_id,
+                                        SSC_DATA.facebookClient_secret];
+            [_theFeed addFacebookFeed:@"SavoySwingClub" andParams:facebookParams];
+        }
+        if (_newsFeedTwitterActive ) {
+            NSArray *twitterParams = @[SSC_DATA.twitterConsumerName,
+                                       SSC_DATA.twitterConsumerKey,
+                                       SSC_DATA.twitterConsumerSecret,
+                                       SSC_DATA.twitterOathToken,
+                                       SSC_DATA.twitterOathTokenSecret];
+            //[theFeed addTwitterFeed:@"savoyswing" andTweetList:nil];      //for user tweets only
+            [_theFeed addTwitterFeed:@"savoyswing" andTweetList:@"seattle-swing-feeds" andParams:twitterParams];
+        }
+        if (_newsFeedWordpressActive) {
+            [_theFeed addWordpressFeed:@"http://www.savoyswing.org/wp-content/plugins/ssc_iphone_app/lib/processMobileApp.php?appSend&newsFeed"];
+        }
+        
+        if ( [_theFeed hasFeeds]) {
+            [_theFeed generateFeeds];
+        }
     }
     
-    if ([_theFeed hasFeeds]) {
-        [_theFeed generateFeeds];
+    if (addBanners) {
+        _theBanners = [[BannerEvents alloc]init];
+        [_theBanners generateEvents];
     }
-    
-    _theBanners = [[BannerEvents alloc]init];
-    [_theBanners generateEvents];
+    self.makingNewFeeds = NO;
 }
 
 -(void) retrieveDataTimer {
@@ -167,6 +174,29 @@
     }
     
     return NO;
+}
+
+-(void)loadImages {
+    //setup image
+    if (self.imageArr == nil ) {
+        self.imageArr = [[NSMutableArray alloc]  init];
+        // GET information (update to POST if possible)
+        NSString *strURL = [NSString stringWithFormat:@"http://www.savoyswing.org/wp-content/plugins/ssc_iphone_app/lib/processMobileApp.php?appSend&sliders"];
+        NSData *dataURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:strURL]];
+        NSString *strResult = [[NSString alloc] initWithData:dataURL encoding:NSUTF8StringEncoding];
+        NSData *theData = [strResult dataUsingEncoding:NSUTF8StringEncoding];
+        NSError *e;
+        NSArray *imageStrArr = [NSJSONSerialization JSONObjectWithData:theData options:kNilOptions error:&e];
+        for (int i=1; i < [imageStrArr count]; i++ ){
+            if ( [strResult length] == 0 ) {
+                break;
+            } else {
+                UIImage *thisImage = [UIImage imageWithData: [NSData dataWithContentsOfURL:[NSURL URLWithString:[imageStrArr objectAtIndex:i]]]];
+                [self.imageArr addObject:thisImage];
+                [self.theLoadingScreen changeLabelText:[NSString stringWithFormat:@"Loaded %d Images",i]];
+            }
+        }
+    }
 }
 
 @end

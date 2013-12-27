@@ -8,6 +8,7 @@
 
 #import "SSCNewsFeeds.h"
 #import "STTwitter.h"
+#import "SSCAppDelegate.h"
 
 @interface SSCNewsFeeds  ()
 @property (nonatomic, strong) STTwitterAPI* _twitter;
@@ -16,10 +17,12 @@
 @implementation SSCNewsFeeds
 
 @synthesize status_update;
+static SSCAppDelegate *theAppDel;
 
 -(id) init {
     self = [super self];
     if (self) {
+        theAppDel = [[UIApplication sharedApplication] delegate];
         twitterActive = NO;
         facebookActive = NO;
         wordpressActive = NO;
@@ -37,7 +40,7 @@
 }
 
 -(void) addTwitterFeed: (NSString*) username andTweetList: (NSString*) tweetList andParams: (NSArray*) params {
-    status_update = @"News Feeds Initializing";
+    [theAppDel.theLoadingScreen changeLabelText:@"Setting Up Twitter"];
     twitter_username = username;
     tweet_list = tweetList;
     twitterActive = YES;
@@ -51,7 +54,7 @@
 }
 
 -(void) addFacebookFeed: (NSString *) username andParams: (NSArray*) params{
-    status_update = @"News Feeds Initializing";
+    [theAppDel.theLoadingScreen changeLabelText:@"Setting Up Facebook"];
     facebook_username = username;
     facebookActive = YES;
     if (params && [params count] == 2) {
@@ -61,7 +64,7 @@
 }
 
 -(void) addWordpressFeed: (NSString *) urlToFeed {
-    status_update = @"News Feeds Initializing";
+    [theAppDel.theLoadingScreen changeLabelText:@"Setting up SavoySwing.org"];
     wordpress_urlToFeed = urlToFeed;
     wordpressActive = YES;
 }
@@ -83,6 +86,7 @@
 }
 
 -(void) generateFeeds {
+    dataReady = NO;
     _allData = [[NSMutableArray alloc] init];
     if ([self hasFeeds]) {
         if (twitterActive) {
@@ -120,14 +124,15 @@
             _allData = [_archivedData mutableCopy];
             _archivedData = nil;
         }
-        status_update = @"Finalizing Display";
+        theAppDel.theLoadingScreen.loadingLabel.text = @"Finishing News Feeds";
+        [theAppDel.theLoadingScreen.loadingLabel sizeThatFits:CGSizeMake(320, 50)];
         dataReady = YES;
     }
 }
 
 -(void) sortObjects {
     if ([self readyToSort]) {
-        status_update = @"Sorting News Feed";
+        NSLog(@"Sorting News Feeds");
         [_sortCellLoader invalidate];
         _sortCellLoader = nil;
         _allData = [[NSMutableArray alloc] init];
@@ -243,10 +248,13 @@
                 [_allData addObject:[_WordpressPosts objectAtIndex:mostRecentIndex]];
                 wp_count++;
             }
+            
         }
         NSLog(@"Data Sorted (total entries: %d)",[_allData count]);
-        status_update = @"Finalizing Display";
+        [theAppDel.theLoadingScreen changeLabelText:@"News Sorted"];
+        
         postsSorted = YES;
+        dataReady = YES;
     }
 }
 
@@ -346,6 +354,9 @@
                     laterFacebookPostLink = [[facebookData objectForKey:@"paging"] objectForKey:@"next"];
                 }
                 NSLog(@"Facebook Feed Success!");
+                theAppDel.theLoadingScreen.loadingLabel.text = @"Facebook Feed Loaded!";
+                [theAppDel.theLoadingScreen.loadingLabel sizeThatFits:CGSizeMake(320, 50)];
+                [theAppDel.theLoadingScreen.loadingLabel setNeedsDisplay];
                 facebookReady = YES;
             } else {
                 NSLog(@"-- error: %@",err);
@@ -382,6 +393,7 @@
         NSData *theData = [strResult dataUsingEncoding:NSUTF8StringEncoding];
         NSError *e;
         _WordpressPosts = [NSJSONSerialization JSONObjectWithData:theData options:kNilOptions error:&e];
+        self.status_update = @"SavoySwing.org Feed Loaded!";
         NSLog(@"Wordpress Feed Success!");
     }
     wordpressReady = YES;
@@ -437,6 +449,7 @@
                                           oldestTwitterID = [[statuses objectAtIndex:([statuses count]-1)] valueForKey:@"id"];
                                       }
                                       twitterReady = YES;
+                                      [theAppDel.theLoadingScreen changeLabelText:@"Twitter Feed Loaded!"];
                                       NSLog(@"Twitter Feed Success!");
                                   } errorBlock:^(NSError *error) {
                                       NSLog(@"-- error: %@", error);
@@ -481,6 +494,7 @@
                                                 oldestTwitterID = [[statuses objectAtIndex:([statuses count]-1)] valueForKey:@"id"];
                                             }
                                             twitterReady = YES;
+                                            [theAppDel.theLoadingScreen changeLabelText:@"Twitter Feed Loaded!"];
                                             NSLog(@"Twitter Feed Success!");
                                         } errorBlock:^(NSError *error) {
                                             NSLog(@"-- error with Timeline acquisition: %@", error);

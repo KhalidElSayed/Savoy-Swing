@@ -10,6 +10,7 @@
 
 @interface NewsFeedDetailViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
     NSInteger cellHeight;
+    UITapGestureRecognizer *tap;
 }
 
 @property (nonatomic, strong) NSString *post_title;

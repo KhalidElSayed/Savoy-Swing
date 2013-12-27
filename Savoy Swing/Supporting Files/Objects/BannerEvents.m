@@ -7,8 +7,11 @@
 //
 
 #import "BannerEvents.h"
+#import "SSCAppDelegate.h"
 
 @implementation BannerEvents
+
+static SSCAppDelegate *theAppDel;
 
 -(id) init {
     self = [super self];
@@ -16,11 +19,14 @@
         _allEvents = [[NSArray alloc] init];
         _indicesSorted = [[NSMutableArray alloc] init];
         _allEventImages = [[NSMutableDictionary alloc] init];
+        
+        theAppDel = [[UIApplication sharedApplication] delegate];
     }
     return self;
 }
 
 -(void) generateEvents {
+    NSLog(@"Accessing Banner Events Loaded");
     NSString *strURL = @"http://www.savoyswing.org/wp-content/plugins/ssc_iphone_app/lib/processMobileApp.php?appSend&allBanners";
     NSData *dataURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:strURL]];
     NSString *strResult = [[NSString alloc] initWithData:dataURL encoding:NSUTF8StringEncoding];
@@ -33,6 +39,9 @@
 }
 
 -(void) loadImagesToMemory {
+    NSLog(@"Loading Banner Events to Memory");
+    [theAppDel.theLoadingScreen changeLabelText:@"Saving Events to Memory"];
+    NSInteger counter = 1;
     for (NSInteger i = 0;i<[_allEvents count];i++ ){
         for (NSInteger j = 0;j<[[_allEvents objectAtIndex:i] count];j++ ){
             NSDictionary *thisEvent = [[_allEvents objectAtIndex:i] objectAtIndex:j];
@@ -41,9 +50,13 @@
                 UIImage *theImage = [UIImage imageWithData: dataFromURL];
                 NSString *thisKey = [thisEvent objectForKey:@"post_id"];
                 [_allEventImages setObject:theImage forKey:thisKey];
+                
+                [theAppDel.theLoadingScreen changeLabelText:[NSString stringWithFormat:@"Loaded %d Events to Memory",counter]];
+                counter++;
             }
         }
     }
+    NSLog(@"Banner Events Loaded");
 }
 
 -(NSArray*) getWeeklyBanners {

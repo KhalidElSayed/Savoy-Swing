@@ -19,8 +19,6 @@
     
     //preloading image
     UIImageView *loaderImageView;
-    UILabel *loadingLabel;
-    UIActivityIndicatorView *imageIndicator;
     
     //news loading
     BOOL loadingFromMemory;
@@ -40,18 +38,15 @@
 @property (nonatomic, retain) UITableViewCell *imageSlider;
 @property (nonatomic, retain) UITableViewCell *BasicCell;
 
-//preloading image
-@property (strong)  NSTimer *loadingScreenText;
-
 //convert to NewsFeed Class
 @property (nonatomic, strong) NSArray *TwitterStatuses;
 @property (nonatomic, strong) NSArray *FacebookPosts;
 @property (strong)  NSTimer *sortCellLoader;
 @property (strong)  NSTimer *tweetLoader;
+@property (strong)  NSTimer *finalizedTimer;
 
 //the methods
 -(void) startLoading;
--(void) updateLoadingScreen;
 -(void) finalizeFeed;
 -(BOOL) listByRows;
 -(NSInteger) rowsOrSectionsReturn: (NSIndexPath*) indexPath;

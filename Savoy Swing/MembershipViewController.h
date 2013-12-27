@@ -7,11 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SSCAppDelegate.h"
+#import "RequiredLoginViewController.h"
 
-@interface MembershipViewController : UIViewController {
-    SSCAppDelegate *theAppDel;
-    UIView *membershipCardView;
-}
+@interface MembershipViewController : RequiredLoginViewController <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *logout_button;
+@property (strong, nonatomic) NSArray *sectionNames;
+@property (strong, nonatomic) NSArray *contentForRow;
+@property (strong, nonatomic) IBOutlet UITableView *theTableView;
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+
+@end
+
+@interface MembershipInfoTableCell : UITableViewCell
+
 
 @end

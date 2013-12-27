@@ -42,7 +42,7 @@
 @property (strong,nonatomic) NSMutableDictionary *specificDateEvents;
 
 //load indicator
-@property (strong, nonatomic) UIActivityIndicatorView *cellIndicator;
+@property (strong, nonatomic) NSMutableDictionary *cellIndicators;
 
 
 -(void) startLoading;

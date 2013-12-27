@@ -42,6 +42,10 @@
     
     
     [postTableView reloadData];
+    
+    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -61,7 +65,6 @@
     
     postTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
 }
-
 
 -(void) sharePost {
     NSArray *itemsToShare = @[message];

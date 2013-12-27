@@ -9,7 +9,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "HomeViewController.h"
-#import "SWRevealViewController.h"
+#import "SSCRevealViewController.h"
 
 @interface HomeViewController ()
 

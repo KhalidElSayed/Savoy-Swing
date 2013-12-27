@@ -7,7 +7,7 @@
 //
 
 #import "SSC-SBTableViewController.h"
-#import "SWRevealViewController.h"
+#import "SSCRevealViewController.h"
 #import "MasterNavViewController.h"
 #import "SSCAppDelegate.h"
 
@@ -41,14 +41,18 @@
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.3f alpha:0.5f];
     self.tableView.separatorColor = [UIColor colorWithWhite:0.15f alpha:0.4f];
     
-    _menuItems = @[@"menu_title",@"home",@"news",@"about",@"calendar",@"special",@"get-involved",@"blank",@"account",@"membership",@"logout"];
     
-    //NSLog(@"%@",_menuItems);
+    _menuItems = @[@"menu_title",@"home",@"news",@"about",@"calendar",@"special",@"get-involved",@"feedback",@"blank",@"membership",@"account"];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    self.selectedIndex = indexPath;
+    [self.tableView reloadData];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -61,7 +65,16 @@
     NSString *cellIdentifier = [self.menuItems objectAtIndex:indexPath.row];
     [tableView cellForRowAtIndexPath:indexPath].backgroundColor = [UIColor colorWithWhite:0.2f alpha:1.0f];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-    
+    if ((self.selectedIndex == nil) && indexPath.row > 0) {
+        self.selectedIndex = indexPath;
+    }
+    if ( indexPath.row == 0 ) {
+        cell.backgroundColor = [UIColor colorWithWhite:0.2f alpha:0.5f];
+    } else if (self.selectedIndex.row == indexPath.row) {
+        cell.backgroundColor = [UIColor colorWithWhite:1 alpha:.1];
+    } else {
+        cell.backgroundColor = [UIColor clearColor];
+    }
     return cell;
 }
 

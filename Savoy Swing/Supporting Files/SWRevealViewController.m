@@ -26,7 +26,6 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import <UIKit/UIGestureRecognizerSubclass.h>
-#import "MasterNavViewController.h"
 #import "SWRevealViewController.h"
 
 #pragma mark - SWDirectionPanGestureRecognizer
@@ -577,30 +576,6 @@ static NSString * const SWSegueRightIdentifier = @"sw_right";
     // and resume it back to the previous state, it is possible to override this behaviour by
     // intercepting it on the panGestureBegan and panGestureEnded delegates
     _userInteractionStore = _contentView.userInteractionEnabled;
-}
-
-- (BOOL)shouldAutorotate {
-    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-    MasterNavViewController *nav;
-    if ([self.frontViewController isKindOfClass:[MasterNavViewController class]] ) {
-        nav = (MasterNavViewController*)self.frontViewController;
-    }
-    if ((orientation == UIInterfaceOrientationLandscapeLeft ||
-         orientation == UIInterfaceOrientationLandscapeRight) &&
-        [nav.topViewController.title isEqualToString: @"Membership" ]) {
-        [nav.topViewController.view removeGestureRecognizer:self.panGestureRecognizer];
-        return YES;
-    }
-    if (orientation==UIInterfaceOrientationPortrait) {
-        [nav.topViewController.view addGestureRecognizer:self.panGestureRecognizer];
-        return YES;
-    }
-    return NO;
-}
-
-- (NSUInteger)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationMaskAll;
 }
 
 // Support for earlier than iOS 6.0

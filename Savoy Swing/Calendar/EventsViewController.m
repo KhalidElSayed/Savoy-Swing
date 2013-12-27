@@ -95,7 +95,7 @@
     main_text.numberOfLines = 0;
     main_text.text = [thisEvent objectForKey:@"post_text"];
     [main_text sizeToFit];
-    return 150+main_text.frame.size.height;
+    return 160+main_text.frame.size.height;
 }
 
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
@@ -108,6 +108,7 @@
 
 -(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     CalendarTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventCell" forIndexPath:indexPath];
+    [self removePreviousCellInfoFromView:cell];
     NSDictionary *thisEvent = [_allEvents objectAtIndex:indexPath.section];
     
     float height = cell.frame.size.width/283.5f*60.0f;
