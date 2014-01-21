@@ -11,25 +11,40 @@
 #import "NewsFeedFooterView.h"
 #import "NewsFeedHeaderView.h"
 
+@interface NewsFeedTableViewController() {
+    SSCAppDelegate *theAppDel;
+    
+    //preloading image
+    UIImageView *loaderImageView;
+    
+    //news loading
+    BOOL loadingFromMemory;
+}
+
+@property (strong, retain) NewsFeedSettingsViewController *newsSettings;
+@property (strong, nonatomic) NewsFeedDetailViewController *detailView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *newsSettingsButton;
+@property (strong, nonatomic) UIImageView *home_background;
+@property (strong,retain) NSMutableArray *imageArr;
+@property (nonatomic) CGFloat basicCellHeight;
+@property (strong)  NSTimer *refreshImage;
+@property (strong)  NSTimer *detectData;
+@property (nonatomic, strong) NSMutableArray *allData;
+@property (nonatomic, strong) NSMutableArray *archivedData;
+@property (nonatomic, retain) UITableViewCell *imageSlider;
+@property (nonatomic, retain) UITableViewCell *BasicCell;
+@property BOOL startTableCells;
+
+@property (nonatomic, strong) NSArray *TwitterStatuses;
+@property (nonatomic, strong) NSArray *FacebookPosts;
+@property (strong)  NSTimer *sortCellLoader;
+@property (strong)  NSTimer *tweetLoader;
+@property (strong)  NSTimer *finalizedTimer;
+
+@end
+
 @implementation NewsFeedTableViewController
-
-@synthesize home_background;
-@synthesize imageArr;
-@synthesize basicCellHeight;
-@synthesize newsSettings;
-@synthesize detailView;
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
- *
- *
- *      ///////////////////////////// View listeners
- *
- *
- */
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
 
 - (void)viewDidLoad
 {
@@ -42,6 +57,9 @@
     [self.view addSubview:backImageView];
     
     [super viewDidLoad];
+    
+    self.startTableCells = NO;
+    
     //basic Cell Height
     self.basicCellHeight = 240.0f;
     
@@ -56,6 +74,9 @@
     self.navigationItem.titleView = label;
     label.text = NSLocalizedString(@"News Feed", @"");
     [label sizeToFit];
+    
+    self.tableView.backgroundColor = [UIColor clearColor];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     
     // set the custom view for "pull to refresh". See DemoTableHeaderView.xib.
@@ -76,10 +97,8 @@
     // set the generic table cell
     nib = [[NSBundle mainBundle] loadNibNamed:@"NewsFeedEmptyCell" owner:self options:nil];
     _BasicCell =[nib objectAtIndex:0];
-    
-    self.tableView.backgroundColor = [UIColor clearColor];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+    //put graphic image for loading graphic
+    self.navigationController.navigationBarHidden = YES;
     
     // Set the side bar button action. When it's tapped, it'll show up the sidebar.
     _sidebarButton.tintColor = [UIColor whiteColor];
@@ -100,15 +119,6 @@
 
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-}
-
-
-
--(void) viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    //put graphic image for loading graphic
-    self.navigationController.navigationBarHidden = YES;
-    
     theAppDel.theLoadingScreen = [[loadingScreenImageView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:theAppDel.theLoadingScreen];
     [theAppDel.theLoadingScreen changeLabelText:@"Compiling News Data"];
@@ -117,14 +127,12 @@
 }
 
 
--(void) startLoading {
-    loadingFromMemory = NO;
-    _detectData = [NSTimer scheduledTimerWithTimeInterval:100.0 target:self selector:@selector(newNewsPostDetected) userInfo:nil repeats:YES];
-    self.finalizedTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(finalizeFeed) userInfo:nil repeats:YES];
-}
 
--(void) viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
+-(void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    self.startTableCells = YES;
+    [self.tableView reloadData];
 }
 
 
@@ -140,18 +148,26 @@
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
- *
- *
- *      ///////////////////////////// General Feed Methods
- *
- *
- */
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
+-(void) returnToNewsFeedDetail:(id)sender {
+    [self.detailView dismissViewControllerAnimated:YES completion:nil];
+}
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark -
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-(void) startLoading {
+    if (!theAppDel.facebookAccount)
+        [theAppDel getFacebookAccount];
+    
+    loadingFromMemory = NO;
+    _detectData = [NSTimer scheduledTimerWithTimeInterval:100.0 target:self selector:@selector(newNewsPostDetected) userInfo:nil repeats:YES];
+    self.finalizedTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(finalizeFeed) userInfo:nil repeats:YES];
+}
 
 -(void) finalizeFeed {
     if ([theAppDel.theFeed allDone]) {
@@ -194,19 +210,118 @@
 }
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
- *
- *
- *      ///////////////////////////// Pull To Refresh
- *
- *
- *
- */
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
+-(void)loadImages {
+    //setup image
+    if (self.imageArr == nil ) {
+        self.imageArr = theAppDel.imageArr;
+        
+        if ( [self.imageArr count] != 0 ) {
+            NSInteger indexArr = 0;
+            self.home_background.image = [self.imageArr objectAtIndex:indexArr];
+            indexArr++;
+            NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+            
+            if (standardUserDefaults) {
+                [standardUserDefaults setObject:[NSNumber numberWithInt:(int)indexArr] forKey:@"indexArr"];
+                [standardUserDefaults synchronize];
+            }
+        }
+        CATransition *transition = [CATransition animation];
+        transition.duration = 0.66f;
+        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        transition.type = kCATransitionFade;
+        transition.delegate = self;
+        [self.home_background.layer addAnimation:transition forKey:nil];
+    }
+}
+
+
+-(void)loadImagesFromWeb {
+    //setup image
+    if (self.imageArr == nil ) {
+        self.imageArr = [[NSMutableArray alloc]  init];
+        // GET information (update to POST if possible)
+        NSString *strURL = [NSString stringWithFormat:@"http://www.savoyswing.org/wp-content/plugins/ssc_iphone_app/lib/processMobileApp.php?appSend&sliders"];
+        NSData *dataURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:strURL]];
+        NSString *strResult = [[NSString alloc] initWithData:dataURL encoding:NSUTF8StringEncoding];
+        NSData *theData = [strResult dataUsingEncoding:NSUTF8StringEncoding];
+        NSError *e;
+        NSArray *imageStrArr = [NSJSONSerialization JSONObjectWithData:theData options:kNilOptions error:&e];
+        for (int i=1; i < [imageStrArr count]; i++ ){
+            if ( [strResult length] == 0 ) {
+                break;
+            } else {
+                UIImage *thisImage = [UIImage imageWithData: [NSData dataWithContentsOfURL:[NSURL URLWithString:[imageStrArr objectAtIndex:i]]]];
+                [self.imageArr addObject:thisImage];
+            }
+        }
+    }
+}
+
+
+-(void)switchImageView
+{
+    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    NSNumber *index = nil;
+    
+    if (standardUserDefaults)
+        index = [standardUserDefaults objectForKey:@"indexArr"];
+    
+    NSInteger indexArr = [index intValue];
+    
+    UIImage * toImage = [self.imageArr objectAtIndex:indexArr];
+    [UIView transitionWithView:self.view
+                      duration:0.33f
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{
+                        self.home_background.image = toImage;
+                    } completion:NULL];
+    indexArr++;
+    if ( indexArr == [self.imageArr count]) {
+        indexArr = 0;
+    }
+    [standardUserDefaults setObject:[NSNumber numberWithInt:(int)indexArr] forKey:@"indexArr"];
+    [standardUserDefaults synchronize];
+}
+
+
+-(void) showNewsSettings:(id)sender {
+    
+    //setup header title
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+    label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
+    label.textAlignment = NSTextAlignmentCenter;
+    // ^-Use UITextAlignmentCenter for older SDKs.
+    label.textColor = [UIColor whiteColor];
+    
+    label.text = NSLocalizedString(@"News Settings", @"");
+    [label sizeToFit];
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController: self.newsSettings];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    self.newsSettings.navigationItem.titleView = label;
+    UIColor *backgroundColor = [UIColor colorWithRed:235.0/255.0 green:119.0/255.0 blue:24.0/255.0 alpha:1.0];
+    self.newsSettings.navigationController.navigationBar.barTintColor = backgroundColor;
+    self.newsSettings.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.newsSettings.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"< News"  style:UIBarButtonItemStylePlain target:self action:@selector(returnToNewsFeedSettings:)];
+    
+    [[self navigationController] presentViewController:navigationController animated:YES completion:nil];;
+}
+
+-(void) returnToNewsFeedSettings:(id)sender {
+    [self.newsSettings dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void) removePreviousCellInfoFromView: (UITableViewCell*) cell {
+    for(UIView *view in cell.contentView.subviews){
+        if ([view isKindOfClass:[UIView class]]) {
+            [view removeFromSuperview];
+        }
+    }
+}
+
 #pragma mark - Pull to Refresh
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 - (void) pinHeaderView
 {
@@ -233,12 +348,18 @@
         hv.title.text = @"Pull down to refresh...";
 }
 
+-(void) refreshFacebookAccount {
+    [theAppDel.theFeed refreshFacebookFeed];
+}
+
 - (BOOL) refresh
 {
     if (![super refresh] || ![theAppDel hasConnectivity]) {
         [self refreshFailed];
         return NO;
     }
+    
+    [self performSelectorInBackground:@selector(refreshFacebookAccount) withObject:nil];
     [theAppDel.theFeed getUpdatedPosts:@"new"];
     [self performSelector:@selector(refreshCompleted) withObject:nil afterDelay:2.0];
     return YES;
@@ -258,8 +379,8 @@
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Load More
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 - (void) willBeginLoadingMore
 {
@@ -295,117 +416,10 @@
     */
     return NO;
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
- *
- *
- *      ///////////////////////////// Images Cell Methods
- *
- *
- *
- */
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
--(void)loadImages {
-    //setup image
-    if (self.imageArr == nil ) {
-        self.imageArr = theAppDel.imageArr;
-        
-        if ( [self.imageArr count] != 0 ) {
-            NSInteger indexArr = 0;
-            self.home_background.image = [imageArr objectAtIndex:indexArr];
-            indexArr++;
-            NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-            
-            if (standardUserDefaults) {
-                [standardUserDefaults setObject:[NSNumber numberWithInt:(int)indexArr] forKey:@"indexArr"];
-                [standardUserDefaults synchronize];
-            }
-        }
-        CATransition *transition = [CATransition animation];
-        transition.duration = 0.66f;
-        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-        transition.type = kCATransitionFade;
-        transition.delegate = self;
-        [self.home_background.layer addAnimation:transition forKey:nil];
-    }
-}
 
--(void)switchImageView
-{
-    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    NSNumber *index = nil;
-    
-    if (standardUserDefaults)
-        index = [standardUserDefaults objectForKey:@"indexArr"];
-    
-    NSInteger indexArr = [index intValue];
-    
-    UIImage * toImage = [self.imageArr objectAtIndex:indexArr];
-    [UIView transitionWithView:self.view
-                      duration:0.33f
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:^{
-                        self.home_background.image = toImage;
-                    } completion:NULL];
-    indexArr++;
-    if ( indexArr == [self.imageArr count]) {
-        indexArr = 0;
-    }
-    [standardUserDefaults setObject:[NSNumber numberWithInt:(int)indexArr] forKey:@"indexArr"];
-    [standardUserDefaults synchronize];
-}
 
+#pragma mark UITableViewDelegate
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
- *
- *
- *    ///////////////////////////// NEWS SETTINGS VIEW
- *
- *
- */
-
--(void) showNewsSettings:(id)sender {
-    
-    //setup header title
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-    label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
-    label.textAlignment = NSTextAlignmentCenter;
-    // ^-Use UITextAlignmentCenter for older SDKs.
-    label.textColor = [UIColor whiteColor];
-    
-    label.text = NSLocalizedString(@"News Settings", @"");
-    [label sizeToFit];
-    
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController: self.newsSettings];
-    navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-    self.newsSettings.navigationItem.titleView = label;
-    UIColor *backgroundColor = [UIColor colorWithRed:235.0/255.0 green:119.0/255.0 blue:24.0/255.0 alpha:1.0];
-    self.newsSettings.navigationController.navigationBar.barTintColor = backgroundColor;
-    self.newsSettings.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.newsSettings.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"< News"  style:UIBarButtonItemStylePlain target:self action:@selector(returnToNewsFeedSettings:)];
-
-    self.newsSettings.theAppDel = theAppDel;
-    
-    [[self navigationController] presentViewController:navigationController animated:YES completion:nil];;
-}
-
--(void) returnToNewsFeedSettings:(id)sender {
-    [self.newsSettings dismissViewControllerAnimated:YES completion:nil];
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
- *
- *
- *     ///////////////////////////// tableView Methods
- *
- *
- */
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row != 0) {
         //setup header title
@@ -438,6 +452,8 @@
         if (isFacebook) {
             self.detailView.post_type = @"Facebook";
             NSDictionary *fbPost = [theAppDel.theFeed.allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1];
+            self.detailView.theFeedData = fbPost;
+            
             name = [[fbPost valueForKeyPath:@"from"] valueForKey:@"name"];
 
             NSString *fbDate =[fbPost valueForKeyPath:@"created_time"];
@@ -461,13 +477,10 @@
             NSString *user_id = [[fbPost valueForKeyPath:@"from"] valueForKey:@"id"];;
             image_url = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=square",user_id];
             
-            if ( [fbPost valueForKey:@"likes"] ) {
-                NSInteger likeDataCount = [[[fbPost valueForKey:@"likes"] valueForKey:@"data"] count];
-                self.detailView.likeData = [[NSString alloc] initWithFormat:@"%d others liked this",likeDataCount];
-            }
         } else if (isTwitter) {
             self.detailView.post_type = @"Twitter";
             NSDictionary *status = [theAppDel.theFeed.allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1];
+            self.detailView.theFeedData = status;
             name = [NSString stringWithFormat:@"@%@:",[status valueForKeyPath:@"user.screen_name"]];
             
             NSString *twitterDate =[status valueForKeyPath:@"created_at"];
@@ -498,6 +511,8 @@
         } else if (isWordpress) {
             self.detailView.post_type = @"Wordpress";
             NSDictionary *post = [theAppDel.theFeed.allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1];
+            self.detailView.theFeedData = post;
+            
             name = [NSString stringWithFormat:@"%@",[post valueForKeyPath:@"post_title"]];
             
             NSString *postDate =[post valueForKeyPath:@"post_date"];
@@ -525,24 +540,14 @@
         
         UINavigationBar *bar = [self.navigationController navigationBar];
         [bar setTintColor:[UIColor whiteColor]];
-        
         [[self navigationController] pushViewController:self.detailView animated:YES];
     }
 }
 
--(void) returnToNewsFeedDetail:(id)sender {
-    [self.detailView dismissViewControllerAnimated:YES completion:nil];
-}
-
-
+#pragma mark UITableViewDataSource
+////////////////////////////////////////////////////////////////////////////////////////////////////
 -(BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath  {
     return YES;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -554,6 +559,8 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    if ( !self.startTableCells )
+        return 0;
     if ([self listByRows]) {
         return 1;
     } else {
@@ -568,6 +575,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if ( !self.startTableCells )
+        return 0;
+    
     if ([self listByRows]) {
         if (theAppDel.theFeed.allData) {
             return [theAppDel.theFeed.allData count];
@@ -576,14 +586,6 @@
         }
     } else {
         return 1;
-    }
-}
-
--(void) removePreviousCellInfoFromView: (UITableViewCell*) cell {
-    for(UIView *view in cell.contentView.subviews){
-        if ([view isKindOfClass:[UIView class]]) {
-            [view removeFromSuperview];
-        }
     }
 }
 

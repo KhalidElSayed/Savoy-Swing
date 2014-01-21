@@ -11,7 +11,6 @@
 @interface BannerEvents : NSObject
 
 @property (strong, nonatomic) NSArray *allEvents;
-@property (strong, nonatomic) NSMutableArray *indicesSorted;
 @property (strong, nonatomic) NSMutableDictionary *allEventImages;
 @property (strong, nonatomic) NSTimer *processDataRequest;
 
@@ -20,5 +19,6 @@
 -(NSArray*) getOtherFrequentBanners;
 -(NSArray*) getSpecificDateBanners;
 -(NSArray*) getSpecialBanners;
+-(void) loadImagesToMemory;
 
 @end

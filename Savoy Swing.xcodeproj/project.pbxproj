@@ -61,6 +61,7 @@
 		D295D5E61840DA6600D796C5 /* NewsFeedEmptyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D295D5E51840DA6600D796C5 /* NewsFeedEmptyCell.xib */; };
 		D296A6561839894600D35795 /* MasterNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D296A6551839894600D35795 /* MasterNavViewController.m */; };
 		D296A65C183994DA00D35795 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D296A65B183994DA00D35795 /* Storyboard.storyboard */; };
+		D29A2A50188F1970009FA15E /* NewsFeedTableModelController.m in Sources */ = {isa = PBXBuildFile; fileRef = D29A2A4F188F1970009FA15E /* NewsFeedTableModelController.m */; };
 		D29EF7771838B3540087B04F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29EF7761838B3540087B04F /* Foundation.framework */; };
 		D29EF7791838B3540087B04F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29EF7781838B3540087B04F /* CoreGraphics.framework */; };
 		D29EF77B1838B3540087B04F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29EF77A1838B3540087B04F /* UIKit.framework */; };
@@ -87,6 +88,7 @@
 		D2CCB7931858F4AE005DDF0E /* ssc_card_med_active.tif in Resources */ = {isa = PBXBuildFile; fileRef = D2CCB7911858F4AE005DDF0E /* ssc_card_med_active.tif */; };
 		D2CCB7941858F4AE005DDF0E /* ssc_card_med_inactive.tif in Resources */ = {isa = PBXBuildFile; fileRef = D2CCB7921858F4AE005DDF0E /* ssc_card_med_inactive.tif */; };
 		D2CCB79718590FCF005DDF0E /* CalendarTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2CCB79618590FCF005DDF0E /* CalendarTableViewCell.m */; };
+		D2D72E76186EA9B200C4B028 /* NotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2D72E75186EA9B200C4B028 /* NotificationView.xib */; };
 		D2D86610183ABBA9002B2575 /* AccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D8660F183ABBA9002B2575 /* AccountViewController.m */; };
 		D2E4814A1852B966008D19B8 /* STableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E481491852B966008D19B8 /* STableViewController.m */; };
 		D2E48190185306EB008D19B8 /* InitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E4818F185306EB008D19B8 /* InitialViewController.m */; };
@@ -190,6 +192,8 @@
 		D296A6541839894600D35795 /* MasterNavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterNavViewController.h; sourceTree = "<group>"; };
 		D296A6551839894600D35795 /* MasterNavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterNavViewController.m; sourceTree = "<group>"; };
 		D296A65B183994DA00D35795 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
+		D29A2A4E188F1970009FA15E /* NewsFeedTableModelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsFeedTableModelController.h; sourceTree = "<group>"; };
+		D29A2A4F188F1970009FA15E /* NewsFeedTableModelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsFeedTableModelController.m; sourceTree = "<group>"; };
 		D29EF7731838B3540087B04F /* Savoy Swing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Savoy Swing.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D29EF7761838B3540087B04F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D29EF7781838B3540087B04F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -229,6 +233,7 @@
 		D2CCB7921858F4AE005DDF0E /* ssc_card_med_inactive.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ssc_card_med_inactive.tif; path = Images/ssc_card_med_inactive.tif; sourceTree = "<group>"; };
 		D2CCB79518590FCF005DDF0E /* CalendarTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CalendarTableViewCell.h; path = Calendar/CalendarTableViewCell.h; sourceTree = "<group>"; };
 		D2CCB79618590FCF005DDF0E /* CalendarTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CalendarTableViewCell.m; path = Calendar/CalendarTableViewCell.m; sourceTree = "<group>"; };
+		D2D72E75186EA9B200C4B028 /* NotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationView.xib; sourceTree = "<group>"; };
 		D2D8660E183ABBA9002B2575 /* AccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountViewController.h; sourceTree = "<group>"; };
 		D2D8660F183ABBA9002B2575 /* AccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountViewController.m; sourceTree = "<group>"; };
 		D2E481481852B966008D19B8 /* STableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = STableViewController.h; path = "../Savoy Swing/STableViewController.h"; sourceTree = "<group>"; };
@@ -377,10 +382,26 @@
 				D2B4739D186AD3CA00C2BDE9 /* GetInvolvedViewController.m */,
 				D2B473A8186C523D00C2BDE9 /* FeedBackViewController.h */,
 				D2B473A9186C523D00C2BDE9 /* FeedBackViewController.m */,
-				D2B473AB186D189C00C2BDE9 /* NotificationView.h */,
-				D2B473AC186D189C00C2BDE9 /* NotificationView.m */,
 			);
 			name = "Main Navigation";
+			sourceTree = "<group>";
+		};
+		D29A2A4D188F18F0009FA15E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D29A2A4E188F1970009FA15E /* NewsFeedTableModelController.h */,
+				D29A2A4F188F1970009FA15E /* NewsFeedTableModelController.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		D29A2A51188F1982009FA15E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D2E481911857BBC2008D19B8 /* NewsFeedCell.h */,
+				D2E481921857BBC2008D19B8 /* NewsFeedCell.m */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 		D29EF76A1838B3540087B04F = {
@@ -437,10 +458,10 @@
 		D29EF77D1838B3540087B04F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D2BC7234186D3FC300326E6C /* loadingScreenImageView.h */,
-				D2BC7235186D3FC300326E6C /* loadingScreenImageView.m */,
-				D2B4739B186A833D00C2BDE9 /* SSC Reveal Controller */,
+				D2D72E78186EB0EE00C4B028 /* Loading Screen */,
+				D2D72E77186EB0DC00C4B028 /* NotificationView */,
 				D2B47396186A6B0300C2BDE9 /* RequiredLoginView */,
+				D2B4739B186A833D00C2BDE9 /* SSC Reveal Controller */,
 				D2F880CB185C149000CEFB6A /* HorizontalTableViewCell */,
 				D295D5D41840C96A00D796C5 /* STableViewController */,
 				D21210FF183FEF1100A2F349 /* STTwitter */,
@@ -572,14 +593,14 @@
 		D2BB47C9183B39E800EF80B8 /* News Feed */ = {
 			isa = PBXGroup;
 			children = (
+				D21210E8183FEEAE00A2F349 /* NewsFeedTableViewController.h */,
+				D21210E9183FEEAE00A2F349 /* NewsFeedTableViewController.m */,
+				D29A2A51188F1982009FA15E /* View */,
+				D29A2A4D188F18F0009FA15E /* Model */,
 				D21210E3183FEEAE00A2F349 /* NewsFeedSettingsViewController.h */,
 				D21210E4183FEEAE00A2F349 /* NewsFeedSettingsViewController.m */,
 				D27C29D61842920D000BD68B /* NewsFeedDetailViewController.h */,
 				D27C29D71842920D000BD68B /* NewsFeedDetailViewController.m */,
-				D21210E8183FEEAE00A2F349 /* NewsFeedTableViewController.h */,
-				D21210E9183FEEAE00A2F349 /* NewsFeedTableViewController.m */,
-				D2E481911857BBC2008D19B8 /* NewsFeedCell.h */,
-				D2E481921857BBC2008D19B8 /* NewsFeedCell.m */,
 				D295D5D81840C9AE00D796C5 /* pullToRefresh */,
 			);
 			name = "News Feed";
@@ -606,6 +627,25 @@
 				D266704F184AEB8200E8DDC9 /* EventsViewController.m */,
 			);
 			name = Calendar;
+			sourceTree = "<group>";
+		};
+		D2D72E77186EB0DC00C4B028 /* NotificationView */ = {
+			isa = PBXGroup;
+			children = (
+				D2D72E75186EA9B200C4B028 /* NotificationView.xib */,
+				D2B473AB186D189C00C2BDE9 /* NotificationView.h */,
+				D2B473AC186D189C00C2BDE9 /* NotificationView.m */,
+			);
+			name = NotificationView;
+			sourceTree = "<group>";
+		};
+		D2D72E78186EB0EE00C4B028 /* Loading Screen */ = {
+			isa = PBXGroup;
+			children = (
+				D2BC7234186D3FC300326E6C /* loadingScreenImageView.h */,
+				D2BC7235186D3FC300326E6C /* loadingScreenImageView.m */,
+			);
+			name = "Loading Screen";
 			sourceTree = "<group>";
 		};
 		D2D8661A183AD3D8002B2575 /* Classes */ = {
@@ -714,6 +754,7 @@
 				D2CCB7931858F4AE005DDF0E /* ssc_card_med_active.tif in Resources */,
 				D21210F5183FEEC700A2F349 /* menu@2x.png in Resources */,
 				D2BC723A186D762200326E6C /* google_stamp.png in Resources */,
+				D2D72E76186EA9B200C4B028 /* NotificationView.xib in Resources */,
 				D2B473A3186BF81C00C2BDE9 /* 002-210x300.jpg in Resources */,
 				D295D5E01840CAFB00D796C5 /* NewsFeedFooterView.xib in Resources */,
 				D21210B1183FEDB900A2F349 /* Default@2x.png in Resources */,
@@ -771,6 +812,7 @@
 				D2B4739E186AD3CB00C2BDE9 /* GetInvolvedViewController.m in Sources */,
 				D295D5E11840CAFB00D796C5 /* NewsFeedHeaderView.m in Sources */,
 				D2B473AA186C523D00C2BDE9 /* FeedBackViewController.m in Sources */,
+				D29A2A50188F1970009FA15E /* NewsFeedTableModelController.m in Sources */,
 				D2E4814A1852B966008D19B8 /* STableViewController.m in Sources */,
 				D2C53DBC185D00C600C37DD3 /* HorizontalTableViewCell.m in Sources */,
 				D252CE961847A69F00F29DAC /* AboutViewController.m in Sources */,
@@ -942,7 +984,7 @@
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1C5379C0-D76E-4886-93C9-9580B197E9A2";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "/Users/OmniGlot/Dropbox/Xcode\\ projects/Savoy\\ Swing/Savoy\\ Swing/Supporting\\ Files";
 				WRAPPER_EXTENSION = app;
@@ -971,7 +1013,7 @@
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1C5379C0-D76E-4886-93C9-9580B197E9A2";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "/Users/OmniGlot/Dropbox/Xcode\\ projects/Savoy\\ Swing/Savoy\\ Swing/Supporting\\ Files";
 				WRAPPER_EXTENSION = app;

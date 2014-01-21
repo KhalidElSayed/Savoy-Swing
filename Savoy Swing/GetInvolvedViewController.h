@@ -8,11 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GetInvolvedViewController : UIViewController <UITableViewDataSource, UITableViewDelegate> {
-    NSArray *identifierNames;
-    NSArray *cellLinks;
-}
-
-@property (strong, nonatomic) IBOutlet UITableView *theTableView;
+@interface GetInvolvedViewController : UIViewController 
 
 @end

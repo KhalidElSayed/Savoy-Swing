@@ -13,4 +13,6 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *noti_act_ind;
 @property (weak,nonatomic) IBOutlet UILabel *message;
 
+-(void) showNotificationView;
+-(void) hideNotificationView;
 @end

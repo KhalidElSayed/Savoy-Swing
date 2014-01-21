@@ -8,6 +8,11 @@
 
 #import "loadingScreenImageView.h"
 
+@interface loadingScreenImageView()
+
+
+@end
+
 @implementation loadingScreenImageView
 
 - (id)initWithFrame:(CGRect)frame
@@ -35,11 +40,13 @@
     return self;
 }
 
+#pragma mark -
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -(void) changeLabelText:(NSString*) text {
     self.loadingLabel.text = text;
     [self.loadingLabel sizeThatFits:CGSizeMake(self.frame.size.width, 50)];
     [self.loadingLabel setNeedsDisplay];
-    [[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2]];
+    [[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
 }
 
 -(void) startAnimating {

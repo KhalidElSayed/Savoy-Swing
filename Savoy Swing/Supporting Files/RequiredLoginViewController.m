@@ -9,7 +9,11 @@
 #import "RequiredLoginViewController.h"
 #import "SSCRevealViewController.h"
 
-@interface RequiredLoginViewController ()
+@interface RequiredLoginViewController ()  {
+    UIView *membershipCardView;
+}
+
+@property (strong, nonatomic) LoginLogoutViewController *loginController;
 
 @end
 
@@ -26,10 +30,6 @@
     membershipCardView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.7f];
 }
 
--(void) backToRevealToggle {
-    [self.revealViewController revealToggleAnimated:YES];
-}
-
 -(void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:YES];
     if ( ![self isLoggedIn] ){
@@ -41,6 +41,34 @@
             [self makeVoidCard];
         }
     }
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+-(void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration  {
+    if ( toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft ||
+        toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+        self.navigationController.navigationBar.hidden = YES;
+        //check if reveal occured and remove if so
+        
+        if ([self.revealViewController frontViewPosition] == FrontViewPositionRight) {
+            [self.revealViewController revealToggleAnimated:YES];
+        }
+        [self.view addSubview:membershipCardView];
+    } else if ( toInterfaceOrientation == UIInterfaceOrientationPortrait ) {
+        self.navigationController.navigationBar.hidden = NO;
+        [membershipCardView removeFromSuperview];
+    }
+}
+
+#pragma mark -
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-(void) backToRevealToggle {
+    [self.revealViewController revealToggleAnimated:YES];
 }
 
 -(void) sendToLoginPage {
@@ -91,22 +119,6 @@
     [membershipCardView addSubview:idLabel];
     [membershipCardView addSubview:exp_dateLabel];
     [membershipCardView addSubview:statusLabel];
-}
-
--(void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration  {
-    if ( toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft ||
-        toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-        self.navigationController.navigationBar.hidden = YES;
-        //check if reveal occured and remove if so
-        
-        if ([self.revealViewController frontViewPosition] == FrontViewPositionRight) {
-            [self.revealViewController revealToggleAnimated:YES];
-        }
-        [self.view addSubview:membershipCardView];
-    } else if ( toInterfaceOrientation == UIInterfaceOrientationPortrait ) {
-        self.navigationController.navigationBar.hidden = NO;
-        [membershipCardView removeFromSuperview];
-    }
 }
 
 

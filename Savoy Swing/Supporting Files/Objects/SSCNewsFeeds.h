@@ -8,40 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SSCNewsFeeds : NSObject {
-    
-    BOOL twitterReady;
-    BOOL facebookReady;
-    BOOL wordpressReady;
-    BOOL postsSorted;
-    BOOL dataReady;
-    
-    BOOL twitterActive;
-    BOOL wordpressActive;
-    BOOL facebookActive;
-
-    BOOL updateNewer;
-    BOOL updateOlder;
-    
-    NSString *newFacebookPostLink;
-    NSString *laterFacebookPostLink;
-    NSString *newestTwitterID;
-    NSString *oldestTwitterID;
-    
-    NSString *twitter_username;
-    NSString *tweet_list;
-    NSString *twitterConsumerName;
-    NSString *twitterConsumerKey;
-    NSString *twitterConsumerSecret;
-    NSString *twitterOathToken;
-    NSString *twitterOathTokenSecret;
-    
-    NSString *wordpress_urlToFeed;
-    
-    NSString *facebook_username;
-    NSString *facebookClient_id;
-    NSString *facebookClient_secret;
-}
+@interface SSCNewsFeeds : NSObject 
 
 @property (strong, nonatomic) NSString *status_update;
 @property (nonatomic, strong) NSArray *TwitterStatuses;
@@ -53,9 +20,15 @@
 @property (strong, nonatomic) NSMutableArray *allData;
 @property (strong, nonatomic) NSMutableArray *archivedData;
 
+@property (strong, nonatomic) NSString *facebookAccess_Token;
+@property (strong, nonatomic) NSMutableDictionary *facebookTrackedIndices;
+@property (strong, nonatomic) NSString *facebookFeedURL;
+
 -(void) addTwitterFeed: (NSString*) username andTweetList: (NSString*) tweetList andParams: (NSArray*) params;
 -(void) addWordpressFeed: (NSString *) urlToFeed;
 -(void) addFacebookFeed: (NSString *) username andParams: (NSArray*) params;
+-(NSDictionary*) refreshFacebookFeedAndReturnPostForID: (NSString *) facebookID;
+-(void) refreshFacebookFeed;
 -(BOOL) hasFeeds;
 -(BOOL) postsReady;
 -(BOOL) allDone;

@@ -10,6 +10,4 @@
 
 @interface SSC_SBTableViewController : UITableViewController
 
-@property (strong,nonatomic) NSIndexPath *selectedIndex;
-
 @end

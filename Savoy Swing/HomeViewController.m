@@ -11,7 +11,16 @@
 #import "HomeViewController.h"
 #import "SSCRevealViewController.h"
 
-@interface HomeViewController ()
+@interface HomeViewController ()  <UITableViewDelegate, UITableViewDataSource> {
+    SSCAppDelegate *theAppDel;
+    UIActivityIndicatorView *first_news_loading;
+}
+
+@property (strong, nonatomic) NewsFeedDetailViewController *detailView;
+@property (weak, nonatomic) IBOutlet UIButton *fullSite;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
+@property (weak, nonatomic) IBOutlet HomeView *Home_info_view;
+@property (strong, nonatomic) NSTimer *singleNewsTimer;
 
 @end
 
@@ -76,7 +85,14 @@
     [_singleNewsTimer invalidate];
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
 
+#pragma mark -
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -(void) openFullSite {
     NSString *theURL = @"https://www.savoyswing.org";
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:theURL]];
@@ -91,17 +107,12 @@
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
--(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {
-    if (indexPath.section ==0 && indexPath.row   == 0 ) {
-        return 100.0f;
-    } else if (indexPath.section ==0 && indexPath.row == 1 ){
-        return 33.0f;
-    }
-    return 0.0f;
+-(void) returnToNewsFeedDetail:(id)sender {
+    [self.detailView dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark UITableViewDataSource
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
@@ -111,133 +122,14 @@
 }
 
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0 && indexPath.section == 0){
-        //setup header title
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-        label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
-        label.textAlignment = NSTextAlignmentCenter;
-        // ^-Use UITextAlignmentCenter for older SDKs.
-        label.textColor = [UIColor whiteColor];
-        
-        label.text = NSLocalizedString(@"News Post", @"");
-        [label sizeToFit];
-        
-        [tableView deselectRowAtIndexPath:indexPath animated:TRUE];
-        
-        BOOL isFacebook = NO;
-        BOOL isTwitter = NO;
-        BOOL isWordpress = NO;
-        NSString *name;
-        NSString *date;
-        NSString *message;
-        NSString *image_url;
-        
-        if ( [[theAppDel.theFeed.allData objectAtIndex:indexPath.row] objectForKey:@"created_at"]) {
-            isTwitter = YES;
-        } else if ( [[theAppDel.theFeed.allData objectAtIndex:indexPath.row] objectForKey:@"created_time"]) {
-            isFacebook = YES;
-        } else if ( [[theAppDel.theFeed.allData objectAtIndex:indexPath.row] objectForKey:@"post_date"]) {
-            isWordpress = YES;
-        }
-        //NSLog(@"%@", [theAppDel.theFeed.allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1]);
-        if (isFacebook) {
-            self.detailView.post_type = @"Facebook";
-            NSDictionary *fbPost = [theAppDel.theFeed.allData objectAtIndex:indexPath.row];
-            name = [[fbPost valueForKeyPath:@"from"] valueForKey:@"name"];
-            
-            NSString *fbDate =[fbPost valueForKeyPath:@"created_time"];
-            
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
-            NSDate *thisDate = [dateFormatter dateFromString:fbDate];
-            [dateFormatter setDateFormat:@"E MMM, d yyyy hh:mm"];
-            NSString *thisDateText = [dateFormatter stringFromDate:thisDate];
-            date = thisDateText;
-            
-            message =[fbPost valueForKeyPath:@"message"];
-            NSRange foundRange = [message rangeOfString:@"\n"];
-            if (foundRange.location != NSNotFound) {
-                message = [message stringByReplacingOccurrencesOfString:@"\n"
-                                                             withString:@""
-                                                                options:0
-                                                                  range:foundRange];
-            }
-            
-            NSString *user_id = [[fbPost valueForKeyPath:@"from"] valueForKey:@"id"];;
-            image_url = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=square",user_id];
-            
-            if ( [fbPost valueForKey:@"likes"] ) {
-                NSInteger likeDataCount = [[[fbPost valueForKey:@"likes"] valueForKey:@"data"] count];
-                self.detailView.likeData = [[NSString alloc] initWithFormat:@"%d others liked this",likeDataCount];
-            }
-        } else if (isTwitter) {
-            self.detailView.post_type = @"Twitter";
-            NSDictionary *status = [theAppDel.theFeed.allData objectAtIndex:indexPath.row];
-            name = [NSString stringWithFormat:@"@%@:",[status valueForKeyPath:@"user.screen_name"]];
-            
-            NSString *twitterDate =[status valueForKeyPath:@"created_at"];
-        
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"E MMM d HH:mm:ss +0000 yyyy"];
-            NSDate *thisDate = [dateFormatter dateFromString:twitterDate];
-            NSTimeInterval secondsInEightHours = -8 * 60 * 60;
-            thisDate = [thisDate dateByAddingTimeInterval:secondsInEightHours];
-            [dateFormatter setDateFormat:@"E MMM, d yyyy hh:mm"];
-            NSString *thisDateText = [dateFormatter stringFromDate:thisDate];
-            date = thisDateText;
-            
-            message =[status valueForKeyPath:@"text"];
-            NSRange foundRange = [message rangeOfString:@"\n"];
-            if (foundRange.location != NSNotFound) {
-                message = [message stringByReplacingOccurrencesOfString:@"\n"
-                                                             withString:@""
-                                                                options:0
-                                                                  range:foundRange];
-            }
-            
-            if ([status valueForKey:@"retweeted_status"]) {
-                image_url = [status valueForKeyPath:@"retweeted_status.user.profile_image_url"];
-            } else {
-                image_url = [status valueForKeyPath:@"user.profile_image_url"];
-            }
-        } else if (isWordpress) {
-            self.detailView.post_type = @"Wordpress";
-            NSDictionary *post = [theAppDel.theFeed.allData objectAtIndex:indexPath.row];
-            name = [NSString stringWithFormat:@"%@",[post valueForKeyPath:@"post_title"]];
-            
-            NSString *postDate =[post valueForKeyPath:@"post_date"];
-            
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-            NSDate *thisDate = [dateFormatter dateFromString:postDate];
-            [dateFormatter setDateFormat:@"E MMM, d yyyy hh:mm"];
-            NSString *thisDateText = [dateFormatter stringFromDate:thisDate];
-            date = thisDateText;
-            
-            message =[post valueForKeyPath:@"post_content"];
-            image_url = @"https://www.savoyswing.org/wp-content/uploads/2011/10/300683_10150309277453001_136441543000_8193471_1958483267_n-150x150.jpg";
-        }
-        self.detailView.image_url = image_url;
-        self.detailView.post_title = name;
-        self.detailView.date_display = date;
-        self.detailView.message = message;
-        
-        
-        self.detailView.navigationItem.titleView = label;
-        UIColor *backgroundColor = [UIColor colorWithRed:235.0/255.0 green:119.0/255.0 blue:24.0/255.0 alpha:1.0];
-        self.detailView.navigationController.navigationBar.barTintColor = backgroundColor;
-        self.detailView.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        
-        [[self navigationController] pushViewController:self.detailView animated:YES];
+-(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {
+    if (indexPath.section ==0 && indexPath.row   == 0 ) {
+        return 100.0f;
+    } else if (indexPath.section ==0 && indexPath.row == 1 ){
+        return 33.0f;
     }
+    return 0.0f;
 }
-
--(void) returnToNewsFeedDetail:(id)sender {
-    [self.detailView dismissViewControllerAnimated:YES completion:nil];
-}
-
-
 
 -(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     theAppDel = (SSCAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -275,12 +167,138 @@
     return cell;
 }
 
+
+#pragma mark UITableViewDelegate
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == 0 && indexPath.section == 0){
+        //setup header title
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+        label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
+        label.textAlignment = NSTextAlignmentCenter;
+        // ^-Use UITextAlignmentCenter for older SDKs.
+        label.textColor = [UIColor whiteColor];
+        
+        label.text = NSLocalizedString(@"News Post", @"");
+        [label sizeToFit];
+        
+        [tableView deselectRowAtIndexPath:indexPath animated:TRUE];
+        
+        BOOL isFacebook = NO;
+        BOOL isTwitter = NO;
+        BOOL isWordpress = NO;
+        NSString *name;
+        NSString *date;
+        NSString *message;
+        NSString *image_url;
+        
+        if ( [[theAppDel.theFeed.allData objectAtIndex:indexPath.row] objectForKey:@"created_at"]) {
+            isTwitter = YES;
+        } else if ( [[theAppDel.theFeed.allData objectAtIndex:indexPath.row] objectForKey:@"created_time"]) {
+            isFacebook = YES;
+        } else if ( [[theAppDel.theFeed.allData objectAtIndex:indexPath.row] objectForKey:@"post_date"]) {
+            isWordpress = YES;
+        }
+        //NSLog(@"%@", [theAppDel.theFeed.allData objectAtIndex:[self rowsOrSectionsReturn:indexPath]-1]);
+        if (isFacebook) {
+            self.detailView.post_type = @"Facebook";
+            NSDictionary *fbPost = [theAppDel.theFeed.allData objectAtIndex:indexPath.row];
+            self.detailView.theFeedData = fbPost;
+            
+            name = [[fbPost valueForKeyPath:@"from"] valueForKey:@"name"];
+            
+            NSString *fbDate =[fbPost valueForKeyPath:@"created_time"];
+            
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
+            NSDate *thisDate = [dateFormatter dateFromString:fbDate];
+            [dateFormatter setDateFormat:@"E MMM, d yyyy hh:mm"];
+            NSString *thisDateText = [dateFormatter stringFromDate:thisDate];
+            date = thisDateText;
+            
+            message =[fbPost valueForKeyPath:@"message"];
+            NSRange foundRange = [message rangeOfString:@"\n"];
+            if (foundRange.location != NSNotFound) {
+                message = [message stringByReplacingOccurrencesOfString:@"\n"
+                                                             withString:@""
+                                                                options:0
+                                                                  range:foundRange];
+            }
+            
+            NSString *user_id = [[fbPost valueForKeyPath:@"from"] valueForKey:@"id"];;
+            image_url = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=square",user_id];
+            
+        } else if (isTwitter) {
+            self.detailView.post_type = @"Twitter";
+            NSDictionary *status = [theAppDel.theFeed.allData objectAtIndex:indexPath.row];
+            self.detailView.theFeedData = status;
+            
+            name = [NSString stringWithFormat:@"@%@:",[status valueForKeyPath:@"user.screen_name"]];
+            
+            NSString *twitterDate =[status valueForKeyPath:@"created_at"];
+            
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"E MMM d HH:mm:ss +0000 yyyy"];
+            NSDate *thisDate = [dateFormatter dateFromString:twitterDate];
+            NSTimeInterval secondsInEightHours = -8 * 60 * 60;
+            thisDate = [thisDate dateByAddingTimeInterval:secondsInEightHours];
+            [dateFormatter setDateFormat:@"E MMM, d yyyy hh:mm"];
+            NSString *thisDateText = [dateFormatter stringFromDate:thisDate];
+            date = thisDateText;
+            
+            message =[status valueForKeyPath:@"text"];
+            NSRange foundRange = [message rangeOfString:@"\n"];
+            if (foundRange.location != NSNotFound) {
+                message = [message stringByReplacingOccurrencesOfString:@"\n"
+                                                             withString:@""
+                                                                options:0
+                                                                  range:foundRange];
+            }
+            
+            if ([status valueForKey:@"retweeted_status"]) {
+                image_url = [status valueForKeyPath:@"retweeted_status.user.profile_image_url"];
+            } else {
+                image_url = [status valueForKeyPath:@"user.profile_image_url"];
+            }
+        } else if (isWordpress) {
+            self.detailView.post_type = @"Wordpress";
+            
+            NSDictionary *post = [theAppDel.theFeed.allData objectAtIndex:indexPath.row];
+            self.detailView.theFeedData = post;
+            
+            name = [NSString stringWithFormat:@"%@",[post valueForKeyPath:@"post_title"]];
+            
+            NSString *postDate =[post valueForKeyPath:@"post_date"];
+            
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+            NSDate *thisDate = [dateFormatter dateFromString:postDate];
+            [dateFormatter setDateFormat:@"E MMM, d yyyy hh:mm"];
+            NSString *thisDateText = [dateFormatter stringFromDate:thisDate];
+            date = thisDateText;
+            
+            message =[post valueForKeyPath:@"post_content"];
+            image_url = @"https://www.savoyswing.org/wp-content/uploads/2011/10/300683_10150309277453001_136441543000_8193471_1958483267_n-150x150.jpg";
+        }
+        self.detailView.image_url = image_url;
+        self.detailView.post_title = name;
+        self.detailView.date_display = date;
+        self.detailView.message = message;
+        
+        
+        self.detailView.navigationItem.titleView = label;
+        UIColor *backgroundColor = [UIColor colorWithRed:235.0/255.0 green:119.0/255.0 blue:24.0/255.0 alpha:1.0];
+        self.detailView.navigationController.navigationBar.barTintColor = backgroundColor;
+        self.detailView.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        [[self navigationController] pushViewController:self.detailView animated:YES];
+    }
+}
+
 @end
 
-
+#pragma mark - Home UIView
 
 @implementation HomeView
-
-
 
 @end

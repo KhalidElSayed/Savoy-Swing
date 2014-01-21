@@ -9,21 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "SSCAppDelegate.h"
 
-@interface EventsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
-    SSCAppDelegate *theAppDel;
-    NSMutableDictionary *theImages;
-    
-    //preloading image
-    UIView *preloaderView;
-    UIImageView *loaderImageView;
-    UILabel *loadingLabel;
-    UIActivityIndicatorView *imageIndicator;
-}
-
-@property (strong, nonatomic) IBOutlet UITableView *theTableView;
-@property (strong)  NSTimer *loadingScreenText;
-@property (strong, nonatomic) NSArray *allEvents;
-
--(void) startLoading;
+@interface EventsViewController : UIViewController 
 
 @end

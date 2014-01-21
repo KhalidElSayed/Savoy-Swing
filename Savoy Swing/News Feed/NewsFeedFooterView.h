@@ -7,13 +7,9 @@
 #import <UIKit/UIKit.h>
 
 
-@interface NewsFeedFooterView : UIView {
-    
-  UIActivityIndicatorView *activityIndicator;
-  UILabel *infoLabel;
-}
+@interface NewsFeedFooterView : UIView 
 
-@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *activityIndicator;
-@property (nonatomic, retain) IBOutlet UILabel *infoLabel;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, weak) IBOutlet UILabel *infoLabel;
 
 @end

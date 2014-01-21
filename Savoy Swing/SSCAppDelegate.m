@@ -8,10 +8,16 @@
 
 #import "SSCAppDelegate.h"
 #import "TestFlight.h"
-#import "SSCData.h"
 #import <sys/socket.h>
 #import <netinet/in.h>
 #import <SystemConfiguration/SystemConfiguration.h>
+#import <Social/Social.h>
+
+@interface SSCAppDelegate() {
+    NSTimer *reloadDataTimer;
+}
+
+@end
 
 @implementation SSCAppDelegate
 
@@ -34,7 +40,7 @@
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-    [reloadDataTimer invalidate];
+    //[reloadDataTimer invalidate];
     
 }
 
@@ -42,14 +48,16 @@
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    [reloadDataTimer invalidate];
+    //[reloadDataTimer invalidate];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    [self retrieveNewData];
-    reloadDataTimer = [NSTimer scheduledTimerWithTimeInterval:300 target:self selector:@selector(retrieveNewData) userInfo:nil repeats:YES];
+    self.facebookUserID = nil;
+    if (self.facebookAccount) {
+        [self refreshFacebookAccount];    }
+    //reloadDataTimer = [NSTimer scheduledTimerWithTimeInterval:300 target:self selector:@selector(retrieveNewData) userInfo:nil repeats:YES];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -98,7 +106,7 @@
 }
 
 -(void) retrieveDataTimer {
-    reloadDataTimer = [NSTimer scheduledTimerWithTimeInterval:300 target:self selector:@selector(retrieveNewData) userInfo:nil repeats:YES];
+    //reloadDataTimer = [NSTimer scheduledTimerWithTimeInterval:300 target:self selector:@selector(retrieveNewData) userInfo:nil repeats:YES];
 }
 
 -(void) retrieveNewData {
@@ -106,6 +114,9 @@
         NSLog(@"detecting new news feeds...");
         NSInteger prevCount = [_theFeed.allData count];
         [_theFeed getUpdatedPosts:@"new"];
+        if (self.facebookAccount) {
+            [self refreshFacebookAccount];
+        }
         NSInteger nextCount = [_theFeed.allData count];
         if (nextCount > prevCount) {
             _containsNewData = YES;
@@ -176,27 +187,139 @@
     return NO;
 }
 
--(void)loadImages {
-    //setup image
-    if (self.imageArr == nil ) {
-        self.imageArr = [[NSMutableArray alloc]  init];
-        // GET information (update to POST if possible)
-        NSString *strURL = [NSString stringWithFormat:@"http://www.savoyswing.org/wp-content/plugins/ssc_iphone_app/lib/processMobileApp.php?appSend&sliders"];
-        NSData *dataURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:strURL]];
-        NSString *strResult = [[NSString alloc] initWithData:dataURL encoding:NSUTF8StringEncoding];
-        NSData *theData = [strResult dataUsingEncoding:NSUTF8StringEncoding];
-        NSError *e;
-        NSArray *imageStrArr = [NSJSONSerialization JSONObjectWithData:theData options:kNilOptions error:&e];
-        for (int i=1; i < [imageStrArr count]; i++ ){
-            if ( [strResult length] == 0 ) {
-                break;
-            } else {
-                UIImage *thisImage = [UIImage imageWithData: [NSData dataWithContentsOfURL:[NSURL URLWithString:[imageStrArr objectAtIndex:i]]]];
-                [self.imageArr addObject:thisImage];
-                [self.theLoadingScreen changeLabelText:[NSString stringWithFormat:@"Loaded %d Images",i]];
-            }
-        }
+-(void) getFacebookAccount {
+    if(!self.accountStore)
+        self.accountStore = [[ACAccountStore alloc] init];
+    if (!self.facebookAccount) {
+        ACAccountType *facebookTypeAccount = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+        
+        SSCData *SSC_DATA = [[SSCData alloc] init];
+        [self.accountStore requestAccessToAccountsWithType:facebookTypeAccount
+                                                        options:@{ACFacebookAppIdKey: SSC_DATA.facebookClient_id,
+                                                                  ACFacebookPermissionsKey: @[@"read_stream",@"email"],
+                                                                  ACFacebookAudienceKey: ACFacebookAudienceEveryone}
+                                                     completion:^(BOOL granted, NSError *error) {
+                                                         if(granted){
+                                                             NSLog(@"Facbeook Account Loaded");
+                                                             NSArray *accounts = [self.accountStore accountsWithAccountType:facebookTypeAccount];
+                                                             self.facebookAccount = [accounts lastObject];
+                                                             [self getPublishStream];
+                                                             [self getFacebookID];
+                                                         }else{
+                                                             // ouch
+                                                             NSLog(@"Fail");
+                                                             NSLog(@"Error: %@", error);
+                                                         }
+                                                     }];
     }
 }
+
+-(void) refreshFacebookAccount {
+    self.facebookAccount = nil;
+    [self getFacebookAccount];
+}
+
+-(void)getPublishStream {
+    ACAccountType *facebookAccountType = [self.accountStore accountTypeWithAccountTypeIdentifier: ACAccountTypeIdentifierFacebook];
+    
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        SSCData *SSC_DATA = [[SSCData alloc] init];
+        
+        NSDictionary *facebookOptions = @{ACFacebookAppIdKey : SSC_DATA.facebookClient_id,
+                                          ACFacebookPermissionsKey : @[@"publish_stream"],
+                                          ACFacebookAudienceKey : ACFacebookAudienceEveryone };
+        
+        [self.accountStore requestAccessToAccountsWithType:facebookAccountType options:facebookOptions completion:^(BOOL granted,
+                                                                                                                         NSError *error) {
+            if (granted) {
+                self.facebookAccount = [[self.accountStore accountsWithAccountType:facebookAccountType]
+                                             lastObject];
+                dispatch_async(dispatch_get_main_queue(), ^{ [[NSNotificationCenter defaultCenter]
+                                                              postNotificationName:@"FacebookAccountAccessGranted" object:nil];
+                    if (error) {
+                        NSLog(@"error for publish_stream: %@",error);
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Facebook Public Stream"
+                                                                                message:@"There was an error retrieving your Facebook account, make sure you have an account setup in Settings and that access is granted for Savoy Swing"
+                                                                               delegate:nil
+                                                                      cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+                            [alertView show];
+                        });
+                    }
+                    
+                });
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Facebook Public Stream"
+                                                                        message:@"Access to Facebook was not granted. Please go to the device settings and allow access for Savoy Swing"
+                                                                       delegate:nil
+                                                              cancelButtonTitle:@"Dismiss"
+                                                              otherButtonTitles:nil];
+                    [alertView show];
+                });
+            }
+        }];
+    });
+    
+    
+    
+}
+
+-(void) getFacebookID {
+    if (!self.facebookUserID) {
+        NSURL *idURL = [NSURL URLWithString:@"https://graph.facebook.com/me"];
+        SLRequest *idrequest = [SLRequest requestForServiceType:SLServiceTypeFacebook
+                                                  requestMethod:SLRequestMethodGET
+                                                            URL:idURL
+                                                     parameters:nil];
+        idrequest.account = self.facebookAccount;
+        
+        [idrequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+            if (error) {
+                NSLog(@"Error getting Facebook Account: %@",error);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Facebook ID"
+                                                                        message:@"There was an error retrieving your Facebook fnfo, make sure you have an account setup in Settings and that access is granted for Savoy Swing"
+                                                                       delegate:nil
+                                                              cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+                    [alertView show];
+                });
+            } else {
+                NSError *jsonError;
+                NSDictionary *facebookData = [NSJSONSerialization JSONObjectWithData:responseData
+                                                                             options:kNilOptions
+                                                                               error:&jsonError];
+                if (jsonError) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        NSLog(@"Error getting Facebook Account: %@",jsonError);
+                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Facebook ID"
+                                                                            message:@"There was an error retrieving your Facebook fnfo, make sure you have an account setup in Settings and that access is granted for Savoy Swing"
+                                                                           delegate:nil
+                                                                  cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+                        [alertView show];
+                    });
+                } else {
+                    if ([facebookData objectForKey:@"error"]) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            NSLog(@"Error getting Facebook Account: %@",[facebookData objectForKey:@"error"]);
+                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Facebook ID"
+                                                                                message:@"There was an error retrieving your Facebook fnfo, make sure you have an account setup in Settings and that access is granted for Savoy Swing"
+                                                                               delegate:nil
+                                                                      cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+                            [alertView show];
+                        });
+                    } else {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            self.facebookUserID = [facebookData objectForKey:@"id"];
+                            
+                            
+                        });
+                    }
+                }
+            }
+        }];
+    }
+}
+
 
 @end

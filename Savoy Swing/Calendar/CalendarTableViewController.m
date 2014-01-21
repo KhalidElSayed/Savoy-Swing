@@ -10,6 +10,38 @@
 #import "BannerEvents.h"
 #import "CalendarTableViewCell.h"
 
+@interface CalendarTableViewController() <UITableViewDelegate, UITableViewDataSource, HorizontalCellDelegate> {
+    SSCAppDelegate *theAppDel;
+    
+    //IBOutlet UITableView *the_tableView;
+	NSMutableDictionary *selectedIndexes;
+    NSInteger basicCellHeight;
+    
+    NSMutableDictionary *allWeeklyBannerEvents;
+    NSMutableArray *allDays;
+    
+    //calendar switch
+    UISegmentedControl *calendar_switch;
+}
+
+//preloading image
+@property (strong, nonatomic) IBOutlet UITableView *theTableView;
+
+//calendar date cell
+@property (nonatomic, retain) CalendarHorizontalCell *horizontalDateCell;
+
+//monthly calendar data
+@property (strong,nonatomic) NSMutableArray *currentDateCells;
+@property (strong,nonatomic) NSDate *currentDate;
+@property (strong,nonatomic) NSMutableDictionary *specificDateEvents;
+
+//load indicator
+@property (strong, nonatomic) NSMutableDictionary *cellIndicators;
+
+-(void) startLoading;
+
+@end
+
 @implementation CalendarTableViewController
 
 -(void) viewDidLoad {
@@ -23,6 +55,7 @@
     calendar_switch = [[UISegmentedControl alloc] initWithItems:calendar_types];
     calendar_switch.frame = CGRectMake(0, 0, 100, 30);
     calendar_switch.selectedSegmentIndex = 0;
+    calendar_switch.tintColor = [UIColor whiteColor];
     [calendar_switch addTarget:self action:@selector(changeCalendarView) forControlEvents:UIControlEventValueChanged];
     self.navigationItem.titleView = calendar_switch;
     
@@ -34,33 +67,8 @@
     
     //put graphic image for loading graphic
     self.navigationController.navigationBarHidden = YES;
-    loaderImageView =[[UIImageView alloc] initWithFrame:CGRectMake(0.0f, (self.view.bounds.size.height-568.0f)/2, self.view.frame.size.width, 568.0f)];
-    
-    UIImage *theImage = [UIImage imageNamed:@"R4Default.png"];
-    loaderImageView.image = theImage;
-    imageIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    
-    loadingLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    loadingLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
-    loadingLabel.textAlignment = NSTextAlignmentCenter;
-    loadingLabel.textColor = [UIColor whiteColor];
-    loadingLabel.text = @"Getting Week Events";
-    [loadingLabel sizeToFit];
-    loadingLabel.frame = CGRectMake(0, 0, self.view.frame.size.width, loadingLabel.frame.size.height);
-    loadingLabel.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height / 2)+160);
-    
-    
-    [imageIndicator startAnimating];
-    imageIndicator.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height / 2)+120);
-    
-    preloaderView = [[UIView alloc] initWithFrame:self.view.bounds];
-    
-    
-    [preloaderView addSubview:loaderImageView];
-    [preloaderView addSubview: imageIndicator];
-    [preloaderView addSubview:loadingLabel];
-    
-    [self.view addSubview:preloaderView];
+    theAppDel.theLoadingScreen = [[loadingScreenImageView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:theAppDel.theLoadingScreen];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -69,6 +77,14 @@
     [self performSelector:@selector(startLoading) withObject:self afterDelay:.25];
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark -
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -(void) changeCalendarView{
     [selectedIndexes removeAllObjects];
     [self.theTableView reloadData];
@@ -117,6 +133,11 @@
     basicCellHeight = 125.0f;
     allDays = [[NSMutableArray alloc] init];
     selectedIndexes = [[NSMutableDictionary alloc] init];
+    
+    if ([theAppDel.theBanners.allEventImages count] == 0) {
+        //load Images
+        [theAppDel.theBanners loadImagesToMemory];
+    }
     
     //get regular weekly dances
     [self addWeeklyDances];
@@ -214,60 +235,10 @@
     
     [self.theTableView reloadData];
     self.navigationController.navigationBarHidden = NO;
-    [preloaderView removeFromSuperview];
+    [theAppDel.theLoadingScreen changeLabelText:@"Refreshing Table"];
+    [theAppDel.theLoadingScreen.imageIndicator stopAnimating];
+    [theAppDel.theLoadingScreen removeFromSuperview];
     
-    loadingLabel.text = @"Refreshing Table";
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Weekly Dances"]) {
-        return [allDays count];
-    } else if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Month Calendar"]) {
-        NSInteger eventsOnDay = 1;
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"EEEE"];
-        NSString *thisDay = [formatter stringFromDate:self.currentDate];
-        
-
-        
-        [formatter setDateFormat:@"MM/dd/yyyy"];
-        NSString *thisDate = [formatter stringFromDate:self.currentDate];
-        if ([self.specificDateEvents objectForKey:thisDate]) {
-            eventsOnDay += [[self.specificDateEvents objectForKey:thisDate] count];
-        }
-        
-        for (NSInteger i=0; i<[[allWeeklyBannerEvents objectForKey:thisDay] count];i++) {
-            NSDictionary *thisEvent = [[allWeeklyBannerEvents objectForKey:thisDay] objectAtIndex:i];
-            if ([[thisEvent objectForKey:@"is_other_frequent"] isEqualToString:@"yes"]) {
-                NSString *date_string = [thisEvent objectForKey:@"date"];
-                NSArray *dateData = [date_string componentsSeparatedByString:@" | "];
-                NSArray *frequency = [dateData[1] componentsSeparatedByString:@","];
-                
-                [formatter setDateFormat:@"F"];
-                NSString *numOfDayInMonth = [formatter stringFromDate:self.currentDate];
-                if ( [frequency containsObject:numOfDayInMonth]) {
-                    eventsOnDay += 1;
-                }
-            } else {
-                eventsOnDay += 1;
-            }
-        }
-        return eventsOnDay+1;
-    }
-    return 0;
-}
-
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Weekly Dances"]) {
-        if ([allDays count] > section ) {
-            return [[allWeeklyBannerEvents objectForKey:[allDays objectAtIndex:section]] count];
-        }
-    } else if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Month Calendar"]) {
-        return 1;
-    }
-    return 0;
 }
 
 - (BOOL)cellIsSelected:(NSString *) comboString {
@@ -320,95 +291,10 @@
     main_text.text = [thisEvent objectForKey:@"post_text"];
     [main_text sizeToFit];
     ongoingHeight += main_text.frame.size.height;
-
+    
     return 150+ongoingHeight;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSDictionary *thisEvent;
-    if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Weekly Dances"]) {
-        if([self cellIsSelected:[NSString stringWithFormat:@"%d-%d",indexPath.section,indexPath.row]]) {
-            NSArray *eventsOnDay = [allWeeklyBannerEvents objectForKey:[allDays objectAtIndex:indexPath.section]];
-            thisEvent = [eventsOnDay objectAtIndex:indexPath.row];
-            return [self heightOfEvent:thisEvent];
-        }
-    } else if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Month Calendar"]) {
-        if (indexPath.section == 0 && indexPath.row == 0 ) {
-            return 120.0f;
-        } else if(![self cellIsSelected:[NSString stringWithFormat:@"%d-%d",indexPath.section,indexPath.row]]) {
-            return basicCellHeight / 2.0;
-        }
-
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"EEEE"];
-        NSString *thisDay = [formatter stringFromDate:self.currentDate];
-        
-        NSArray *eventsOnDay;
-        [formatter setDateFormat:@"MM/dd/yyyy"];
-        NSString *thisDate = [formatter stringFromDate:self.currentDate];
-        if ([self.specificDateEvents objectForKey:thisDate]) {
-            eventsOnDay = [[self.specificDateEvents objectForKey:thisDate]
-                           arrayByAddingObjectsFromArray:[allWeeklyBannerEvents objectForKey:thisDay]];
-        } else {
-            eventsOnDay = [allWeeklyBannerEvents objectForKey:thisDay];
-        }
-        if ([self numberOfSectionsInTableView:self.theTableView] == indexPath.section+1) {
-            return basicCellHeight / 2.0;
-        }
-        thisEvent = [eventsOnDay objectAtIndex:(indexPath.section-1)];
-        return [self heightOfEvent:thisEvent];
-    }
-    return basicCellHeight;
-}
-
--(CGFloat)tableView: (UITableView*) tableView heightForHeaderInSection:(NSInteger)section {
-    if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Month Calendar"]) {
-        if (section == 0) {
-            return 0;
-        } else if (section == 1) {
-            return 20.0f;
-        }
-        return 10.0f;
-    }
-    return 50.0f;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Weekly Dances"]) {
-        return [NSString stringWithFormat:@"%@s",[allDays objectAtIndex:section]];
-    }
-    return @"";
-}
-
-- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Weekly Dances"]) {
-        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)];
-        headerView.backgroundColor = [UIColor clearColor];
-        UILabel *tempLabel=[[UILabel alloc]initWithFrame:CGRectMake(15,0,300,44)];
-        tempLabel.backgroundColor=[UIColor clearColor];
-        tempLabel.shadowOffset = CGSizeMake(0,2);
-        tempLabel.textColor = [UIColor whiteColor];
-        tempLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:19];
-        tempLabel.text=[self tableView:tableView titleForHeaderInSection:section];
-        
-        [headerView addSubview:tempLabel];
-        return headerView;
-    }
-    return nil;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *thisAddress = [NSString stringWithFormat:@"%d-%d",indexPath.section,indexPath.row];
-    if ([self cellIsSelected:thisAddress] ) {
-        [selectedIndexes setObject:@"0" forKey:thisAddress];
-    } else {
-        [selectedIndexes setObject:@"1" forKey:thisAddress];
-    }
-    [self.theTableView deselectRowAtIndexPath:indexPath animated:TRUE];
-    
-    [self performSelector:@selector(refreshTableCells) withObject:self afterDelay:0.1];
-}
 
 -(void) refreshTableCells {
     [self.theTableView beginUpdates];
@@ -432,6 +318,78 @@
     [self.theTableView reloadData];
 }
 
+
+
+-(void) getInfoForCell: (NSArray*) data {
+    
+    [[data objectAtIndex:0] prepareCell:[data objectAtIndex:1] onDate:self.currentDate];
+    UIActivityIndicatorView *thisIndicator = [_cellIndicators objectForKey:[NSString stringWithFormat:@"%@",[data objectAtIndex:1]]];
+    [thisIndicator removeFromSuperview];
+    [_cellIndicators removeObjectForKey:[data objectAtIndex:1]];
+}
+
+
+#pragma mark UITableViewDataSource
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Weekly Dances"]) {
+        return [allDays count];
+    } else if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Month Calendar"]) {
+        NSInteger eventsOnDay = 1;
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"EEEE"];
+        NSString *thisDay = [formatter stringFromDate:self.currentDate];
+        
+
+        
+        [formatter setDateFormat:@"MM/dd/yyyy"];
+        NSString *thisDate = [formatter stringFromDate:self.currentDate];
+        if ([self.specificDateEvents objectForKey:thisDate]) {
+            eventsOnDay += [[self.specificDateEvents objectForKey:thisDate] count];
+        }
+        
+        for (NSInteger i=0; i<[[allWeeklyBannerEvents objectForKey:thisDay] count];i++) {
+            NSDictionary *thisEvent = [[allWeeklyBannerEvents objectForKey:thisDay] objectAtIndex:i];
+            if ([[thisEvent objectForKey:@"is_other_frequent"] isEqualToString:@"yes"]) {
+                NSString *date_string = [thisEvent objectForKey:@"date"];
+                NSArray *dateData = [date_string componentsSeparatedByString:@" | "];
+                NSArray *frequency = [dateData[1] componentsSeparatedByString:@","];
+                
+                [formatter setDateFormat:@"F"];
+                NSString *numOfDayInMonth = [formatter stringFromDate:self.currentDate];
+                if ( [frequency containsObject:numOfDayInMonth]) {
+                    eventsOnDay += 1;
+                }
+            } else {
+                eventsOnDay += 1;
+            }
+        }
+        return eventsOnDay+1;
+    }
+    return 0;
+}
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Weekly Dances"]) {
+        if ([allDays count] > section ) {
+            return [[allWeeklyBannerEvents objectForKey:[allDays objectAtIndex:section]] count];
+        }
+    } else if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Month Calendar"]) {
+        return 1;
+    }
+    return 0;
+}
+
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Weekly Dances"]) {
+        return [NSString stringWithFormat:@"%@s",[allDays objectAtIndex:section]];
+    }
+    return @"";
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     CalendarTableViewCell *cell;
     if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Weekly Dances"]) {
@@ -450,7 +408,7 @@
         bannerImageView.image = [theAppDel.theBanners.allEventImages objectForKey:[thisEvent objectForKey:@"post_id"]];
         [cell.contentView addSubview:bannerImageView];
         
-        [cell prepareCell:thisEvent theCell:cell onDate:[allDays objectAtIndex:indexPath.section]];
+        [cell prepareCell:thisEvent onDate:[allDays objectAtIndex:indexPath.section]];
     } else if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Month Calendar"]) {
         if (indexPath.section ==0 && indexPath.row == 0 ) {
             _cellIndicators = [[NSMutableDictionary alloc] init];
@@ -499,7 +457,7 @@
                 cell.layer.masksToBounds = YES;
                 cell.backgroundColor = [UIColor whiteColor];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
+                
                 NSDictionary *thisEvent = [eventsOnDay objectAtIndex:(indexPath.section-1)];
                 
                 float height = cell.frame.size.width/283.5f*60.0f;
@@ -519,16 +477,92 @@
     return cell;
 }
 
--(void) getInfoForCell: (NSArray*) data {
+#pragma mark UITableViewDataDelegate
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *thisEvent;
+    if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Weekly Dances"]) {
+        if([self cellIsSelected:[NSString stringWithFormat:@"%d-%d",indexPath.section,indexPath.row]]) {
+            NSArray *eventsOnDay = [allWeeklyBannerEvents objectForKey:[allDays objectAtIndex:indexPath.section]];
+            thisEvent = [eventsOnDay objectAtIndex:indexPath.row];
+            return [self heightOfEvent:thisEvent];
+        }
+    } else if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Month Calendar"]) {
+        if (indexPath.section == 0 && indexPath.row == 0 ) {
+            return 120.0f;
+        } else if(![self cellIsSelected:[NSString stringWithFormat:@"%d-%d",indexPath.section,indexPath.row]]) {
+            return basicCellHeight / 2.0;
+        }
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"EEEE"];
+        NSString *thisDay = [formatter stringFromDate:self.currentDate];
+        
+        NSArray *eventsOnDay;
+        [formatter setDateFormat:@"MM/dd/yyyy"];
+        NSString *thisDate = [formatter stringFromDate:self.currentDate];
+        if ([self.specificDateEvents objectForKey:thisDate]) {
+            eventsOnDay = [[self.specificDateEvents objectForKey:thisDate]
+                           arrayByAddingObjectsFromArray:[allWeeklyBannerEvents objectForKey:thisDay]];
+        } else {
+            eventsOnDay = [allWeeklyBannerEvents objectForKey:thisDay];
+        }
+        if ([self numberOfSectionsInTableView:self.theTableView] == indexPath.section+1) {
+            return basicCellHeight / 2.0;
+        }
+        thisEvent = [eventsOnDay objectAtIndex:(indexPath.section-1)];
+        return [self heightOfEvent:thisEvent];
+    }
+    return basicCellHeight;
+}
+
+-(CGFloat)tableView: (UITableView*) tableView heightForHeaderInSection:(NSInteger)section {
+    if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Month Calendar"]) {
+        if (section == 0) {
+            return 0;
+        } else if (section == 1) {
+            return 20.0f;
+        }
+        return 10.0f;
+    }
+    return 50.0f;
+}
+
+- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if ([[calendar_switch titleForSegmentAtIndex:calendar_switch.selectedSegmentIndex] isEqualToString:@"Weekly Dances"]) {
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)];
+        headerView.backgroundColor = [UIColor clearColor];
+        UILabel *tempLabel=[[UILabel alloc]initWithFrame:CGRectMake(15,0,300,44)];
+        tempLabel.backgroundColor=[UIColor clearColor];
+        tempLabel.shadowOffset = CGSizeMake(0,2);
+        tempLabel.textColor = [UIColor whiteColor];
+        tempLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:19];
+        tempLabel.text=[self tableView:tableView titleForHeaderInSection:section];
+        
+        [headerView addSubview:tempLabel];
+        return headerView;
+    }
+    return nil;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *thisAddress = [NSString stringWithFormat:@"%d-%d",indexPath.section,indexPath.row];
+    if ([self cellIsSelected:thisAddress] ) {
+        [selectedIndexes setObject:@"0" forKey:thisAddress];
+    } else {
+        [selectedIndexes setObject:@"1" forKey:thisAddress];
+    }
+    [self.theTableView deselectRowAtIndexPath:indexPath animated:TRUE];
     
-    [[data objectAtIndex:0] prepareCell:[data objectAtIndex:1] theCell:[data objectAtIndex:0] onDate:self.currentDate];
-    UIActivityIndicatorView *thisIndicator = [_cellIndicators objectForKey:[NSString stringWithFormat:@"%@",[data objectAtIndex:1]]];
-    [thisIndicator removeFromSuperview];
-    [_cellIndicators removeObjectForKey:[data objectAtIndex:1]];
+    [self performSelector:@selector(refreshTableCells) withObject:self afterDelay:0.1];
 }
 
 @end
 
+#pragma mark CalendarCell of UITableViewCell
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 @implementation CalendarCellView
 
 - (id)initWithFrame:(CGRect)frame
@@ -540,6 +574,9 @@
     return self;
 }
 
+
+#pragma mark -
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -(void)setBackgroundColor:(UIColor *)backgroundColor {
     CGFloat alpha = CGColorGetAlpha(backgroundColor.CGColor);
     if (alpha != 0) {

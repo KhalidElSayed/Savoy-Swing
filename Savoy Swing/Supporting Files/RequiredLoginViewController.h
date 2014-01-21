@@ -10,12 +10,9 @@
 #import "SSCAppDelegate.h"
 #import "LoginLogoutViewController.h"
 
-@interface RequiredLoginViewController : UIViewController {
-    UIView *membershipCardView;
+@interface RequiredLoginViewController : UIViewController  {
     SSCAppDelegate *theAppDel;
 }
-
-@property (strong, nonatomic) LoginLogoutViewController *loginController;
 
 -(void) sendToLoginPage;
 

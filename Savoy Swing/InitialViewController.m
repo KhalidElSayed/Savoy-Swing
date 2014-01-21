@@ -8,7 +8,10 @@
 
 #import "InitialViewController.h"
 
-@interface InitialViewController ()
+@interface InitialViewController () {
+    SSCAppDelegate *theAppDel;
+}
+@property (strong, nonatomic) UIImageView *theImageView;
 
 @end
 
@@ -25,25 +28,20 @@
 }
 
 -(void) viewDidAppear:(BOOL)animated {
-    /*
-    [super viewDidAppear:animated];
 
-    CGPoint origin = _theImageView.center;
-    CGPoint target = CGPointMake(_theImageView.center.x, _theImageView.center.y-150);
-    
-    CABasicAnimation *bounce = [CABasicAnimation animationWithKeyPath:@"position.y"];
-    bounce.fromValue = [NSNumber numberWithInt:origin.y];
-    bounce.toValue = [NSNumber numberWithInt:target.y];
-    bounce.duration = 1;
-    [_theImageView.layer addAnimation:bounce forKey:@"position"];
-    
-    _theImageView.center = target;
-     */
-    [self performSelector:@selector(doStuff) withObject:self afterDelay:1.5];
+    [super viewDidAppear:animated];
+    [self performSelector:@selector(doStuff) withObject:self afterDelay:0.5];
 }
 
 -(void) viewDidDisappear:(BOOL)animated {
+    [theAppDel.theLoadingScreen removeFromSuperview];
     [super viewDidDisappear:animated];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 - (BOOL)shouldAutorotate {
@@ -52,12 +50,15 @@
          orientation == UIInterfaceOrientationLandscapeRight)) {
         return NO;
     }
-    if (orientation==UIInterfaceOrientationPortrait) {
+    if (orientation==UIInterfaceOrientationPortrait || orientation==UIInterfaceOrientationPortraitUpsideDown) {
         return YES;
     }
     return NO;
 }
 
+
+#pragma mark -
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -(void) doStuff {
     theAppDel.theLoadingScreen.imageIndicator.hidden = NO;
     [theAppDel.theLoadingScreen.imageIndicator startAnimating];
@@ -86,15 +87,27 @@
 }
 
 -(void) getInternetData {
-    [theAppDel makeNewFeedsWithNews:YES withBanners:YES];
-    [theAppDel getAbout];
-    [theAppDel retrieveDataTimer];
-    [theAppDel loadImages];
+    [self performSelectorInBackground:@selector(loadGeneral) withObject:nil];
     
+    [theAppDel makeNewFeedsWithNews:YES withBanners:YES];
+    [self performSelectorInBackground:@selector(loadInitial) withObject:nil];
+
     [theAppDel.theLoadingScreen.imageIndicator stopAnimating];
     theAppDel.theLoadingScreen.imageIndicator.hidden = YES;
     [theAppDel.theLoadingScreen changeLabelText:@"Loading Home Screen"];
     [self performSelector:@selector(getFirstViewController) withObject:self afterDelay:2];
+}
+
+-(void) loadInitial {
+    if ([theAppDel.theBanners.allEventImages count] == 0) {
+        //load Images
+        [theAppDel.theBanners loadImagesToMemory];
+    }
+}
+
+-(void) loadGeneral {
+    [theAppDel getAbout];
+    [theAppDel loadImages];
 }
 
 -(void) getFirstViewController {

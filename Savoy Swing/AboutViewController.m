@@ -8,13 +8,16 @@
 
 #import "AboutViewController.h"
 
-@interface AboutViewController ()
+@interface AboutViewController () {
+    SSCAppDelegate *theAppDel;
+}
+
+@property (weak, nonatomic) IBOutlet UIView *shadowView;
+@property (weak, nonatomic) IBOutlet UITextView *aboutText;
 
 @end
 
 @implementation AboutViewController
-
-
 
 - (void)viewDidLoad
 {
@@ -27,5 +30,10 @@
     _aboutText.layer.masksToBounds = YES;
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
 
 @end

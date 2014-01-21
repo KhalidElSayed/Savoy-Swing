@@ -11,11 +11,4 @@
 
 @interface FeedBackViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UITextField *subject_field;
-@property (weak, nonatomic) IBOutlet UITextView *message_field;
-@property (weak, nonatomic) IBOutlet UIButton *send_button;
-@property (weak, nonatomic) IBOutlet NotificationView *noti_view;
-
-- (IBAction)backgroundTouch:(id)sender;
--(IBAction) sendFeedbackAction:(id)sender;
 @end

@@ -9,7 +9,16 @@
 #import "EventsViewController.h"
 #import "CalendarTableViewCell.h"
 
-@interface EventsViewController ()
+@interface EventsViewController () <UITableViewDelegate, UITableViewDataSource> {
+    SSCAppDelegate *theAppDel;
+    
+}
+
+@property (strong, nonatomic) IBOutlet UITableView *theTableView;
+@property (strong)  NSTimer *loadingScreenText;
+@property (strong, nonatomic) NSArray *allEvents;
+
+-(void) startLoading;
 
 @end
 
@@ -30,51 +39,35 @@
 -(void) viewWillAppear:(BOOL)animated {
     //put graphic image for loading graphic
     self.navigationController.navigationBarHidden = YES;
-    loaderImageView =[[UIImageView alloc] initWithFrame:CGRectMake(0.0f, (self.view.bounds.size.height-568.0f)/2, self.view.frame.size.width, 568.0f)];
-    
-    UIImage *theImage = [UIImage imageNamed:@"R4Default.png"];
-    loaderImageView.image = theImage;
-    imageIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    
-    loadingLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    loadingLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
-    loadingLabel.textAlignment = NSTextAlignmentCenter;
-    loadingLabel.textColor = [UIColor whiteColor];
-    loadingLabel.text = @"Getting Special Events";
-    [loadingLabel sizeToFit];
-    loadingLabel.frame = CGRectMake(0, 0, self.view.frame.size.width, loadingLabel.frame.size.height);
-    loadingLabel.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height / 2)+160);
-    
-    
-    [imageIndicator startAnimating];
-    imageIndicator.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height / 2)+120);
-    
-    preloaderView = [[UIView alloc] initWithFrame:self.view.bounds];
-    
-    
-    [preloaderView addSubview:loaderImageView];
-    [preloaderView addSubview: imageIndicator];
-    [preloaderView addSubview:loadingLabel];
-    
-    //[self.view addSubview:preloaderView];
+    theAppDel.theLoadingScreen = [[loadingScreenImageView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:theAppDel.theLoadingScreen];
 }
 
 -(void) viewDidAppear:(BOOL)animated {
-    [self startLoading];
+    
+    [self performSelector:@selector(startLoading) withObject:self afterDelay:0.5];
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
 
+#pragma mark -
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -(void) startLoading {
-    theImages = [[NSMutableDictionary alloc] init];
+    if ([theAppDel.theBanners.allEventImages count] == 0) {
+        //load Images
+        [theAppDel.theBanners loadImagesToMemory];
+    }
     _allEvents = [theAppDel.theBanners getSpecificDateBanners];
     [self.theTableView reloadData];
-    loadingLabel.text = @"Configuring View";
+    [theAppDel.theLoadingScreen changeLabelText:@"Configuring View"];
     self.navigationController.navigationBarHidden = NO;
-    //[preloaderView removeFromSuperview];
+    [theAppDel.theLoadingScreen.imageIndicator stopAnimating];
+    [theAppDel.theLoadingScreen removeFromSuperview];
 }
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 -(void) removePreviousCellInfoFromView: (UITableViewCell*) cell {
     for(UIView *view in cell.contentView.subviews){
@@ -84,8 +77,8 @@
     }
 }
 
-
-
+#pragma mark UITableViewDelegate
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {
     NSDictionary *thisEvent = [_allEvents objectAtIndex:indexPath.section];
     UILabel *main_text = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 60.0f, 280.0f, 22.0f)];
@@ -116,7 +109,7 @@
     bannerImageView.image = [theAppDel.theBanners.allEventImages objectForKey:[thisEvent objectForKey:@"post_id"]];
     [cell.contentView addSubview:bannerImageView];
     
-    [cell prepareCell:thisEvent theCell:cell onDate:nil];
+    [cell prepareCell:thisEvent onDate:nil];
     cell.layer.cornerRadius = 5;
     cell.layer.masksToBounds = YES;
     cell.backgroundColor = [UIColor whiteColor];

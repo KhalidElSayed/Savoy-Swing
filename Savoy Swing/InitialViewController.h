@@ -10,10 +10,6 @@
 #import "SSCAppDelegate.h"
 #import "SSCRevealViewController.h"
 
-@interface InitialViewController : UIViewController {
-    SSCAppDelegate *theAppDel;
-}
-
-@property (strong, nonatomic) UIImageView *theImageView;
+@interface InitialViewController : UIViewController 
 
 @end

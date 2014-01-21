@@ -10,7 +10,4 @@
 #import "SSCAppDelegate.h"
 
 @interface NewsFeedSettingsViewController : UITableViewController
-@property (nonatomic) UISwitch *twitterSwitch;
-@property (nonatomic) UISwitch *facebookSwitch;
-@property SSCAppDelegate *theAppDel; 
 @end

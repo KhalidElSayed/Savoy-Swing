@@ -9,7 +9,15 @@
 #import "LoginLogoutViewController.h"
 #import "SSCRevealViewController.h"
 
-@interface LoginLogoutViewController ()
+@interface LoginLogoutViewController () <UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource> {
+    SSCAppDelegate * theAppDel;
+}
+
+@property (weak, nonatomic) IBOutlet UITableView *theTableView;
+@property (strong, nonatomic) UITextField *user_textfield;
+@property (strong, nonatomic) UITextField *pass_textfield;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *status;
+@property (weak, nonatomic) IBOutlet UIButton *login_button;
 
 @end
 
@@ -45,9 +53,15 @@ bool isLoggingIn = NO;
     
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
 
-/////// Other Methods
 
+#pragma mark UITextFieldDelegate
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void) keyboardAppeared: (NSNotification *) notification {
     if ( !isKeyboardVisible ) {
         isKeyboardVisible = YES;
@@ -83,6 +97,8 @@ bool isLoggingIn = NO;
     return YES;
 }
 
+#pragma mark -
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 - (IBAction)backgroundTouch:(id)sender {
     [self.user_textfield resignFirstResponder];
     [self.pass_textfield resignFirstResponder];
@@ -161,8 +177,8 @@ bool isLoggingIn = NO;
 }
 
 
-/////// TableView Methods
-
+#pragma mark UITableViewDataSource
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 2;
 }
@@ -190,6 +206,7 @@ bool isLoggingIn = NO;
 
 @end
 
+#pragma mark - Username UITableViewCell
 @implementation UsernameCell
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -203,6 +220,7 @@ bool isLoggingIn = NO;
 
 @end
 
+#pragma mark - Password UITableViewCell 
 @implementation PasswordCell
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {

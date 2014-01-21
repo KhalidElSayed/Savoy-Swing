@@ -8,6 +8,16 @@
 
 #import "AccountViewController.h"
 
+@interface AccountViewController() <UITableViewDataSource, UITableViewDelegate>
+
+@property (nonatomic, strong) NSArray *accountSection;
+@property (nonatomic, strong) NSArray *profileSection;
+@property (nonatomic, weak) IBOutlet UITableView *theTableView;
+
+-(IBAction)dismissKeyboard:(id)sender;
+
+@end
+
 @implementation AccountViewController
 
 
@@ -33,9 +43,14 @@
     self.navigationItem.rightBarButtonItem = nil;
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
 
-#pragma mark - Table view data source
-
+#pragma mark UITableViewDataSource
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.

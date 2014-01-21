@@ -10,8 +10,44 @@
 #import "STTwitter.h"
 #import "SSCAppDelegate.h"
 
-@interface SSCNewsFeeds  ()
+@interface SSCNewsFeeds  () {
+    
+    BOOL twitterReady;
+    BOOL facebookReady;
+    BOOL wordpressReady;
+    BOOL postsSorted;
+    BOOL dataReady;
+    
+    BOOL twitterActive;
+    BOOL wordpressActive;
+    BOOL facebookActive;
+    
+    BOOL updateNewer;
+    BOOL updateOlder;
+    
+    NSString *newFacebookPostLink;
+    NSString *laterFacebookPostLink;
+    NSString *newestTwitterID;
+    NSString *oldestTwitterID;
+    
+    NSString *twitter_username;
+    NSString *tweet_list;
+    NSString *twitterConsumerName;
+    NSString *twitterConsumerKey;
+    NSString *twitterConsumerSecret;
+    NSString *twitterOathToken;
+    NSString *twitterOathTokenSecret;
+    
+    NSString *wordpress_urlToFeed;
+    
+    NSString *facebook_username;
+    NSString *facebookClient_id;
+    NSString *facebookClient_secret;
+    
+}
+
 @property (nonatomic, strong) STTwitterAPI* _twitter;
+
 @end
 
 @implementation SSCNewsFeeds
@@ -136,12 +172,13 @@ static SSCAppDelegate *theAppDel;
         [_sortCellLoader invalidate];
         _sortCellLoader = nil;
         _allData = [[NSMutableArray alloc] init];
-            
+        _facebookTrackedIndices = [[NSMutableDictionary alloc] init];
         NSInteger fb_count = 0;
         NSInteger twi_count = 0;
         NSInteger wp_count = 0;
+        NSInteger runningTotal = 0;
         NSInteger totalData =([_FacebookPosts count]+[_TwitterStatuses count]+[_WordpressPosts count]);
-        for (int i=0; i<totalData;i++ ){
+        for (NSInteger i=0; i<totalData;i++ ){
             //facebook date
             NSDate *fb_date;
             if (fb_count < [_FacebookPosts count]) {
@@ -241,12 +278,16 @@ static SSCAppDelegate *theAppDel;
             if ([mostRecentType isEqualToString:@"Twitter"]) {
                 [_allData addObject:[_TwitterStatuses objectAtIndex:mostRecentIndex]];
                 twi_count++;
+                runningTotal++;
             } else if ([mostRecentType isEqualToString:@"Facebook"]){
                 [_allData addObject:[_FacebookPosts objectAtIndex:mostRecentIndex]];
+                [_facebookTrackedIndices setObject:[NSString stringWithFormat:@"%d",runningTotal] forKey:[[_FacebookPosts objectAtIndex:mostRecentIndex]objectForKey:@"id"]];
                 fb_count++;
+                runningTotal++;
             } else if ([mostRecentType isEqualToString:@"Wordpress"]){
                 [_allData addObject:[_WordpressPosts objectAtIndex:mostRecentIndex]];
                 wp_count++;
+                runningTotal++;
             }
             
         }
@@ -306,6 +347,44 @@ static SSCAppDelegate *theAppDel;
     _finishedLoader = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(finalizeData) userInfo:nil repeats:YES];
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////           Feed Update          ///////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+ *
+ *      Facebook Feed
+ */
+-(NSDictionary*) refreshFacebookFeedAndReturnPostForID: (NSString *) facebookID {
+    NSURL *feedURL = [NSURL URLWithString:[theAppDel.theFeed.facebookFeedURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSData *feedData = [NSData dataWithContentsOfURL:feedURL];
+    NSDictionary *returnPost;
+    if (feedData) {
+        NSError *err;
+        NSDictionary *facebookData = [NSJSONSerialization JSONObjectWithData:feedData
+                                                                     options:kNilOptions
+                                                                       error:&err];
+        if (!err) {
+            _FacebookPosts = [facebookData objectForKey:@"data"];
+            for (NSInteger i=0;i<[_FacebookPosts count];i++ ) {
+                NSDictionary *fbPost = [_FacebookPosts objectAtIndex:i];
+                NSString *allDataIndex = [self.facebookTrackedIndices objectForKey:[fbPost objectForKey:@"id"]];
+                if ( allDataIndex ) {
+                    [_allData replaceObjectAtIndex:allDataIndex.integerValue withObject:fbPost];
+                }
+                if ([[fbPost objectForKey:@"id"] isEqualToString:facebookID]) {
+                    returnPost = fbPost;
+                }
+            }
+        }
+    }
+    return returnPost;
+}
+
+-(void) refreshFacebookFeed {
+    [self refreshFacebookFeedAndReturnPostForID:@""];
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -318,8 +397,7 @@ static SSCAppDelegate *theAppDel;
  *
  */
 -(void)makeFacebookFeed: (NSString*) type {
-    NSString *strResult;
-    NSString *feedURLString;
+    NSString *strResult = nil;
     if (![type isEqualToString:@"new"] && ![type isEqualToString:@"old"]) {
         NSString *mainURL = @"https://graph.facebook.com/oauth/access_token";
         NSString *requestString =[NSString stringWithFormat:@"client_id=%@&client_secret=%@&grant_type=client_credentials"
@@ -331,16 +409,18 @@ static SSCAppDelegate *theAppDel;
         strResult = [[NSString alloc] initWithData:dataURL encoding:NSUTF8StringEncoding];
     }
     if (strResult || [type isEqualToString:@"new"] || [type isEqualToString:@"old"]) {
-        NSString *accessToken = strResult;
+        self.facebookAccess_Token = strResult;
         NSError *err;
+        NSString *searchURL = @"";
         if ( strResult ) {
-            feedURLString = [NSString stringWithFormat:@"https://graph.facebook.com/%@/feed?%@",facebook_username,accessToken ];
+            self.facebookFeedURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/feed?%@",facebook_username, self.facebookAccess_Token ];
+            searchURL =  self.facebookFeedURL ;
         } else if ([type isEqualToString:@"new"]) {
-            feedURLString = newFacebookPostLink;
+            searchURL = newFacebookPostLink;
         } else if ([type isEqualToString:@"old"]) {
-            feedURLString = laterFacebookPostLink;
+            searchURL = laterFacebookPostLink;
         }
-        NSURL *feedURL = [NSURL URLWithString:[feedURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        NSURL *feedURL = [NSURL URLWithString:[searchURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         NSData *feedData = [NSData dataWithContentsOfURL:feedURL];
         
         if (feedData) {
@@ -560,7 +640,7 @@ static SSCAppDelegate *theAppDel;
  */
 -(UITableViewCell *) addFacebookCell: (UITableViewCell *) theCell withIndex: (NSInteger) dataIndex {
     NSDictionary *fbPost = [_allData objectAtIndex:dataIndex];
-    NSString *title = [NSString stringWithFormat:@"@%@:",[fbPost valueForKeyPath:@"from.name"]];
+    NSString *title = [NSString stringWithFormat:@"%@:",[fbPost valueForKeyPath:@"from.name"]];
     NSString *dateFormatter = @"yyyy-MM-dd'T'HH:mm:ssZ";
     NSString *date = [fbPost valueForKeyPath:@"created_time"];
     NSString *text = [fbPost valueForKeyPath:@"message"];

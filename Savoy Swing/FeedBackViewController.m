@@ -12,6 +12,14 @@
 
 @interface FeedBackViewController ()
 
+@property (weak, nonatomic) IBOutlet UITextField *subject_field;
+@property (weak, nonatomic) IBOutlet UITextView *message_field;
+@property (weak, nonatomic) IBOutlet UIButton *send_button;
+@property (weak, nonatomic) NotificationView *noti_view;
+
+- (IBAction)backgroundTouch:(id)sender;
+-(IBAction) sendFeedbackAction:(id)sender;
+
 @end
 
 @implementation FeedBackViewController
@@ -20,9 +28,16 @@
 {
     [super viewDidLoad];
     
+    
+    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"NotificationView" owner:self options:nil];
+    self.noti_view = [nib objectAtIndex:0];
+    
     self.noti_view.layer.cornerRadius = 5;
     self.noti_view.layer.masksToBounds = YES;
     self.noti_view.alpha = 0;
+    [self.view addSubview:self.noti_view];
+    self.noti_view.center = self.view.center;
+    
     UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 20)];
     self.subject_field.leftView = paddingView;
     self.subject_field.leftViewMode = UITextFieldViewModeAlways;
@@ -35,6 +50,31 @@
 
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+#pragma mark UIAlertViewDelegate
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    // when leaving this application to safari, we will prompt the user, this function handle the response
+    switch(buttonIndex)
+    {
+        case 0:
+            [self sendFeedback];
+            break;
+        case 1: // Stay
+            self.send_button.enabled = YES;
+            break;
+    }
+}
+
+#pragma mark -
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -(NSString*) getMachine {
     NSString *machine;
     size_t size;
@@ -62,24 +102,10 @@
     [alert show];
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    // when leaving this application to safari, we will prompt the user, this function handle the response
-    switch(buttonIndex)
-    {
-        case 0:
-            [self sendFeedback];
-            break;
-        case 1: // Stay
-            self.send_button.enabled = YES;
-            break;
-    }
-}
-
 -(void) sendFeedback {
     
     self.noti_view.message.text = @"Reaching Host";
-    [self showNotificationView];
+    [self.noti_view showNotificationView];
     self.subject_field.enabled = NO;
     self.message_field.editable = NO;
     NSString *sendSubject = self.subject_field.text;
@@ -107,17 +133,11 @@
 }
 
 -(void) showNotificationView {
-    [self.noti_view.noti_act_ind startAnimating];
-    [UIView animateWithDuration:1.5 animations:^(void) {
-        self.noti_view.alpha = 1;
-    }];
+    [self.noti_view showNotificationView];
 }
 
 -(void) hideNotificationView {
-    [UIView animateWithDuration:1.0 animations:^(void) {
-        self.noti_view.alpha = 0;
-    }];
-    [self.noti_view.noti_act_ind stopAnimating];
+    [self.noti_view hideNotificationView];
 }
 
 -(void) connectionTimedout {

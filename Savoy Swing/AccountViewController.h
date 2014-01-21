@@ -9,12 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "RequiredLoginViewController.h"
 
-@interface AccountViewController : RequiredLoginViewController <UITableViewDataSource, UITableViewDelegate>
-
-@property (nonatomic, strong) NSArray *accountSection;
-@property (nonatomic, strong) NSArray *profileSection;
-@property (nonatomic, strong) IBOutlet UITableView *theTableView;
-
--(IBAction)dismissKeyboard:(id)sender;
+@interface AccountViewController : RequiredLoginViewController 
 
 @end

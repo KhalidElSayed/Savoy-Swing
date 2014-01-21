@@ -8,7 +8,12 @@
 
 #import "GetInvolvedViewController.h"
 
-@interface GetInvolvedViewController ()
+@interface GetInvolvedViewController () <UITableViewDataSource, UITableViewDelegate> {
+    NSArray *identifierNames;
+    NSArray *cellLinks;
+}
+
+@property (weak, nonatomic) IBOutlet UITableView *theTableView;
 
 @end
 
@@ -27,12 +32,23 @@
                   @"https://www.savoyswing.org"];
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+#pragma mark UITableViewDelegate
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *theURL = [cellLinks objectAtIndex:indexPath.section];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:theURL]];
     [self.theTableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
+#pragma mark UITableViewDataSource
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 1;
 }

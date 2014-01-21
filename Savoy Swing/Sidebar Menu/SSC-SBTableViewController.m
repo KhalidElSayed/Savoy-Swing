@@ -14,6 +14,7 @@
 @interface SSC_SBTableViewController ()
 
 @property (nonatomic, strong) NSArray *menuItems;
+@property (strong,nonatomic) NSIndexPath *selectedIndex;
 
 @end
 
@@ -42,17 +43,27 @@
     self.tableView.separatorColor = [UIColor colorWithWhite:0.15f alpha:0.4f];
     
     
-    _menuItems = @[@"menu_title",@"home",@"news",@"about",@"calendar",@"special",@"get-involved",@"feedback",@"blank",@"membership",@"account"];
+    _menuItems = @[@"menu_title",@"news",@"calendar",@"special",@"blank",@"membership",@"account"];
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (void)didReceiveMemoryWarning
 {
-    return 1;
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
+#pragma mark UITableViewDelegate
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     self.selectedIndex = indexPath;
     [self.tableView reloadData];
+}
+
+#pragma mark UITableViewDataSource
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
