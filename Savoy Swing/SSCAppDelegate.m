@@ -73,7 +73,7 @@
 -(void) makeNewFeedsWithNews:(BOOL)addNews withBanners:(BOOL)addBanners {
     if (addNews) {
         self.makingNewFeeds = YES;
-        _theFeed = [[SSCNewsFeeds alloc] init];
+        _theFeed = [[SSCNewsFeedManager alloc] init];
         SSCData *SSC_DATA = [[SSCData alloc] init];
         if ( _newsFeedFacebookActive ) {
             NSArray *facebookParams = @[SSC_DATA.facebookClient_id,

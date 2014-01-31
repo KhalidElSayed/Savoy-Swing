@@ -10,7 +10,7 @@
 #import "SSCAppDelegate.h"
 #import "CalendarHorizontalCell.h"
 
-@interface CalendarTableViewController : UIViewController 
+@interface SSCalendarTableViewController : UIViewController 
 
 @end
 

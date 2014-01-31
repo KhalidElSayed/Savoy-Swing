@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 Steven Stevenson. All rights reserved.
 //
 
-#import "EventsViewController.h"
+#import "SSEventsViewController.h"
 #import "CalendarTableViewCell.h"
 
-@interface EventsViewController () <UITableViewDelegate, UITableViewDataSource> {
+@interface SSEventsViewController () <UITableViewDelegate, UITableViewDataSource> {
     SSCAppDelegate *theAppDel;
     
 }
@@ -22,7 +22,7 @@
 
 @end
 
-@implementation EventsViewController
+@implementation SSEventsViewController
 
 - (void)viewDidLoad
 {

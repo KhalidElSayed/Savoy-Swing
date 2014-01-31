@@ -85,8 +85,6 @@
     [formatter setDateFormat:@"EEEE"];
     weekdayLabel.text = [formatter stringFromDate:[self.horizontalData objectAtIndex:indexPath.row]];
     
-
-    
     if (indexPath.row == 0 || [bigDate.text isEqualToString:@"1"] ) {
         UILabel *monthLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 10,150,100)];
         monthLabel.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:75.0];
@@ -101,7 +99,6 @@
     
     [cell addSubview:bigDate];
     [cell addSubview:weekdayLabel];
-    
     return cell;
 }
 

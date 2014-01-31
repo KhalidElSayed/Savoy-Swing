@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SSCRevealViewController.h"
-#import "SSCNewsFeeds.h"
+#import "SSCNewsFeedManager.h"
 #import "BannerEvents.h"
 #import "loadingScreenImageView.h"
 #import "SSCData.h"
@@ -19,7 +19,7 @@
 @property (nonatomic) BOOL containsNewData;
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) NSDictionary *user;
-@property (strong, nonatomic) SSCNewsFeeds *theFeed;
+@property (strong, nonatomic) SSCNewsFeedManager *theFeed;
 @property (strong, nonatomic) BannerEvents *theBanners;
 @property (nonatomic) BOOL makingNewFeeds;
 @property (strong, nonatomic) NSString *loadingInfo;

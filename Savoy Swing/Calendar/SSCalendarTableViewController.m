@@ -6,11 +6,11 @@
 //  Copyright (c) 2013 Steven Stevenson. All rights reserved.
 //
 
-#import "CalendarTableViewController.h"
+#import "SSCalendarTableViewController.h"
 #import "BannerEvents.h"
 #import "CalendarTableViewCell.h"
 
-@interface CalendarTableViewController() <UITableViewDelegate, UITableViewDataSource, HorizontalCellDelegate> {
+@interface SSCalendarTableViewController() <UITableViewDelegate, UITableViewDataSource, HorizontalCellDelegate> {
     SSCAppDelegate *theAppDel;
     
     //IBOutlet UITableView *the_tableView;
@@ -42,7 +42,7 @@
 
 @end
 
-@implementation CalendarTableViewController
+@implementation SSCalendarTableViewController
 
 -(void) viewDidLoad {
     
@@ -555,7 +555,6 @@
         [selectedIndexes setObject:@"1" forKey:thisAddress];
     }
     [self.theTableView deselectRowAtIndexPath:indexPath animated:TRUE];
-    
     [self performSelector:@selector(refreshTableCells) withObject:self afterDelay:0.1];
 }
 

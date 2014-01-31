@@ -21,7 +21,7 @@
 		D21210B0183FEDB900A2F349 /* facebook-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D212109F183FEDB900A2F349 /* facebook-icon.png */; };
 		D21210B1183FEDB900A2F349 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21210A0183FEDB900A2F349 /* Default@2x.png */; };
 		D21210B8183FEE3000A2F349 /* BannerEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210B3183FEE3000A2F349 /* BannerEvents.m */; };
-		D21210B9183FEE3000A2F349 /* SSCNewsFeeds.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210B5183FEE3000A2F349 /* SSCNewsFeeds.m */; };
+		D21210B9183FEE3000A2F349 /* SSCNewsFeedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210B5183FEE3000A2F349 /* SSCNewsFeedManager.m */; };
 		D21210E2183FEE7A00A2F349 /* SSC-SBTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210E1183FEE7A00A2F349 /* SSC-SBTableViewController.m */; };
 		D21210EA183FEEAE00A2F349 /* NewsFeedSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210E4183FEEAE00A2F349 /* NewsFeedSettingsViewController.m */; };
 		D21210ED183FEEAE00A2F349 /* NewsFeedTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210E9183FEEAE00A2F349 /* NewsFeedTableViewController.m */; };
@@ -29,39 +29,24 @@
 		D21210F3183FEEC700A2F349 /* menu-gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21210EF183FEEC700A2F349 /* menu-gear@2x.png */; };
 		D21210F4183FEEC700A2F349 /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = D21210F0183FEEC700A2F349 /* menu.png */; };
 		D21210F5183FEEC700A2F349 /* menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21210F1183FEEC700A2F349 /* menu@2x.png */; };
-		D21210FE183FEEE200A2F349 /* CalendarTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210FB183FEEE200A2F349 /* CalendarTableViewController.m */; };
-		D2121119183FEF1100A2F349 /* NSDateFormatter+STTwitter.m in Sources */ = {isa = PBXBuildFile; fileRef = D2121101183FEF1100A2F349 /* NSDateFormatter+STTwitter.m */; };
-		D212111A183FEF1100A2F349 /* NSString+STTwitter.m in Sources */ = {isa = PBXBuildFile; fileRef = D2121103183FEF1100A2F349 /* NSString+STTwitter.m */; };
-		D212111B183FEF1100A2F349 /* STHTTPRequest+STTwitter.m in Sources */ = {isa = PBXBuildFile; fileRef = D2121105183FEF1100A2F349 /* STHTTPRequest+STTwitter.m */; };
-		D212111C183FEF1100A2F349 /* STTwitterAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = D2121108183FEF1100A2F349 /* STTwitterAPI.m */; };
-		D212111D183FEF1100A2F349 /* STTwitterAppOnly.m in Sources */ = {isa = PBXBuildFile; fileRef = D212110A183FEF1100A2F349 /* STTwitterAppOnly.m */; };
-		D212111E183FEF1100A2F349 /* STTwitterHTML.m in Sources */ = {isa = PBXBuildFile; fileRef = D212110C183FEF1100A2F349 /* STTwitterHTML.m */; };
-		D212111F183FEF1100A2F349 /* STTwitterOAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = D212110E183FEF1100A2F349 /* STTwitterOAuth.m */; };
-		D2121120183FEF1100A2F349 /* STTwitterOS.m in Sources */ = {isa = PBXBuildFile; fileRef = D2121110183FEF1100A2F349 /* STTwitterOS.m */; };
-		D2121121183FEF1100A2F349 /* BAVPlistNode.m in Sources */ = {isa = PBXBuildFile; fileRef = D2121114183FEF1100A2F349 /* BAVPlistNode.m */; };
-		D2121122183FEF1100A2F349 /* JSONSyntaxHighlight.m in Sources */ = {isa = PBXBuildFile; fileRef = D2121116183FEF1100A2F349 /* JSONSyntaxHighlight.m */; };
-		D2121123183FEF1100A2F349 /* STHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = D2121118183FEF1100A2F349 /* STHTTPRequest.m */; };
+		D21210FE183FEEE200A2F349 /* SSCalendarTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D21210FB183FEEE200A2F349 /* SSCalendarTableViewController.m */; };
 		D2121126183FEF3B00A2F349 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2121125183FEF3B00A2F349 /* SWRevealViewController.m */; };
 		D212112B183FEF6F00A2F349 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D212112A183FEF6F00A2F349 /* main.m */; };
 		D22584E7186E24CA007A8C6E /* google_stamp_x.png in Resources */ = {isa = PBXBuildFile; fileRef = D22584E6186E24CA007A8C6E /* google_stamp_x.png */; };
 		D252CE9318467C9500F29DAC /* home_bg_solid.png in Resources */ = {isa = PBXBuildFile; fileRef = D252CE9218467C9500F29DAC /* home_bg_solid.png */; };
-		D252CE961847A69F00F29DAC /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D252CE951847A69F00F29DAC /* AboutViewController.m */; };
 		D2542017183D8D83001BA3E1 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2542016183D8D83001BA3E1 /* FacebookSDK.framework */; };
-		D2667050184AEB8200E8DDC9 /* EventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D266704F184AEB8200E8DDC9 /* EventsViewController.m */; };
+		D2667050184AEB8200E8DDC9 /* SSEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D266704F184AEB8200E8DDC9 /* SSEventsViewController.m */; };
 		D2667053184BDE4100E8DDC9 /* MembershipViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2667052184BDE4100E8DDC9 /* MembershipViewController.m */; };
 		D273FCF11844166F00C04977 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D273FCF01844166F00C04977 /* HomeViewController.m */; };
 		D27C29D81842920D000BD68B /* NewsFeedDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D27C29D71842920D000BD68B /* NewsFeedDetailViewController.m */; };
+		D290E83A189B1433002F59E9 /* SSGoogleCalendarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D290E839189B1433002F59E9 /* SSGoogleCalendarManager.m */; };
 		D293E9B9183B160000D3D9EA /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D293E9B5183B160000D3D9EA /* libTestFlight.a */; };
 		D293E9BC183B16DB00D3D9EA /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D293E9BB183B16DB00D3D9EA /* libz.dylib */; };
-		D295D5DF1840CAFB00D796C5 /* NewsFeedFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = D295D5DA1840CAFB00D796C5 /* NewsFeedFooterView.m */; };
-		D295D5E01840CAFB00D796C5 /* NewsFeedFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D295D5DB1840CAFB00D796C5 /* NewsFeedFooterView.xib */; };
-		D295D5E11840CAFB00D796C5 /* NewsFeedHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D295D5DD1840CAFB00D796C5 /* NewsFeedHeaderView.m */; };
-		D295D5E21840CAFB00D796C5 /* NewsFeedHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D295D5DE1840CAFB00D796C5 /* NewsFeedHeaderView.xib */; };
-		D295D5E41840D3AF00D796C5 /* NewsFeedImageSliderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D295D5E31840D3AF00D796C5 /* NewsFeedImageSliderView.xib */; };
-		D295D5E61840DA6600D796C5 /* NewsFeedEmptyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D295D5E51840DA6600D796C5 /* NewsFeedEmptyCell.xib */; };
 		D296A6561839894600D35795 /* MasterNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D296A6551839894600D35795 /* MasterNavViewController.m */; };
 		D296A65C183994DA00D35795 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D296A65B183994DA00D35795 /* Storyboard.storyboard */; };
 		D29A2A50188F1970009FA15E /* NewsFeedTableModelController.m in Sources */ = {isa = PBXBuildFile; fileRef = D29A2A4F188F1970009FA15E /* NewsFeedTableModelController.m */; };
+		D29A2A54188F1D2C009FA15E /* SSCNewsPost.m in Sources */ = {isa = PBXBuildFile; fileRef = D29A2A53188F1D2C009FA15E /* SSCNewsPost.m */; };
+		D29A2A5A188F2DF8009FA15E /* SSCNewsFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = D29A2A59188F2DF8009FA15E /* SSCNewsFeed.m */; };
 		D29EF7771838B3540087B04F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29EF7761838B3540087B04F /* Foundation.framework */; };
 		D29EF7791838B3540087B04F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29EF7781838B3540087B04F /* CoreGraphics.framework */; };
 		D29EF77B1838B3540087B04F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29EF77A1838B3540087B04F /* UIKit.framework */; };
@@ -75,25 +60,16 @@
 		D2B4739218664E4D00C2BDE9 /* LoginLogoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B4739118664E4D00C2BDE9 /* LoginLogoutViewController.m */; };
 		D2B47395186A508C00C2BDE9 /* RequiredLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B47394186A508C00C2BDE9 /* RequiredLoginViewController.m */; };
 		D2B4739A186A833500C2BDE9 /* SSCRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B47399186A833500C2BDE9 /* SSCRevealViewController.m */; };
-		D2B4739E186AD3CB00C2BDE9 /* GetInvolvedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B4739D186AD3CA00C2BDE9 /* GetInvolvedViewController.m */; };
-		D2B473A3186BF81C00C2BDE9 /* 002-210x300.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D2B473A2186BF81C00C2BDE9 /* 002-210x300.jpg */; };
-		D2B473A5186C2C8F00C2BDE9 /* down_banner.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D2B473A4186C2C8F00C2BDE9 /* down_banner.jpg */; };
-		D2B473A7186C491F00C2BDE9 /* super_old_ssc_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = D2B473A6186C491F00C2BDE9 /* super_old_ssc_logo.png */; };
-		D2B473AA186C523D00C2BDE9 /* FeedBackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B473A9186C523D00C2BDE9 /* FeedBackViewController.m */; };
-		D2B473AD186D189C00C2BDE9 /* NotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B473AC186D189C00C2BDE9 /* NotificationView.m */; };
-		D2BC7236186D3FC300326E6C /* loadingScreenImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2BC7235186D3FC300326E6C /* loadingScreenImageView.m */; };
 		D2BC723A186D762200326E6C /* google_stamp.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BC7239186D762200326E6C /* google_stamp.png */; };
 		D2C53DBC185D00C600C37DD3 /* HorizontalTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C53DBB185D00C600C37DD3 /* HorizontalTableViewCell.m */; };
 		D2C53DBF185D010800C37DD3 /* CalendarHorizontalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C53DBE185D010800C37DD3 /* CalendarHorizontalCell.m */; };
 		D2CCB7931858F4AE005DDF0E /* ssc_card_med_active.tif in Resources */ = {isa = PBXBuildFile; fileRef = D2CCB7911858F4AE005DDF0E /* ssc_card_med_active.tif */; };
 		D2CCB7941858F4AE005DDF0E /* ssc_card_med_inactive.tif in Resources */ = {isa = PBXBuildFile; fileRef = D2CCB7921858F4AE005DDF0E /* ssc_card_med_inactive.tif */; };
 		D2CCB79718590FCF005DDF0E /* CalendarTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2CCB79618590FCF005DDF0E /* CalendarTableViewCell.m */; };
-		D2D72E76186EA9B200C4B028 /* NotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2D72E75186EA9B200C4B028 /* NotificationView.xib */; };
 		D2D86610183ABBA9002B2575 /* AccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D8660F183ABBA9002B2575 /* AccountViewController.m */; };
-		D2E4814A1852B966008D19B8 /* STableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E481491852B966008D19B8 /* STableViewController.m */; };
-		D2E48190185306EB008D19B8 /* InitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E4818F185306EB008D19B8 /* InitialViewController.m */; };
 		D2E481931857BBC2008D19B8 /* NewsFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E481921857BBC2008D19B8 /* NewsFeedCell.m */; };
 		D2EB39CD1843521E0067214D /* SSCData.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EB39CC1843521E0067214D /* SSCData.m */; };
+		IYDQKWBMRKIEYEVRWSLKUDQT /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = YXIFWTDXJPPRRMDCEPMDTJHK /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,8 +98,8 @@
 		D21210A0183FEDB900A2F349 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Images/Default@2x.png"; sourceTree = "<group>"; };
 		D21210B2183FEE3000A2F349 /* BannerEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BannerEvents.h; path = "Supporting Files/Objects/BannerEvents.h"; sourceTree = "<group>"; };
 		D21210B3183FEE3000A2F349 /* BannerEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BannerEvents.m; path = "Supporting Files/Objects/BannerEvents.m"; sourceTree = "<group>"; };
-		D21210B4183FEE3000A2F349 /* SSCNewsFeeds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSCNewsFeeds.h; path = "Supporting Files/Objects/SSCNewsFeeds.h"; sourceTree = "<group>"; };
-		D21210B5183FEE3000A2F349 /* SSCNewsFeeds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSCNewsFeeds.m; path = "Supporting Files/Objects/SSCNewsFeeds.m"; sourceTree = "<group>"; };
+		D21210B4183FEE3000A2F349 /* SSCNewsFeedManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSCNewsFeedManager.h; path = "Supporting Files/Objects/SSCNewsFeedManager.h"; sourceTree = "<group>"; };
+		D21210B5183FEE3000A2F349 /* SSCNewsFeedManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSCNewsFeedManager.m; path = "Supporting Files/Objects/SSCNewsFeedManager.m"; sourceTree = "<group>"; };
 		D21210E0183FEE7A00A2F349 /* SSC-SBTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SSC-SBTableViewController.h"; path = "Sidebar Menu/SSC-SBTableViewController.h"; sourceTree = "<group>"; };
 		D21210E1183FEE7A00A2F349 /* SSC-SBTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SSC-SBTableViewController.m"; path = "Sidebar Menu/SSC-SBTableViewController.m"; sourceTree = "<group>"; };
 		D21210E3183FEEAE00A2F349 /* NewsFeedSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewsFeedSettingsViewController.h; path = "News Feed/NewsFeedSettingsViewController.h"; sourceTree = "<group>"; };
@@ -134,66 +110,40 @@
 		D21210EF183FEEC700A2F349 /* menu-gear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "menu-gear@2x.png"; path = "Images/menu-gear@2x.png"; sourceTree = "<group>"; };
 		D21210F0183FEEC700A2F349 /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu.png; path = Images/menu.png; sourceTree = "<group>"; };
 		D21210F1183FEEC700A2F349 /* menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "menu@2x.png"; path = "Images/menu@2x.png"; sourceTree = "<group>"; };
-		D21210FA183FEEE200A2F349 /* CalendarTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CalendarTableViewController.h; path = Calendar/CalendarTableViewController.h; sourceTree = "<group>"; };
-		D21210FB183FEEE200A2F349 /* CalendarTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CalendarTableViewController.m; path = Calendar/CalendarTableViewController.m; sourceTree = "<group>"; };
-		D2121100183FEF1100A2F349 /* NSDateFormatter+STTwitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+STTwitter.h"; sourceTree = "<group>"; };
-		D2121101183FEF1100A2F349 /* NSDateFormatter+STTwitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+STTwitter.m"; sourceTree = "<group>"; };
-		D2121102183FEF1100A2F349 /* NSString+STTwitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+STTwitter.h"; sourceTree = "<group>"; };
-		D2121103183FEF1100A2F349 /* NSString+STTwitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+STTwitter.m"; sourceTree = "<group>"; };
-		D2121104183FEF1100A2F349 /* STHTTPRequest+STTwitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "STHTTPRequest+STTwitter.h"; sourceTree = "<group>"; };
-		D2121105183FEF1100A2F349 /* STHTTPRequest+STTwitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "STHTTPRequest+STTwitter.m"; sourceTree = "<group>"; };
-		D2121106183FEF1100A2F349 /* STTwitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STTwitter.h; sourceTree = "<group>"; };
-		D2121107183FEF1100A2F349 /* STTwitterAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STTwitterAPI.h; sourceTree = "<group>"; };
-		D2121108183FEF1100A2F349 /* STTwitterAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STTwitterAPI.m; sourceTree = "<group>"; };
-		D2121109183FEF1100A2F349 /* STTwitterAppOnly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STTwitterAppOnly.h; sourceTree = "<group>"; };
-		D212110A183FEF1100A2F349 /* STTwitterAppOnly.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STTwitterAppOnly.m; sourceTree = "<group>"; };
-		D212110B183FEF1100A2F349 /* STTwitterHTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STTwitterHTML.h; sourceTree = "<group>"; };
-		D212110C183FEF1100A2F349 /* STTwitterHTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STTwitterHTML.m; sourceTree = "<group>"; };
-		D212110D183FEF1100A2F349 /* STTwitterOAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STTwitterOAuth.h; sourceTree = "<group>"; };
-		D212110E183FEF1100A2F349 /* STTwitterOAuth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STTwitterOAuth.m; sourceTree = "<group>"; };
-		D212110F183FEF1100A2F349 /* STTwitterOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STTwitterOS.h; sourceTree = "<group>"; };
-		D2121110183FEF1100A2F349 /* STTwitterOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STTwitterOS.m; sourceTree = "<group>"; };
-		D2121111183FEF1100A2F349 /* STTwitterProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STTwitterProtocol.h; sourceTree = "<group>"; };
-		D2121113183FEF1100A2F349 /* BAVPlistNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAVPlistNode.h; sourceTree = "<group>"; };
-		D2121114183FEF1100A2F349 /* BAVPlistNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAVPlistNode.m; sourceTree = "<group>"; };
-		D2121115183FEF1100A2F349 /* JSONSyntaxHighlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONSyntaxHighlight.h; sourceTree = "<group>"; };
-		D2121116183FEF1100A2F349 /* JSONSyntaxHighlight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONSyntaxHighlight.m; sourceTree = "<group>"; };
-		D2121117183FEF1100A2F349 /* STHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STHTTPRequest.h; sourceTree = "<group>"; };
-		D2121118183FEF1100A2F349 /* STHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STHTTPRequest.m; sourceTree = "<group>"; };
+		D21210FA183FEEE200A2F349 /* SSCalendarTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSCalendarTableViewController.h; path = Calendar/SSCalendarTableViewController.h; sourceTree = "<group>"; };
+		D21210FB183FEEE200A2F349 /* SSCalendarTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSCalendarTableViewController.m; path = Calendar/SSCalendarTableViewController.m; sourceTree = "<group>"; };
 		D2121124183FEF3B00A2F349 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SWRevealViewController.h; path = "Supporting Files/SWRevealViewController.h"; sourceTree = "<group>"; };
 		D2121125183FEF3B00A2F349 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SWRevealViewController.m; path = "Supporting Files/SWRevealViewController.m"; sourceTree = "<group>"; };
 		D212112A183FEF6F00A2F349 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "Supporting Files/main.m"; sourceTree = "<group>"; };
 		D22584E6186E24CA007A8C6E /* google_stamp_x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = google_stamp_x.png; sourceTree = "<group>"; };
 		D252CE9218467C9500F29DAC /* home_bg_solid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home_bg_solid.png; sourceTree = "<group>"; };
-		D252CE941847A69F00F29DAC /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
-		D252CE951847A69F00F29DAC /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		D2542016183D8D83001BA3E1 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
-		D266704E184AEB8200E8DDC9 /* EventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventsViewController.h; path = Calendar/EventsViewController.h; sourceTree = "<group>"; };
-		D266704F184AEB8200E8DDC9 /* EventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventsViewController.m; path = Calendar/EventsViewController.m; sourceTree = "<group>"; };
+		D266704E184AEB8200E8DDC9 /* SSEventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSEventsViewController.h; path = Calendar/SSEventsViewController.h; sourceTree = "<group>"; };
+		D266704F184AEB8200E8DDC9 /* SSEventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSEventsViewController.m; path = Calendar/SSEventsViewController.m; sourceTree = "<group>"; };
 		D2667051184BDE4100E8DDC9 /* MembershipViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MembershipViewController.h; sourceTree = "<group>"; };
 		D2667052184BDE4100E8DDC9 /* MembershipViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MembershipViewController.m; sourceTree = "<group>"; };
 		D273FCEF1844166F00C04977 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		D273FCF01844166F00C04977 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		D27C29D61842920D000BD68B /* NewsFeedDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsFeedDetailViewController.h; sourceTree = "<group>"; };
 		D27C29D71842920D000BD68B /* NewsFeedDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsFeedDetailViewController.m; sourceTree = "<group>"; };
+		D290E838189B1433002F59E9 /* SSGoogleCalendarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSGoogleCalendarManager.h; sourceTree = "<group>"; };
+		D290E839189B1433002F59E9 /* SSGoogleCalendarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSGoogleCalendarManager.m; sourceTree = "<group>"; };
 		D293E9B5183B160000D3D9EA /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
 		D293E9B6183B160000D3D9EA /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		D293E9B7183B160000D3D9EA /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
 		D293E9B8183B160000D3D9EA /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
 		D293E9BB183B16DB00D3D9EA /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		D295D5D91840CAFB00D796C5 /* NewsFeedFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewsFeedFooterView.h; path = "News Feed/NewsFeedFooterView.h"; sourceTree = "<group>"; };
-		D295D5DA1840CAFB00D796C5 /* NewsFeedFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewsFeedFooterView.m; path = "News Feed/NewsFeedFooterView.m"; sourceTree = "<group>"; };
-		D295D5DB1840CAFB00D796C5 /* NewsFeedFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewsFeedFooterView.xib; path = "News Feed/NewsFeedFooterView.xib"; sourceTree = "<group>"; };
-		D295D5DC1840CAFB00D796C5 /* NewsFeedHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewsFeedHeaderView.h; path = "News Feed/NewsFeedHeaderView.h"; sourceTree = "<group>"; };
-		D295D5DD1840CAFB00D796C5 /* NewsFeedHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewsFeedHeaderView.m; path = "News Feed/NewsFeedHeaderView.m"; sourceTree = "<group>"; };
-		D295D5DE1840CAFB00D796C5 /* NewsFeedHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewsFeedHeaderView.xib; path = "News Feed/NewsFeedHeaderView.xib"; sourceTree = "<group>"; };
-		D295D5E31840D3AF00D796C5 /* NewsFeedImageSliderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewsFeedImageSliderView.xib; path = "News Feed/NewsFeedImageSliderView.xib"; sourceTree = "<group>"; };
-		D295D5E51840DA6600D796C5 /* NewsFeedEmptyCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewsFeedEmptyCell.xib; path = "News Feed/NewsFeedEmptyCell.xib"; sourceTree = "<group>"; };
 		D296A6541839894600D35795 /* MasterNavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterNavViewController.h; sourceTree = "<group>"; };
 		D296A6551839894600D35795 /* MasterNavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterNavViewController.m; sourceTree = "<group>"; };
 		D296A65B183994DA00D35795 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 		D29A2A4E188F1970009FA15E /* NewsFeedTableModelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsFeedTableModelController.h; sourceTree = "<group>"; };
 		D29A2A4F188F1970009FA15E /* NewsFeedTableModelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsFeedTableModelController.m; sourceTree = "<group>"; };
+		D29A2A52188F1D2C009FA15E /* SSCNewsPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSCNewsPost.h; sourceTree = "<group>"; };
+		D29A2A53188F1D2C009FA15E /* SSCNewsPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSCNewsPost.m; sourceTree = "<group>"; };
+		D29A2A55188F1F4D009FA15E /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		D29A2A56188F1FAC009FA15E /* Savoy Swing-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Savoy Swing-Prefix.pch"; sourceTree = "<group>"; };
+		D29A2A58188F2DF8009FA15E /* SSCNewsFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSCNewsFeed.h; sourceTree = "<group>"; };
+		D29A2A59188F2DF8009FA15E /* SSCNewsFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSCNewsFeed.m; sourceTree = "<group>"; };
 		D29EF7731838B3540087B04F /* Savoy Swing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Savoy Swing.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D29EF7761838B3540087B04F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D29EF7781838B3540087B04F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -213,17 +163,6 @@
 		D2B47394186A508C00C2BDE9 /* RequiredLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RequiredLoginViewController.m; path = "Supporting Files/RequiredLoginViewController.m"; sourceTree = "<group>"; };
 		D2B47398186A833500C2BDE9 /* SSCRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSCRevealViewController.h; path = "Supporting Files/SSCRevealViewController.h"; sourceTree = "<group>"; };
 		D2B47399186A833500C2BDE9 /* SSCRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSCRevealViewController.m; path = "Supporting Files/SSCRevealViewController.m"; sourceTree = "<group>"; };
-		D2B4739C186AD3CA00C2BDE9 /* GetInvolvedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetInvolvedViewController.h; sourceTree = "<group>"; };
-		D2B4739D186AD3CA00C2BDE9 /* GetInvolvedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetInvolvedViewController.m; sourceTree = "<group>"; };
-		D2B473A2186BF81C00C2BDE9 /* 002-210x300.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "002-210x300.jpg"; sourceTree = "<group>"; };
-		D2B473A4186C2C8F00C2BDE9 /* down_banner.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = down_banner.jpg; sourceTree = "<group>"; };
-		D2B473A6186C491F00C2BDE9 /* super_old_ssc_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = super_old_ssc_logo.png; sourceTree = "<group>"; };
-		D2B473A8186C523D00C2BDE9 /* FeedBackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedBackViewController.h; sourceTree = "<group>"; };
-		D2B473A9186C523D00C2BDE9 /* FeedBackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedBackViewController.m; sourceTree = "<group>"; };
-		D2B473AB186D189C00C2BDE9 /* NotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationView.h; sourceTree = "<group>"; };
-		D2B473AC186D189C00C2BDE9 /* NotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationView.m; sourceTree = "<group>"; };
-		D2BC7234186D3FC300326E6C /* loadingScreenImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = loadingScreenImageView.h; path = "Supporting Files/loadingScreenImageView.h"; sourceTree = "<group>"; };
-		D2BC7235186D3FC300326E6C /* loadingScreenImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = loadingScreenImageView.m; path = "Supporting Files/loadingScreenImageView.m"; sourceTree = "<group>"; };
 		D2BC7239186D762200326E6C /* google_stamp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = google_stamp.png; sourceTree = "<group>"; };
 		D2C53DBA185D00C600C37DD3 /* HorizontalTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HorizontalTableViewCell.h; path = ../../HorizontalTableViewCell/HorizontalTableViewCell.h; sourceTree = "<group>"; };
 		D2C53DBB185D00C600C37DD3 /* HorizontalTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HorizontalTableViewCell.m; path = ../../HorizontalTableViewCell/HorizontalTableViewCell.m; sourceTree = "<group>"; };
@@ -233,18 +172,15 @@
 		D2CCB7921858F4AE005DDF0E /* ssc_card_med_inactive.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ssc_card_med_inactive.tif; path = Images/ssc_card_med_inactive.tif; sourceTree = "<group>"; };
 		D2CCB79518590FCF005DDF0E /* CalendarTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CalendarTableViewCell.h; path = Calendar/CalendarTableViewCell.h; sourceTree = "<group>"; };
 		D2CCB79618590FCF005DDF0E /* CalendarTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CalendarTableViewCell.m; path = Calendar/CalendarTableViewCell.m; sourceTree = "<group>"; };
-		D2D72E75186EA9B200C4B028 /* NotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationView.xib; sourceTree = "<group>"; };
 		D2D8660E183ABBA9002B2575 /* AccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountViewController.h; sourceTree = "<group>"; };
 		D2D8660F183ABBA9002B2575 /* AccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountViewController.m; sourceTree = "<group>"; };
-		D2E481481852B966008D19B8 /* STableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = STableViewController.h; path = "../Savoy Swing/STableViewController.h"; sourceTree = "<group>"; };
-		D2E481491852B966008D19B8 /* STableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = STableViewController.m; path = "../Savoy Swing/STableViewController.m"; sourceTree = "<group>"; };
-		D2E4818E185306EB008D19B8 /* InitialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InitialViewController.h; sourceTree = "<group>"; };
-		D2E4818F185306EB008D19B8 /* InitialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InitialViewController.m; sourceTree = "<group>"; };
 		D2E481911857BBC2008D19B8 /* NewsFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewsFeedCell.h; path = "News Feed/NewsFeedCell.h"; sourceTree = "<group>"; };
 		D2E481921857BBC2008D19B8 /* NewsFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewsFeedCell.m; path = "News Feed/NewsFeedCell.m"; sourceTree = "<group>"; };
 		D2EB39CB1843521E0067214D /* SSCData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSCData.h; path = "../../Savoy Swing Secret/Savoy Swing Secret/SSCData.h"; sourceTree = "<group>"; };
 		D2EB39CC1843521E0067214D /* SSCData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSCData.m; path = "../../Savoy Swing Secret/Savoy Swing Secret/SSCData.m"; sourceTree = "<group>"; };
 		D2EB39CE184355C00067214D /* Savoy Swing-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Savoy Swing-Info.plist"; sourceTree = "<group>"; };
+		HBDITSPYVFDWQYYBDCIDIXGK /* SparkInspector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SparkInspector.framework; path = "/Applications/Spark Inspector.app/Contents/Resources/Frameworks/SparkInspector.framework"; sourceTree = "<group>"; };
+		YXIFWTDXJPPRRMDCEPMDTJHK /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -258,6 +194,7 @@
 				D29EF7771838B3540087B04F /* Foundation.framework in Frameworks */,
 				D293E9B9183B160000D3D9EA /* libTestFlight.a in Frameworks */,
 				D2542017183D8D83001BA3E1 /* FacebookSDK.framework in Frameworks */,
+				IYDQKWBMRKIEYEVRWSLKUDQT /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,44 +211,50 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D21210FF183FEF1100A2F349 /* STTwitter */ = {
+		D20CAA5B189B156E00B0B981 /* Banner Events Manager */ = {
 			isa = PBXGroup;
 			children = (
-				D2121100183FEF1100A2F349 /* NSDateFormatter+STTwitter.h */,
-				D2121101183FEF1100A2F349 /* NSDateFormatter+STTwitter.m */,
-				D2121102183FEF1100A2F349 /* NSString+STTwitter.h */,
-				D2121103183FEF1100A2F349 /* NSString+STTwitter.m */,
-				D2121104183FEF1100A2F349 /* STHTTPRequest+STTwitter.h */,
-				D2121105183FEF1100A2F349 /* STHTTPRequest+STTwitter.m */,
-				D2121106183FEF1100A2F349 /* STTwitter.h */,
-				D2121107183FEF1100A2F349 /* STTwitterAPI.h */,
-				D2121108183FEF1100A2F349 /* STTwitterAPI.m */,
-				D2121109183FEF1100A2F349 /* STTwitterAppOnly.h */,
-				D212110A183FEF1100A2F349 /* STTwitterAppOnly.m */,
-				D212110B183FEF1100A2F349 /* STTwitterHTML.h */,
-				D212110C183FEF1100A2F349 /* STTwitterHTML.m */,
-				D212110D183FEF1100A2F349 /* STTwitterOAuth.h */,
-				D212110E183FEF1100A2F349 /* STTwitterOAuth.m */,
-				D212110F183FEF1100A2F349 /* STTwitterOS.h */,
-				D2121110183FEF1100A2F349 /* STTwitterOS.m */,
-				D2121111183FEF1100A2F349 /* STTwitterProtocol.h */,
-				D2121112183FEF1100A2F349 /* Vendor */,
+				D290E838189B1433002F59E9 /* SSGoogleCalendarManager.h */,
+				D290E839189B1433002F59E9 /* SSGoogleCalendarManager.m */,
+				D21210B2183FEE3000A2F349 /* BannerEvents.h */,
+				D21210B3183FEE3000A2F349 /* BannerEvents.m */,
 			);
-			name = STTwitter;
-			path = ../../STTwitter;
+			name = "Banner Events Manager";
 			sourceTree = "<group>";
 		};
-		D2121112183FEF1100A2F349 /* Vendor */ = {
+		D20CAA5C189B514400B0B981 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				D2121113183FEF1100A2F349 /* BAVPlistNode.h */,
-				D2121114183FEF1100A2F349 /* BAVPlistNode.m */,
-				D2121115183FEF1100A2F349 /* JSONSyntaxHighlight.h */,
-				D2121116183FEF1100A2F349 /* JSONSyntaxHighlight.m */,
-				D2121117183FEF1100A2F349 /* STHTTPRequest.h */,
-				D2121118183FEF1100A2F349 /* STHTTPRequest.m */,
+				D21210E8183FEEAE00A2F349 /* NewsFeedTableViewController.h */,
+				D21210E9183FEEAE00A2F349 /* NewsFeedTableViewController.m */,
+				D21210E3183FEEAE00A2F349 /* NewsFeedSettingsViewController.h */,
+				D21210E4183FEEAE00A2F349 /* NewsFeedSettingsViewController.m */,
+				D27C29D61842920D000BD68B /* NewsFeedDetailViewController.h */,
+				D27C29D71842920D000BD68B /* NewsFeedDetailViewController.m */,
 			);
-			path = Vendor;
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		D20CAA5E189B556A00B0B981 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D2C53DBD185D010800C37DD3 /* CalendarHorizontalCell.h */,
+				D2C53DBE185D010800C37DD3 /* CalendarHorizontalCell.m */,
+				D2CCB79518590FCF005DDF0E /* CalendarTableViewCell.h */,
+				D2CCB79618590FCF005DDF0E /* CalendarTableViewCell.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		D20CAA5F189B559100B0B981 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				D21210FA183FEEE200A2F349 /* SSCalendarTableViewController.h */,
+				D21210FB183FEEE200A2F349 /* SSCalendarTableViewController.m */,
+				D266704E184AEB8200E8DDC9 /* SSEventsViewController.h */,
+				D266704F184AEB8200E8DDC9 /* SSEventsViewController.m */,
+			);
+			name = Controller;
 			sourceTree = "<group>";
 		};
 		D273FCF618441CD100C04977 /* Background */ = {
@@ -344,31 +287,6 @@
 			name = "Sidebar Menu";
 			sourceTree = "<group>";
 		};
-		D295D5D41840C96A00D796C5 /* STableViewController */ = {
-			isa = PBXGroup;
-			children = (
-				D2E481481852B966008D19B8 /* STableViewController.h */,
-				D2E481491852B966008D19B8 /* STableViewController.m */,
-			);
-			name = STableViewController;
-			path = ../../STableViewController;
-			sourceTree = "<group>";
-		};
-		D295D5D81840C9AE00D796C5 /* pullToRefresh */ = {
-			isa = PBXGroup;
-			children = (
-				D295D5E51840DA6600D796C5 /* NewsFeedEmptyCell.xib */,
-				D295D5E31840D3AF00D796C5 /* NewsFeedImageSliderView.xib */,
-				D295D5D91840CAFB00D796C5 /* NewsFeedFooterView.h */,
-				D295D5DA1840CAFB00D796C5 /* NewsFeedFooterView.m */,
-				D295D5DB1840CAFB00D796C5 /* NewsFeedFooterView.xib */,
-				D295D5DC1840CAFB00D796C5 /* NewsFeedHeaderView.h */,
-				D295D5DD1840CAFB00D796C5 /* NewsFeedHeaderView.m */,
-				D295D5DE1840CAFB00D796C5 /* NewsFeedHeaderView.xib */,
-			);
-			name = pullToRefresh;
-			sourceTree = "<group>";
-		};
 		D296A6571839894F00D35795 /* Main Navigation */ = {
 			isa = PBXGroup;
 			children = (
@@ -376,12 +294,6 @@
 				D296A6551839894600D35795 /* MasterNavViewController.m */,
 				D273FCEF1844166F00C04977 /* HomeViewController.h */,
 				D273FCF01844166F00C04977 /* HomeViewController.m */,
-				D252CE941847A69F00F29DAC /* AboutViewController.h */,
-				D252CE951847A69F00F29DAC /* AboutViewController.m */,
-				D2B4739C186AD3CA00C2BDE9 /* GetInvolvedViewController.h */,
-				D2B4739D186AD3CA00C2BDE9 /* GetInvolvedViewController.m */,
-				D2B473A8186C523D00C2BDE9 /* FeedBackViewController.h */,
-				D2B473A9186C523D00C2BDE9 /* FeedBackViewController.m */,
 			);
 			name = "Main Navigation";
 			sourceTree = "<group>";
@@ -402,6 +314,19 @@
 				D2E481921857BBC2008D19B8 /* NewsFeedCell.m */,
 			);
 			name = View;
+			sourceTree = "<group>";
+		};
+		D29A2A57188F2DC1009FA15E /* News Feed Manager */ = {
+			isa = PBXGroup;
+			children = (
+				D21210B4183FEE3000A2F349 /* SSCNewsFeedManager.h */,
+				D21210B5183FEE3000A2F349 /* SSCNewsFeedManager.m */,
+				D29A2A58188F2DF8009FA15E /* SSCNewsFeed.h */,
+				D29A2A59188F2DF8009FA15E /* SSCNewsFeed.m */,
+				D29A2A52188F1D2C009FA15E /* SSCNewsPost.h */,
+				D29A2A53188F1D2C009FA15E /* SSCNewsPost.m */,
+			);
+			name = "News Feed Manager";
 			sourceTree = "<group>";
 		};
 		D29EF76A1838B3540087B04F = {
@@ -432,6 +357,8 @@
 				D29EF7781838B3540087B04F /* CoreGraphics.framework */,
 				D29EF77A1838B3540087B04F /* UIKit.framework */,
 				D29EF78F1838B3540087B04F /* XCTest.framework */,
+				YXIFWTDXJPPRRMDCEPMDTJHK /* QuartzCore.framework */,
+				HBDITSPYVFDWQYYBDCIDIXGK /* SparkInspector.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -440,8 +367,6 @@
 			isa = PBXGroup;
 			children = (
 				D296A65B183994DA00D35795 /* Storyboard.storyboard */,
-				D2E4818E185306EB008D19B8 /* InitialViewController.h */,
-				D2E4818F185306EB008D19B8 /* InitialViewController.m */,
 				D29EF7851838B3540087B04F /* SSCAppDelegate.h */,
 				D29EF7861838B3540087B04F /* SSCAppDelegate.m */,
 				D29443B71839A704008F51CE /* Sidebar Menu */,
@@ -458,17 +383,14 @@
 		D29EF77D1838B3540087B04F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D2D72E78186EB0EE00C4B028 /* Loading Screen */,
-				D2D72E77186EB0DC00C4B028 /* NotificationView */,
-				D2B47396186A6B0300C2BDE9 /* RequiredLoginView */,
 				D2B4739B186A833D00C2BDE9 /* SSC Reveal Controller */,
 				D2F880CB185C149000CEFB6A /* HorizontalTableViewCell */,
-				D295D5D41840C96A00D796C5 /* STableViewController */,
-				D21210FF183FEF1100A2F349 /* STTwitter */,
 				D293E9BA183B160800D3D9EA /* TestFlight */,
 				D2D8661A183AD3D8002B2575 /* Classes */,
 				D29EF77F1838B3540087B04F /* InfoPlist.strings */,
 				D2EB39CE184355C00067214D /* Savoy Swing-Info.plist */,
+				D29A2A56188F1FAC009FA15E /* Savoy Swing-Prefix.pch */,
+				D29A2A55188F1F4D009FA15E /* Constants.h */,
 				D212112A183FEF6F00A2F349 /* main.m */,
 				D2EB39CB1843521E0067214D /* SSCData.h */,
 				D2EB39CC1843521E0067214D /* SSCData.m */,
@@ -494,15 +416,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		D29EF7AA1838B3C40087B04F /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				D2B4739018664E4C00C2BDE9 /* LoginLogoutViewController.h */,
-				D2B4739118664E4D00C2BDE9 /* LoginLogoutViewController.m */,
-			);
-			name = Login;
-			sourceTree = "<group>";
-		};
 		D29EF7AB1838B52B0087B04F /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -510,8 +423,6 @@
 				D273FCF618441CD100C04977 /* Background */,
 				D2CCB7911858F4AE005DDF0E /* ssc_card_med_active.tif */,
 				D2CCB7921858F4AE005DDF0E /* ssc_card_med_inactive.tif */,
-				D2B473A2186BF81C00C2BDE9 /* 002-210x300.jpg */,
-				D2B473A4186C2C8F00C2BDE9 /* down_banner.jpg */,
 				D2B473A1186BF80100C2BDE9 /* Logos */,
 				D2B473A0186BF7F200C2BDE9 /* menu_icons */,
 				D2B4739F186BF7CE00C2BDE9 /* icons */,
@@ -519,23 +430,25 @@
 			name = Images;
 			sourceTree = "<group>";
 		};
-		D2B47396186A6B0300C2BDE9 /* RequiredLoginView */ = {
+		D2B47396186A6B0300C2BDE9 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
 				D2B47393186A508C00C2BDE9 /* RequiredLoginViewController.h */,
 				D2B47394186A508C00C2BDE9 /* RequiredLoginViewController.m */,
+				D2D8660E183ABBA9002B2575 /* AccountViewController.h */,
+				D2D8660F183ABBA9002B2575 /* AccountViewController.m */,
+				D2667051184BDE4100E8DDC9 /* MembershipViewController.h */,
+				D2667052184BDE4100E8DDC9 /* MembershipViewController.m */,
+				D2B4739018664E4C00C2BDE9 /* LoginLogoutViewController.h */,
+				D2B4739118664E4D00C2BDE9 /* LoginLogoutViewController.m */,
 			);
-			name = RequiredLoginView;
+			name = Controller;
 			sourceTree = "<group>";
 		};
 		D2B47397186A804900C2BDE9 /* User Section */ = {
 			isa = PBXGroup;
 			children = (
-				D29EF7AA1838B3C40087B04F /* Login */,
-				D2D8660E183ABBA9002B2575 /* AccountViewController.h */,
-				D2D8660F183ABBA9002B2575 /* AccountViewController.m */,
-				D2667051184BDE4100E8DDC9 /* MembershipViewController.h */,
-				D2667052184BDE4100E8DDC9 /* MembershipViewController.m */,
+				D2B47396186A6B0300C2BDE9 /* Controller */,
 			);
 			name = "User Section";
 			sourceTree = "<group>";
@@ -556,7 +469,6 @@
 			children = (
 				D22584E6186E24CA007A8C6E /* google_stamp_x.png */,
 				D2BC7239186D762200326E6C /* google_stamp.png */,
-				D2B473A6186C491F00C2BDE9 /* super_old_ssc_logo.png */,
 				D2121097183FEDB900A2F349 /* ssc-app-design@2x-76x76.png */,
 				D2121098183FEDB900A2F349 /* ssc-app-design@2x-152x152.png */,
 				D2121099183FEDB900A2F349 /* ssc-app-design@2x-120x120.png */,
@@ -593,15 +505,10 @@
 		D2BB47C9183B39E800EF80B8 /* News Feed */ = {
 			isa = PBXGroup;
 			children = (
-				D21210E8183FEEAE00A2F349 /* NewsFeedTableViewController.h */,
-				D21210E9183FEEAE00A2F349 /* NewsFeedTableViewController.m */,
-				D29A2A51188F1982009FA15E /* View */,
+				D20CAA5C189B514400B0B981 /* Controller */,
 				D29A2A4D188F18F0009FA15E /* Model */,
-				D21210E3183FEEAE00A2F349 /* NewsFeedSettingsViewController.h */,
-				D21210E4183FEEAE00A2F349 /* NewsFeedSettingsViewController.m */,
-				D27C29D61842920D000BD68B /* NewsFeedDetailViewController.h */,
-				D27C29D71842920D000BD68B /* NewsFeedDetailViewController.m */,
-				D295D5D81840C9AE00D796C5 /* pullToRefresh */,
+				D29A2A51188F1982009FA15E /* View */,
+				D29A2A57188F2DC1009FA15E /* News Feed Manager */,
 			);
 			name = "News Feed";
 			sourceTree = "<group>";
@@ -609,12 +516,8 @@
 		D2C53DC0185D09EA00C37DD3 /* Week/Month */ = {
 			isa = PBXGroup;
 			children = (
-				D21210FA183FEEE200A2F349 /* CalendarTableViewController.h */,
-				D21210FB183FEEE200A2F349 /* CalendarTableViewController.m */,
-				D2C53DBD185D010800C37DD3 /* CalendarHorizontalCell.h */,
-				D2C53DBE185D010800C37DD3 /* CalendarHorizontalCell.m */,
-				D2CCB79518590FCF005DDF0E /* CalendarTableViewCell.h */,
-				D2CCB79618590FCF005DDF0E /* CalendarTableViewCell.m */,
+				D20CAA5F189B559100B0B981 /* Controller */,
+				D20CAA5E189B556A00B0B981 /* View */,
 			);
 			name = Week/Month;
 			sourceTree = "<group>";
@@ -623,38 +526,14 @@
 			isa = PBXGroup;
 			children = (
 				D2C53DC0185D09EA00C37DD3 /* Week/Month */,
-				D266704E184AEB8200E8DDC9 /* EventsViewController.h */,
-				D266704F184AEB8200E8DDC9 /* EventsViewController.m */,
+				D20CAA5B189B156E00B0B981 /* Banner Events Manager */,
 			);
 			name = Calendar;
-			sourceTree = "<group>";
-		};
-		D2D72E77186EB0DC00C4B028 /* NotificationView */ = {
-			isa = PBXGroup;
-			children = (
-				D2D72E75186EA9B200C4B028 /* NotificationView.xib */,
-				D2B473AB186D189C00C2BDE9 /* NotificationView.h */,
-				D2B473AC186D189C00C2BDE9 /* NotificationView.m */,
-			);
-			name = NotificationView;
-			sourceTree = "<group>";
-		};
-		D2D72E78186EB0EE00C4B028 /* Loading Screen */ = {
-			isa = PBXGroup;
-			children = (
-				D2BC7234186D3FC300326E6C /* loadingScreenImageView.h */,
-				D2BC7235186D3FC300326E6C /* loadingScreenImageView.m */,
-			);
-			name = "Loading Screen";
 			sourceTree = "<group>";
 		};
 		D2D8661A183AD3D8002B2575 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				D21210B2183FEE3000A2F349 /* BannerEvents.h */,
-				D21210B3183FEE3000A2F349 /* BannerEvents.m */,
-				D21210B4183FEE3000A2F349 /* SSCNewsFeeds.h */,
-				D21210B5183FEE3000A2F349 /* SSCNewsFeeds.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -754,15 +633,10 @@
 				D2CCB7931858F4AE005DDF0E /* ssc_card_med_active.tif in Resources */,
 				D21210F5183FEEC700A2F349 /* menu@2x.png in Resources */,
 				D2BC723A186D762200326E6C /* google_stamp.png in Resources */,
-				D2D72E76186EA9B200C4B028 /* NotificationView.xib in Resources */,
-				D2B473A3186BF81C00C2BDE9 /* 002-210x300.jpg in Resources */,
-				D295D5E01840CAFB00D796C5 /* NewsFeedFooterView.xib in Resources */,
 				D21210B1183FEDB900A2F349 /* Default@2x.png in Resources */,
 				D21210AB183FEDB900A2F349 /* ssc-app-design.png in Resources */,
 				D21210B0183FEDB900A2F349 /* facebook-icon.png in Resources */,
-				D295D5E41840D3AF00D796C5 /* NewsFeedImageSliderView.xib in Resources */,
 				D2CCB7941858F4AE005DDF0E /* ssc_card_med_inactive.tif in Resources */,
-				D295D5E21840CAFB00D796C5 /* NewsFeedHeaderView.xib in Resources */,
 				D252CE9318467C9500F29DAC /* home_bg_solid.png in Resources */,
 				D21210AD183FEDB900A2F349 /* Default@2x-120x120.png in Resources */,
 				D21210A7183FEDB900A2F349 /* ssc-app-design_nobg.png in Resources */,
@@ -772,12 +646,9 @@
 				D21210A9183FEDB900A2F349 /* ssc-app-design@2x-152x152.png in Resources */,
 				D21210F2183FEEC700A2F349 /* menu-gear.png in Resources */,
 				D21210AF183FEDB900A2F349 /* twitter-icon.png in Resources */,
-				D2B473A5186C2C8F00C2BDE9 /* down_banner.jpg in Resources */,
-				D295D5E61840DA6600D796C5 /* NewsFeedEmptyCell.xib in Resources */,
 				D21210A1183FEDB900A2F349 /* 2xDefault.png in Resources */,
 				D21210AA183FEDB900A2F349 /* ssc-app-design@2x-120x120.png in Resources */,
 				D22584E7186E24CA007A8C6E /* google_stamp_x.png in Resources */,
-				D2B473A7186C491F00C2BDE9 /* super_old_ssc_logo.png in Resources */,
 				D21210A2183FEDB900A2F349 /* R4Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -798,49 +669,32 @@
 			buildActionMask = 2147483647;
 			files = (
 				D2B4739218664E4D00C2BDE9 /* LoginLogoutViewController.m in Sources */,
-				D2B473AD186D189C00C2BDE9 /* NotificationView.m in Sources */,
 				D2667053184BDE4100E8DDC9 /* MembershipViewController.m in Sources */,
-				D2121120183FEF1100A2F349 /* STTwitterOS.m in Sources */,
 				D21210E2183FEE7A00A2F349 /* SSC-SBTableViewController.m in Sources */,
-				D2121123183FEF1100A2F349 /* STHTTPRequest.m in Sources */,
-				D2121119183FEF1100A2F349 /* NSDateFormatter+STTwitter.m in Sources */,
+				D29A2A54188F1D2C009FA15E /* SSCNewsPost.m in Sources */,
 				D29EF7871838B3540087B04F /* SSCAppDelegate.m in Sources */,
 				D212112B183FEF6F00A2F349 /* main.m in Sources */,
 				D2EB39CD1843521E0067214D /* SSCData.m in Sources */,
 				D21210ED183FEEAE00A2F349 /* NewsFeedTableViewController.m in Sources */,
-				D212111A183FEF1100A2F349 /* NSString+STTwitter.m in Sources */,
-				D2B4739E186AD3CB00C2BDE9 /* GetInvolvedViewController.m in Sources */,
-				D295D5E11840CAFB00D796C5 /* NewsFeedHeaderView.m in Sources */,
-				D2B473AA186C523D00C2BDE9 /* FeedBackViewController.m in Sources */,
+				D290E83A189B1433002F59E9 /* SSGoogleCalendarManager.m in Sources */,
 				D29A2A50188F1970009FA15E /* NewsFeedTableModelController.m in Sources */,
-				D2E4814A1852B966008D19B8 /* STableViewController.m in Sources */,
 				D2C53DBC185D00C600C37DD3 /* HorizontalTableViewCell.m in Sources */,
-				D252CE961847A69F00F29DAC /* AboutViewController.m in Sources */,
 				D2121126183FEF3B00A2F349 /* SWRevealViewController.m in Sources */,
-				D295D5DF1840CAFB00D796C5 /* NewsFeedFooterView.m in Sources */,
 				D21210EA183FEEAE00A2F349 /* NewsFeedSettingsViewController.m in Sources */,
 				D296A6561839894600D35795 /* MasterNavViewController.m in Sources */,
-				D2121121183FEF1100A2F349 /* BAVPlistNode.m in Sources */,
-				D2121122183FEF1100A2F349 /* JSONSyntaxHighlight.m in Sources */,
-				D212111E183FEF1100A2F349 /* STTwitterHTML.m in Sources */,
-				D2667050184AEB8200E8DDC9 /* EventsViewController.m in Sources */,
-				D212111F183FEF1100A2F349 /* STTwitterOAuth.m in Sources */,
+				D2667050184AEB8200E8DDC9 /* SSEventsViewController.m in Sources */,
 				D2D86610183ABBA9002B2575 /* AccountViewController.m in Sources */,
 				D2C53DBF185D010800C37DD3 /* CalendarHorizontalCell.m in Sources */,
-				D2BC7236186D3FC300326E6C /* loadingScreenImageView.m in Sources */,
 				D27C29D81842920D000BD68B /* NewsFeedDetailViewController.m in Sources */,
 				D2B4739A186A833500C2BDE9 /* SSCRevealViewController.m in Sources */,
 				D2B47395186A508C00C2BDE9 /* RequiredLoginViewController.m in Sources */,
 				D273FCF11844166F00C04977 /* HomeViewController.m in Sources */,
-				D212111D183FEF1100A2F349 /* STTwitterAppOnly.m in Sources */,
 				D2E481931857BBC2008D19B8 /* NewsFeedCell.m in Sources */,
-				D21210FE183FEEE200A2F349 /* CalendarTableViewController.m in Sources */,
-				D212111B183FEF1100A2F349 /* STHTTPRequest+STTwitter.m in Sources */,
+				D29A2A5A188F2DF8009FA15E /* SSCNewsFeed.m in Sources */,
+				D21210FE183FEEE200A2F349 /* SSCalendarTableViewController.m in Sources */,
 				D2CCB79718590FCF005DDF0E /* CalendarTableViewCell.m in Sources */,
-				D21210B9183FEE3000A2F349 /* SSCNewsFeeds.m in Sources */,
+				D21210B9183FEE3000A2F349 /* SSCNewsFeedManager.m in Sources */,
 				D21210B8183FEE3000A2F349 /* BannerEvents.m in Sources */,
-				D2E48190185306EB008D19B8 /* InitialViewController.m in Sources */,
-				D212111C183FEF1100A2F349 /* STTwitterAPI.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -902,6 +756,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Steven Stevenson (G72SQQ59H2)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Steven Stevenson (G72SQQ59H2)";
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "\"/Applications/Spark Inspector.app/Contents/Resources/Frameworks\"";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -918,6 +773,11 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-framework",
+					SparkInspector,
+				);
 				PROVISIONING_PROFILE = "1C5379C0-D76E-4886-93C9-9580B197E9A2";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -972,8 +832,9 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/OmniGlot/Dropbox/Xcode\\ projects/FacebookSDK",
+					"\"/Applications/Spark Inspector.app/Contents/Resources/Frameworks\"",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Savoy Swing/Savoy Swing-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/Savoy Swing/Savoy Swing-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -983,6 +844,11 @@
 					"/Users/OmniGlot/Dropbox/Xcode\\ projects/Savoy\\ Swing/Savoy\\ Swing/Supporting\\ Files",
 				);
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-framework",
+					SparkInspector,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1002,7 +868,7 @@
 					"$(inherited)",
 					"/Users/OmniGlot/Dropbox/Xcode\\ projects/FacebookSDK",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Savoy Swing/Savoy Swing-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/Savoy Swing/Savoy Swing-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
