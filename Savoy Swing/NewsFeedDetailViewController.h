@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+  
 @interface NewsFeedDetailViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
     NSInteger cellHeight;
 }

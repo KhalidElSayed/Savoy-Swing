@@ -7,7 +7,7 @@
 //
 
 #import "NewsFeedDetailViewController.h"
-
+  
 @implementation NewsFeedDetailViewController
 
 @synthesize postTableView;
