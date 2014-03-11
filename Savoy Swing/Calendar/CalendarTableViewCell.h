@@ -9,12 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "SSCAppDelegate.h"
 
-@interface CalendarTableViewCell : UITableViewCell {
-    SSCAppDelegate *theAppDel;
-    NSMutableDictionary *approvedGoogleData;
-}
+@interface CalendarTableViewCell : UITableViewCell
 
-- (void)prepareCell: (NSDictionary*) thisEvent theCell: (CalendarTableViewCell*) cell onDate: (NSDate*) theDate;
-- (void)addGoogleInfo: (NSDictionary*) thisEvent theCell: (CalendarTableViewCell*) cell onDate: (NSDate*) theDate;
+
+@property (nonatomic, strong) NSDate *theDate;
+@property (nonatomic, strong) UILabel *title;
+@property (nonatomic, strong) UILabel *sub_title;
+@property (nonatomic, strong) UILabel *main_text;
+@property (nonatomic, strong) UIImageView *google_stamp;
+@property (nonatomic, strong) NSDictionary *thisEvent;
+
+- (void)prepareCell: (NSDictionary*) thisEvent onDate: (id) theDate;
+- (void)addGoogleInfo;
 
 @end

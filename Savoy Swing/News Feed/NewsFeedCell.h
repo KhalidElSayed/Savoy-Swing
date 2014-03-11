@@ -8,12 +8,19 @@
 
 #import <UIKit/UIKit.h>
 #import "SSCAppDelegate.h"
+#import "SSCNewsPost.h"
 
-@interface NewsFeedCell : UITableViewCell {
-    SSCAppDelegate *theAppDel;
-}
+@interface NewsFeedCell : UITableViewCell
 
-@property (strong,nonatomic) UIView *cell_back;
+@property (nonatomic) SSCNewsPost *the_post;
+@property (nonatomic) UIView *cell_back;
+
+
+@property (nonatomic) UILabel *titleLabel;
+@property (nonatomic) UILabel *dateLabel;
+@property (nonatomic) UILabel *textLabel;
+@property (nonatomic) UIImageView *imageView;
 
 -(id) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier height: (float) height;
+-(void) drawCell;
 @end

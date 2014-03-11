@@ -9,6 +9,12 @@
 #import "BannerEvents.h"
 #import "SSCAppDelegate.h"
 
+@interface BannerEvents()
+
+@property (strong, nonatomic) NSMutableArray *indicesSorted;
+
+@end
+
 @implementation BannerEvents
 
 static SSCAppDelegate *theAppDel;
@@ -26,7 +32,6 @@ static SSCAppDelegate *theAppDel;
 }
 
 -(void) generateEvents {
-    NSLog(@"Accessing Banner Events Loaded");
     NSString *strURL = @"http://www.savoyswing.org/wp-content/plugins/ssc_iphone_app/lib/processMobileApp.php?appSend&allBanners";
     NSData *dataURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:strURL]];
     NSString *strResult = [[NSString alloc] initWithData:dataURL encoding:NSUTF8StringEncoding];
@@ -34,7 +39,6 @@ static SSCAppDelegate *theAppDel;
         NSData *theData = [strResult dataUsingEncoding:NSUTF8StringEncoding];
         NSError *e;
         _allEvents = [NSJSONSerialization JSONObjectWithData:theData options:kNilOptions error:&e];
-        [self loadImagesToMemory];
     }
 }
 
@@ -46,8 +50,17 @@ static SSCAppDelegate *theAppDel;
         for (NSInteger j = 0;j<[[_allEvents objectAtIndex:i] count];j++ ){
             NSDictionary *thisEvent = [[_allEvents objectAtIndex:i] objectAtIndex:j];
             if ([thisEvent objectForKey:@"image_url"] && ![[thisEvent objectForKey:@"image_url"] isEqualToString:@""]){
-                NSData *dataFromURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:[thisEvent objectForKey:@"image_url"]]];
+                NSString *mediumImageURL = [thisEvent objectForKey:@"image_url"];
+                NSInteger stringLength = mediumImageURL.length-4;
+                mediumImageURL =[[thisEvent objectForKey:@"image_url"] substringToIndex:stringLength];
+                mediumImageURL = [NSString stringWithFormat:@"%@-300x73.jpg",mediumImageURL];
+                NSData *dataFromURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:mediumImageURL]];
                 UIImage *theImage = [UIImage imageWithData: dataFromURL];
+                if (!theImage) {
+                    dataFromURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:[thisEvent objectForKey:@"image_url"]]];
+                    theImage = [UIImage imageWithData: dataFromURL];
+                }
+                    
                 NSString *thisKey = [thisEvent objectForKey:@"post_id"];
                 [_allEventImages setObject:theImage forKey:thisKey];
                 
@@ -56,7 +69,8 @@ static SSCAppDelegate *theAppDel;
             }
         }
     }
-    NSLog(@"Banner Events Loaded");
+    NSLog(@"Banner Event Images Loaded");
+[theAppDel.theLoadingScreen changeLabelText:@"Banner Events Loaded"];
 }
 
 -(NSArray*) getWeeklyBanners {

@@ -8,7 +8,7 @@
 
 #import "HorizontalTableViewCell.h"
 
-
+#pragma mark - HorizontalCellDelegate Protocol
 @protocol HorizontalCellDelegate <NSObject>
 - (void)updateMainTable:(NSMutableArray*) theDates withIndex: (NSInteger)index;
 @end

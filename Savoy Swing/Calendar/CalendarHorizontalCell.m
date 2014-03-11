@@ -8,6 +8,12 @@
 
 #import "CalendarHorizontalCell.h"
 
+@interface CalendarHorizontalCell()
+
+@property (strong, nonatomic) NSMutableArray *horizontalData;
+
+@end
+
 @implementation CalendarHorizontalCell
 
 
@@ -19,8 +25,9 @@
     return self;
 }
 
+#pragma mark -
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -(void) prepCalendarCells {
-    self.horizontalTableView.backgroundColor = [UIColor clearColor];
     self.backgroundColor = [UIColor clearColor];
     self.horizontalData = [[NSMutableArray alloc] init];
     NSCalendar *cal = [NSCalendar currentCalendar];
@@ -37,14 +44,17 @@
         
 
     }
-    
     self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
+#pragma mark UITableViewDelegate
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [_delegate updateMainTable:[self.horizontalData objectAtIndex:indexPath.row] withIndex:indexPath.row];
 }
 
+#pragma mark UITableViewDataSource
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"HorizontalCell"];
     
@@ -75,8 +85,6 @@
     [formatter setDateFormat:@"EEEE"];
     weekdayLabel.text = [formatter stringFromDate:[self.horizontalData objectAtIndex:indexPath.row]];
     
-
-    
     if (indexPath.row == 0 || [bigDate.text isEqualToString:@"1"] ) {
         UILabel *monthLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 10,150,100)];
         monthLabel.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:75.0];
@@ -91,7 +99,6 @@
     
     [cell addSubview:bigDate];
     [cell addSubview:weekdayLabel];
-    
     return cell;
 }
 

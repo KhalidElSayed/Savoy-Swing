@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "RequiredLoginViewController.h"
 
-@interface MembershipViewController : RequiredLoginViewController <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
+@interface MembershipViewController : RequiredLoginViewController <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate> 
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *logout_button;
 @property (strong, nonatomic) NSArray *sectionNames;

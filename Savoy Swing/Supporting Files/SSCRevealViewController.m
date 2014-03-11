@@ -28,7 +28,7 @@
         [nav.topViewController.view removeGestureRecognizer:self.panGestureRecognizer];
         return YES;
     }
-    if (orientation==UIInterfaceOrientationPortrait) {
+    if (orientation==UIInterfaceOrientationPortrait || orientation==UIInterfaceOrientationPortraitUpsideDown) {
         [nav.topViewController.view addGestureRecognizer:self.panGestureRecognizer];
         return YES;
     }
