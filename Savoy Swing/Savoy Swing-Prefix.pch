@@ -1,0 +1,22 @@
+//
+//  PrefixHeader.pch
+//  Savoy Swing
+//
+//  Created by Stevenson on 1/21/14.
+//  Copyright (c) 2014 Steven Stevenson. All rights reserved.
+//
+
+#ifndef Savoy_Swing_PrefixHeader_pch
+#define Savoy_Swing_PrefixHeader_pch
+
+#import <Availability.h>
+
+#ifndef __IPHONE_5_0
+#warning "This project uses features only available in iOS SDK 5.0 and later."
+#endif
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import "Constants.h"
+#endif

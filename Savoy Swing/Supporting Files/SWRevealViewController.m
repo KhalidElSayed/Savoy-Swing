@@ -26,7 +26,6 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import <UIKit/UIGestureRecognizerSubclass.h>
-
 #import "SWRevealViewController.h"
 
 #pragma mark - SWDirectionPanGestureRecognizer
@@ -428,7 +427,6 @@ const int FrontViewPositionNone = 0xff;
     _draggableBorderWidth = 0.0f;
 }
 
-
 #pragma mark Storyboard support
 
 static NSString * const SWSegueRearIdentifier = @"sw_rear";
@@ -578,12 +576,6 @@ static NSString * const SWSegueRightIdentifier = @"sw_right";
     // and resume it back to the previous state, it is possible to override this behaviour by
     // intercepting it on the panGestureBegan and panGestureEnded delegates
     _userInteractionStore = _contentView.userInteractionEnabled;
-}
-
-
-- (NSUInteger)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationMaskAll;
 }
 
 // Support for earlier than iOS 6.0

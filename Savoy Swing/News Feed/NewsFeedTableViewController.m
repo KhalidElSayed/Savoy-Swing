@@ -14,8 +14,6 @@
 #import "NewsFeedFooterView.h"
 #import "NewsFeedHeaderView.h"
 
-@interface NewsFeedTableViewController  ()
-@property (nonatomic, strong) STTwitterAPI* _twitter;
 @end
 
 @implementation NewsFeedTableViewController
@@ -124,8 +122,9 @@
     [self.view addSubview:loadingLabel];
 }
 
-- (void) startLoading {
-    [self makeFeeds];
+-(void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self startLoading];
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
@@ -177,6 +176,8 @@
         [self initializeCellData];
     }
     
+    self.startTableCells = YES;
+    [self.tableView reloadData];
 }
 
 -(void) sortInitialObjects {
@@ -384,8 +385,6 @@
         } else {
             NSLog(@"-- error: no Response!");
         }
-    } else {
-        NSLog(@"-- error: no Token Received!");
     }
 }
 
@@ -424,11 +423,16 @@
     text.numberOfLines = 0;
     //[text sizeToFit];
     
-    [theCell.contentView addSubview:tag];
-    [theCell.contentView addSubview:date];
-    [theCell.contentView addSubview:text];
+    NewsFeedHeaderView *hv = (NewsFeedHeaderView *)self.headerView;
+    [hv.activityIndicator startAnimating];
+    hv.title.text = @"Loading More News...";
+}
+
+- (void) unpinHeaderView
+{
+    [super unpinHeaderView];
     
-    return theCell;
+    [[(NewsFeedHeaderView *)self.headerView activityIndicator] stopAnimating];
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -752,31 +756,13 @@
     }
 }
 
+#pragma mark - Load More
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
--(void)switchImageView
+- (void) willBeginLoadingMore
 {
-    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    NSNumber *index = nil;
-    
-    if (standardUserDefaults)
-        index = [standardUserDefaults objectForKey:@"indexArr"];
-    
-    NSInteger indexArr = [index intValue];
-    
-    NSString *nextIMG = [self.imageArr objectAtIndex:indexArr];
-    UIImage * toImage = [UIImage imageWithData: [NSData dataWithContentsOfURL:[NSURL URLWithString:nextIMG]]];
-    [UIView transitionWithView:self.view
-                      duration:0.33f
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:^{
-                        self.home_background.image = toImage;
-                    } completion:NULL];
-    indexArr++;
-    if ( indexArr == [self.imageArr count]) {
-        indexArr = 0;
-    }
-    [standardUserDefaults setObject:[NSNumber numberWithInt:(int)indexArr] forKey:@"indexArr"];
-    [standardUserDefaults synchronize];
+    NewsFeedFooterView *fv = (NewsFeedFooterView *)self.footerView;
+    [fv.activityIndicator startAnimating];
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -789,17 +775,12 @@
  *
  */
 
--(void) showNewsSettings:(id)sender {
+- (void) loadMoreCompleted
+{
+    [super loadMoreCompleted];
     
-    //setup header title
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-    label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
-    label.textAlignment = NSTextAlignmentCenter;
-    // ^-Use UITextAlignmentCenter for older SDKs.
-    label.textColor = [UIColor whiteColor];
-    
-    label.text = NSLocalizedString(@"News Settings", @"");
-    [label sizeToFit];
+    NewsFeedFooterView *fv = (NewsFeedFooterView *)self.footerView;
+    [fv.activityIndicator stopAnimating];
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController: self.newsSettings];
     navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
@@ -930,13 +911,15 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0 && indexPath.row == 0 ) {
-        return 215.0f;
+        return 225.0f;
     }
-    return self.basicCellHeight;
+    return [theAppDel.theFeed thisCellHeight:[self rowsOrSectionsReturn:indexPath]-1];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    if ( !self.startTableCells )
+        return 0;
     if ([self listByRows]) {
         return 1;
     } else {
@@ -973,6 +956,7 @@
             [view removeFromSuperview];
         }
     }
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1014,6 +998,13 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                        reuseIdentifier:CellIdentifier];
     }
+    
+    NSString *CellIdentifier = @"Cell";
+    NewsFeedCell *cell = [[NewsFeedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier height:[theAppDel.theFeed thisCellHeight:[self rowsOrSectionsReturn:indexPath]-1]];
+
+    [cell setThe_post:(SSCNewsPost*)theAppDel.theFeed.allData];
+    [cell drawCell];
+
     return cell;
 }
 

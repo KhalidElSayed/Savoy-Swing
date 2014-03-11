@@ -14,6 +14,7 @@
 @interface SSC_SBTableViewController ()
 
 @property (nonatomic, strong) NSArray *menuItems;
+@property (strong,nonatomic) NSIndexPath *selectedIndex;
 
 @end
 
@@ -32,13 +33,17 @@
 {
     [super viewDidLoad];
     
+    UIImageView *highlightLogo = [[UIImageView alloc] initWithFrame:CGRectMake(-150.0f, 250.0f, 400.0f, 385.0f)];
+    highlightLogo.image = [UIImage imageNamed:@"ssc-app-design_nobg"];
+    highlightLogo.alpha = 0.1;
+    [self.view addSubview:highlightLogo];
+    
     self.view.backgroundColor = [UIColor colorWithWhite:0.2f alpha:1.0f];
-    self.tableView.backgroundColor = [UIColor colorWithWhite:0.2f alpha:1.0f];
+    self.tableView.backgroundColor = [UIColor colorWithWhite:0.3f alpha:0.5f];
     self.tableView.separatorColor = [UIColor colorWithWhite:0.15f alpha:0.4f];
     
-    _menuItems = @[@"menu_title",@"news",@"about",@"calendar",@"classes",@"get-involved",@"blank",@"account",@"membership",@"logout"];
     
-    //NSLog(@"%@",_menuItems);
+    _menuItems = @[@"menu_title",@"news",@"calendar",@"special",@"blank",@"membership",@"account"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -47,6 +52,15 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark UITableViewDelegate
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    self.selectedIndex = indexPath;
+    [self.tableView reloadData];
+}
+
+#pragma mark UITableViewDataSource
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -62,13 +76,21 @@
     NSString *cellIdentifier = [self.menuItems objectAtIndex:indexPath.row];
     [tableView cellForRowAtIndexPath:indexPath].backgroundColor = [UIColor colorWithWhite:0.2f alpha:1.0f];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-    
+    if ((self.selectedIndex == nil) && indexPath.row > 0) {
+        self.selectedIndex = indexPath;
+    }
+    if ( indexPath.row == 0 ) {
+        cell.backgroundColor = [UIColor colorWithWhite:0.2f alpha:0.5f];
+    } else if (self.selectedIndex.row == indexPath.row) {
+        cell.backgroundColor = [UIColor colorWithWhite:1 alpha:.1];
+    } else {
+        cell.backgroundColor = [UIColor clearColor];
+    }
     return cell;
 }
 
 - (void) prepareForSegue: (UIStoryboardSegue *) segue sender: (id) sender
 {
-    //NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     UINavigationController *destViewController = (UINavigationController*)segue.destinationViewController;
     
     
@@ -76,9 +98,7 @@
     UIImage *theImage = [[UIImage alloc] initWithContentsOfFile:filePath];
     
     destViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:theImage style:UIBarButtonItemStylePlain target:self.revealViewController action:@selector(revealToggle:)];
-    if (![[segue identifier] isEqualToString:@"showNews"]) {
-         [destViewController.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
-    }
+
     
     if ( [segue isKindOfClass: [SWRevealViewControllerSegue class]] ) {
         SWRevealViewControllerSegue *swSegue = (SWRevealViewControllerSegue*) segue;

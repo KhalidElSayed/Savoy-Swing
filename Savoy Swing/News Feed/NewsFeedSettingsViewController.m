@@ -10,6 +10,10 @@
 
 @interface NewsFeedSettingsViewController ()
 
+@property (nonatomic) UISwitch *twitterSwitch;
+@property (nonatomic) UISwitch *facebookSwitch;
+@property SSCAppDelegate *theAppDel;
+
 @end
 
 @implementation NewsFeedSettingsViewController
@@ -22,9 +26,12 @@
 
     _twitterSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(251.0f, 6.0f, 51.0f, 31.0f)];
     _twitterSwitch.on = _theAppDel.newsFeedTwitterActive;
+    
+    self.theAppDel = [[UIApplication sharedApplication] delegate];
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
+    BOOL nonce = NO;
     if (_facebookSwitch.on != _theAppDel.newsFeedFacebookActive ){
         _theAppDel.newsFeedFacebookActive = _facebookSwitch.on;
         _theAppDel.newsFeedData = nil;
@@ -32,7 +39,20 @@
     if (_twitterSwitch.on != _theAppDel.newsFeedTwitterActive ){
         _theAppDel.newsFeedData = nil;
         _theAppDel.newsFeedTwitterActive = _twitterSwitch.on;
+        [self performSelector:@selector(makeNewFeedsWait) withObject:nil afterDelay:.5];
     }
+}
+
+- (BOOL)shouldAutorotate {
+    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+    if ((orientation == UIInterfaceOrientationLandscapeLeft ||
+         orientation == UIInterfaceOrientationLandscapeRight)) {
+        return NO;
+    }
+    if (orientation==UIInterfaceOrientationPortrait || orientation==UIInterfaceOrientationPortraitUpsideDown) {
+        return YES;
+    }
+    return NO;
 }
 
 - (void)didReceiveMemoryWarning
@@ -40,6 +60,15 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark -
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-(void) makeNewFeedsWait {
+        [_theAppDel makeNewFeedsWithNews:YES withBanners:NO];
+}
+
+#pragma mark UITableViewDataSource
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
